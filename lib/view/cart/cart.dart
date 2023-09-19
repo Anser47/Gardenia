@@ -8,35 +8,34 @@ class CartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          title: const Center(
+            child: Text(
+              'Cart',
+              style: TextStyle(color: Colors.black),
+            ),
+          ),
+        ),
         body: SingleChildScrollView(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 18.0, left: 18),
-                child: Text(
-                  'Cart',
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                  ),
+              Container(
+                decoration: const BoxDecoration(gradient: gcolor),
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    return ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: 5,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return CartProductCard(
+                            name: 'sdf', price: 324, constraints: constraints);
+                      },
+                    );
+                  },
                 ),
               ),
-              SizedBox(
-                height: 20,
-              ),
-              ProductCard(
-                  imageUrl:
-                      'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%3Fid%3DOIP.HknsoENC5MynDj3g6reSyAHaHa%26pid%3DApi&f=1&ipt=389a54fc3cfc1ad8ae942c3503b7d1b354855ab0026eaa9c90703fbb3efb60b5&ipo=images',
-                  name: 'Peace Lily',
-                  description: 'sojfjbovaddfsaaaaaaa',
-                  price: 324),
-              ProductCard(
-                  imageUrl:
-                      'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.33nQcbaDm9dHFLuhZadtBQHaKr%26pid%3DApi&f=1&ipt=881ff209cdf0df0c8abc53c1c3734ee55663599a1fc4918b8567d8e23d99b1ef&ipo=images',
-                  name: 'Shedi',
-                  description: 'sojfjbovaddfsaaaaaaa',
-                  price: 324),
             ],
           ),
         ),
@@ -45,111 +44,173 @@ class CartScreen extends StatelessWidget {
   }
 }
 
-class ProductCard extends StatefulWidget {
-  final String imageUrl;
-  final String name;
-  final String description;
-  final double price;
+// class ProductCard extends StatefulWidget {
+//   final String imageUrl;
+//   final String name;
+//   final String description;
+//   final double price;
 
-  ProductCard({
-    required this.imageUrl,
+//   ProductCard({
+//     required this.imageUrl,
+//     required this.name,
+//     required this.description,
+//     required this.price,
+//   });
+
+//   @override
+//   _ProductCardState createState() => _ProductCardState();
+// }
+
+// class _ProductCardState extends State<ProductCard> {
+//   int quantity = 1;
+//   Text dd = Text(
+//     'dasf',
+//     style: TextStyle(fontSize: 34),
+//   );
+//   void _increaseQuantity() {
+//     setState(() {
+//       quantity++;
+//     });
+//   }
+
+//   void _decreaseQuantity() {
+//     setState(() {
+//       if (quantity > 1) {
+//         quantity--;
+//       }
+//     });
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     Size size = MediaQuery.of(context).size;
+//     var height = size.height;
+//     return Card(
+//       margin: const EdgeInsets.all(16.0),
+//       elevation: 1.0,
+//       child: Container(
+//         height: 330,
+//         // decoration: const BoxDecoration(gradient: gcolor),
+//         child: Column(
+//           children: [
+//             Image.network(widget.imageUrl,
+//                 height: 200.0, width: double.infinity, fit: BoxFit.cover),
+//             CartItem(productName: 'f', price: 34, quantity: quantity),
+//             // ListTile(
+//             //   title: Text(
+//             //     widget.name,
+//             //     style: const TextStyle(fontWeight: FontWeight.bold),
+//             //   ),
+//             //   subtitle: Text(widget.description),
+//             //   trailing: Text(
+//             //     '₹${widget.price.toStringAsFixed(2)}',
+//             //     style: const TextStyle(fontSize: 20),
+//             //   ),
+//             // ),
+
+//             ListTile(
+//               title: Row(
+//                 children: [
+//                   IconButton(
+//                     icon: const Icon(Icons.remove),
+//                     onPressed: _decreaseQuantity,
+//                   ),
+//                   Text('$quantity'),
+//                   IconButton(
+//                     icon: const Icon(Icons.add),
+//                     onPressed: _increaseQuantity,
+//                   ),
+//                 ],
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+class CartProductCard extends StatelessWidget {
+  const CartProductCard({
+    super.key,
     required this.name,
-    required this.description,
     required this.price,
+    required this.constraints,
   });
-
-  @override
-  _ProductCardState createState() => _ProductCardState();
-}
-
-class _ProductCardState extends State<ProductCard> {
-  int quantity = 1;
-
-  void _increaseQuantity() {
-    setState(() {
-      quantity++;
-    });
-  }
-
-  void _decreaseQuantity() {
-    setState(() {
-      if (quantity > 1) {
-        quantity--;
-      }
-    });
-  }
+  final String name;
+  final double price;
+  final BoxConstraints constraints;
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    var height = size.height;
     return Card(
-      margin: EdgeInsets.all(16.0),
-      elevation: 1.0,
+      elevation: 5,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      margin: const EdgeInsets.all(10.0),
       child: Container(
-        height: 330,
-        decoration: const BoxDecoration(gradient: gcolor),
-        child: Column(
+        width: double.infinity,
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.network(widget.imageUrl,
-                height: 200.0, width: double.infinity, fit: BoxFit.cover),
-            ListTile(
-              title: Text(
-                widget.name,
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              subtitle: Text(widget.description),
-              trailing: Text(
-                '₹${widget.price.toStringAsFixed(2)}',
-                style: TextStyle(fontSize: 20),
+            SizedBox(
+              width: 100,
+              height: 100,
+              child: Image.network(
+                'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.6IeEzE8WjRisNJks_ytv-AHaJO%26pid%3DApi&f=1&ipt=41acb58a3b29bc0977c9f208e79bd3319dd0788e2b8f14f1917f68b5d6fbfed4&ipo=images',
+                fit: BoxFit.cover,
               ),
             ),
-            ListTile(
-              title: Row(
+            const SizedBox(width: 16.0),
+            // Product Details
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  IconButton(
-                    icon: Icon(Icons.remove),
-                    onPressed: _decreaseQuantity,
+                  const Text(
+                    'Product Name',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  Text('$quantity'),
-                  IconButton(
-                    icon: Icon(Icons.add),
-                    onPressed: _increaseQuantity,
+                  const Padding(
+                    padding: EdgeInsets.only(top: 8.0),
+                    child: Text(
+                      '\$99.99',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.green,
+                      ),
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      const Text('quantity'),
+                      IconButton(
+                        icon: const Icon(Icons.remove),
+                        onPressed: () {},
+                      ),
+                      const Text('3'),
+                      IconButton(
+                        icon: const Icon(Icons.add),
+                        onPressed: () {},
+                      ),
+                    ],
                   ),
                 ],
               ),
-            )
+            ),
+
+            IconButton(
+              icon: Icon(Icons.delete_outline),
+              onPressed: () {},
+            ),
           ],
         ),
       ),
     );
   }
-}
-
-class GradientAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final double height = 56.0; // Adjust the height as needed
-  final Widget title;
-  final LinearGradient gradient;
-
-  GradientAppBar({
-    required this.title,
-    required this.gradient,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-      height: preferredSize.height,
-      child: Center(
-        child: title,
-      ),
-      decoration: BoxDecoration(
-        gradient: gradient,
-      ),
-    );
-  }
-
-  @override
-  Size get preferredSize => Size.fromHeight(height);
 }
