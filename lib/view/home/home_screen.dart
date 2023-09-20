@@ -1,60 +1,265 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:gardenia/shared/bottomnavigation/core/constants.dart';
+import 'package:flutter/cupertino.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
+  HomeScreen({super.key});
+  ValueNotifier<bool> notifier = ValueNotifier(true);
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              const Center(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 15),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Welcome ',
-                        style: kTitle,
-                      ),
-                      Text(
-                        'gardenia',
-                        style: TextStyle(
-                          color: Colors.green,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
+        backgroundColor: Colors.white,
+        body: ValueListenableBuilder(
+            valueListenable: notifier,
+            builder: (context, value, child) {
+              return NotificationListener<UserScrollNotification>(
+                onNotification: (notification) {
+                  final ScrollDirection direction = notification.direction;
+                  if (direction == ScrollDirection.reverse) {
+                    notifier.value = false;
+                  } else if (direction == ScrollDirection.forward) {
+                    notifier.value = true;
+                  }
+                  return true;
+                },
+                child: Stack(
+                  children: [
+                    ListView(
+                      children: [
+                        Container(
+                          decoration: const BoxDecoration(gradient: gcolor),
+                          height: 300,
+                          child: Image.network(
+                            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.5tFGU4QsY1cfsFm9QZJD1wHaE9%26pid%3DApi&f=1&ipt=f77b75f6c62783af2b2397e203912dfad58459e8bf93c7eb92b4fe5fe5921f3f&ipo=images',
+                            fit: BoxFit.cover,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: TextField(
-                  decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15.0),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        LayoutBuilder(builder: (context, constraints) {
+                          final crossAxisCount =
+                              constraints.maxWidth > 600 ? 3 : 2;
+                          const aspectRatio = 3.0 / 4.0;
+                          return GridView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    childAspectRatio: aspectRatio,
+                                    crossAxisCount: crossAxisCount,
+                                    crossAxisSpacing: 16.0,
+                                    mainAxisSpacing: 16.0),
+                            itemCount: 5,
+                            itemBuilder: (context, index) {
+                              return const ProductTile(
+                                  name: 'sdaf',
+                                  subname: 'kjbdfvjkjklndvkln',
+                                  rate: 23,
+                                  image:
+                                      'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%3Fid%3DOIP.cmRHPqeRkBl0I2so0qf-NwHaJ4%26pid%3DApi&f=1&ipt=d851d30b7eb26026a889e36fb9f4bd923d4090835bf9271130ceae085fe8b899&ipo=images',
+                                  description: 'dsfdsfadf');
+                            },
+                          );
+                        }),
+                      ],
                     ),
-                    border: InputBorder.none,
-                    labelText: "Search",
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                      borderSide: const BorderSide(
-                        color: Colors.green,
-                        width: 2.0,
-                      ),
-                    ),
-                  ),
+                    notifier.value == true
+                        ? AnimatedContainer(
+                            duration: const Duration(milliseconds: 1000),
+                            width: double.infinity,
+                            height: 130,
+                            color: Colors.white.withOpacity(0.6),
+                            child: const Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  'Gardenia',
+                                  style: TextStyle(
+                                    color: Colors.green,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SearchWidget(),
+                              ],
+                            ),
+                          )
+                        : const Text(''),
+                  ],
                 ),
-              )
-            ],
+              );
+            }),
+      ),
+    );
+  }
+}
+
+class SearchWidget extends StatelessWidget {
+  const SearchWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: TextField(
+        decoration: InputDecoration(
+          prefixIcon: const Icon(Icons.search_rounded),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          border: InputBorder.none,
+          labelText: "Search",
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15.0),
+            borderSide: const BorderSide(
+              color: Colors.green,
+              width: 2.0,
+            ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+// class ProductCard extends StatefulWidget {
+//   final String imageUrl;
+//   final String name;
+//   final String description;
+//   final double price;
+
+//   ProductCard({
+//     required this.imageUrl,
+//     required this.name,
+//     required this.description,
+//     required this.price,
+//   });
+
+//   @override
+//   _ProductCardState createState() => _ProductCardState();
+// }
+
+// class _ProductCardState extends State<ProductCard> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Card(
+//       margin: const EdgeInsets.all(16.0),
+//       elevation: 1.0,
+//       child: Container(
+//         height: 300,
+//         child: Column(
+//           children: [
+//             Image.network(widget.imageUrl,
+//                 height: 200.0, width: double.infinity, fit: BoxFit.cover),
+//             ListTile(
+//               title: Text(
+//                 widget.name,
+//                 style: const TextStyle(fontWeight: FontWeight.bold),
+//               ),
+//               subtitle: Text(widget.description),
+//               trailing: Text(
+//                 '₹${widget.price.toStringAsFixed(2)}',
+//                 style: const TextStyle(fontSize: 20),
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+class ProductTile extends StatefulWidget {
+  final String name;
+  final String subname;
+  final int rate;
+  final String image;
+  final String description;
+
+  const ProductTile({
+    Key? key,
+    required this.name,
+    required this.subname,
+    required this.rate,
+    required this.image,
+    required this.description,
+  }) : super(key: key);
+
+  @override
+  State<ProductTile> createState() => _ProductTileState();
+}
+
+class _ProductTileState extends State<ProductTile> {
+  bool isAddedToWishlist = false;
+
+  @override
+  Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    return GestureDetector(
+      onTap: () {},
+      child: Column(
+        children: [
+          Container(
+            width: 180,
+            height: 180,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25),
+                image: DecorationImage(
+                  image: NetworkImage(widget.image),
+                  fit: BoxFit.cover,
+                )),
+            child: Stack(
+              children: [
+                Positioned(
+                    left: size.width / 3.2,
+                    top: -4,
+                    child: IconButton(
+                      icon: Icon(
+                        isAddedToWishlist
+                            ? CupertinoIcons.suit_heart_fill
+                            : CupertinoIcons.heart,
+                        color: Colors.black,
+                        size: 24,
+                      ),
+                      onPressed: () async {},
+                    ))
+              ],
+            ),
+          ),
+          Text(
+            widget.name,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+            style: TextStyle(
+                letterSpacing: .5,
+                fontSize: 15,
+                color: Colors.black,
+                fontWeight: FontWeight.w900),
+          ),
+          Text(
+            widget.subname,
+            maxLines: 1,
+            overflow: TextOverflow.clip,
+            style: const TextStyle(
+                letterSpacing: .5,
+                fontSize: 12,
+                color: Colors.black54,
+                fontWeight: FontWeight.w700),
+          ),
+          Text(
+            "₹${widget.rate}.00",
+            style: const TextStyle(
+                letterSpacing: .5,
+                fontSize: 15,
+                color: Colors.black,
+                fontWeight: FontWeight.w900),
+          ),
+        ],
       ),
     );
   }

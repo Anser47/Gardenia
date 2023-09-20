@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: ScreenNavWidget(),
-      // home: CartScreen(),
+      // home: ProductGrid(),
     );
   }
 }

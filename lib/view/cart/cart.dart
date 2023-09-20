@@ -146,7 +146,7 @@ class CartProductCard extends StatelessWidget {
     return Card(
       elevation: 5,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8.0),
+        borderRadius: BorderRadius.circular(25.0),
       ),
       margin: const EdgeInsets.all(10.0),
       child: Container(
@@ -179,7 +179,7 @@ class CartProductCard extends StatelessWidget {
                   const Padding(
                     padding: EdgeInsets.only(top: 8.0),
                     child: Text(
-                      '\$99.99',
+                      '₹99.99',
                       style: TextStyle(
                         fontSize: 16,
                         color: Colors.green,
@@ -205,7 +205,7 @@ class CartProductCard extends StatelessWidget {
             ),
 
             IconButton(
-              icon: Icon(Icons.delete_outline),
+              icon: const Icon(Icons.delete_outline),
               onPressed: () {},
             ),
           ],

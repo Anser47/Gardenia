@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gardenia/shared/bottomnavigation/core/constants.dart';
 
 class WishlistScreen extends StatelessWidget {
+  const WishlistScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,7 +17,7 @@ class WishlistScreen extends StatelessWidget {
         ),
       ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: gcolor,
         ),
         child: LayoutBuilder(
@@ -71,7 +73,6 @@ class WishlistProductCard extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 16.0),
-            // Product Details
             const Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,7 +85,7 @@ class WishlistProductCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '\$99.99', // Replace with the actual price
+                    '₹99.99',
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.green,
@@ -93,12 +94,9 @@ class WishlistProductCard extends StatelessWidget {
                 ],
               ),
             ),
-            // Like Button
             IconButton(
-              icon: Icon(Icons.favorite_border),
-              onPressed: () {
-                // Handle like button tap
-              },
+              icon: const Icon(Icons.favorite_border),
+              onPressed: () {},
             ),
           ],
         ),

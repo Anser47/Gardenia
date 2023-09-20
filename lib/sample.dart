@@ -1,83 +1,93 @@
-import 'package:flutter/material.dart';
+// import 'package:flutter/cupertino.dart';
+// import 'package:flutter/material.dart';
 
-class CartScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Shopping Cart'),
-      ),
-      body: Column(
-        children: [
-          // Expanded ListView to display cart items
-          Expanded(
-            child: ListView.builder(
-              itemCount: 10, // Replace with the number of cart items
-              itemBuilder: (context, index) {
-                // Replace this with your CartItem widget
-                return CartItem(
-                  productName: 'Product $index',
-                  price: 10.0,
-                  quantity: 2,
-                );
-              },
-            ),
-          ),
-          // Cart summary at the bottom
-          CartSummaryWidget(),
-        ],
-      ),
-    );
-  }
-}
+// class ProductTile extends StatefulWidget {
+//   final String name;
+//   final String subname;
+//   final int rate;
+//   final List<dynamic> image;
+//   final String description;
 
-class CartSummaryWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    // Replace these values with your actual cart data
-    int totalItems = 15;
-    double totalAmount = 150.0;
+//   const ProductTile({
+//     Key? key,
+//     required this.name,
+//     required this.subname,
+//     required this.rate,
+//     required this.image,
+//     required this.description,
+//   }) : super(key: key);
 
-    return Container(
-      padding: EdgeInsets.all(16.0),
-      color: Colors.blue, // Customize the background color as needed
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('Total Items: $totalItems',
-              style: TextStyle(color: Colors.white)),
-          Text('Total Amount: ₹$totalAmount',
-              style: TextStyle(color: Colors.white)),
-          SizedBox(height: 10.0),
-          ElevatedButton(
-            onPressed: () {
-              // Implement your place order logic here
-            },
-            child: Text('Place Order'),
-          ),
-        ],
-      ),
-    );
-  }
-}
+//   @override
+//   State<ProductTile> createState() => _ProductTileState();
+// }
 
-class CartItem extends StatelessWidget {
-  final String productName;
-  final double price;
-  final int quantity;
+// class _ProductTileState extends State<ProductTile> {
+//   bool isAddedToWishlist = false;
 
-  CartItem({
-    required this.productName,
-    required this.price,
-    required this.quantity,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(productName),
-      subtitle: Text('Price: ₹$price | Quantity: $quantity'),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     var size = MediaQuery.of(context).size;
+//     return GestureDetector(
+//       onTap: () {},
+//       child: Column(
+//         children: [
+//           Container(
+//             width: 180,
+//             height: 180,
+//             decoration: BoxDecoration(
+//                 borderRadius: BorderRadius.circular(25),
+//                 image: DecorationImage(
+//                   image: NetworkImage(widget.image[0]),
+//                   fit: BoxFit.cover,
+//                 )),
+//             child: Stack(
+//               children: [
+//                 Positioned(
+//                     left: size.width / 3.2,
+//                     top: -4,
+//                     child: IconButton(
+//                       icon: Icon(
+//                         isAddedToWishlist
+//                             ? CupertinoIcons.suit_heart_fill
+//                             : CupertinoIcons.heart,
+//                         color: Colors.black,
+//                         size: 24,
+//                       ),
+//                       onPressed: () async {},
+//                     ))
+//               ],
+//             ),
+//           ),
+//           Text(
+//             widget.name,
+//             overflow: TextOverflow.ellipsis,
+//             maxLines: 1,
+//             style: TextStyle(
+//                 letterSpacing: .5,
+//                 fontSize: 15,
+//                 color: Colors.black,
+//                 fontWeight: FontWeight.w900),
+//           ),
+//           Text(
+//             widget.subname,
+//             maxLines: 1,
+//             overflow: TextOverflow.clip,
+//             style: const TextStyle(
+//                 letterSpacing: .5,
+//                 fontSize: 12,
+//                 color: Colors.black54,
+//                 fontWeight: FontWeight.w700),
+//           ),
+//           Text(
+//             "₹${widget.rate}.00",
+//             style: const TextStyle(
+//                 letterSpacing: .5,
+//                 fontSize: 15,
+//                 color: Colors.black,
+//                 fontWeight: FontWeight.w900),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
