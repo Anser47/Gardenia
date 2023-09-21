@@ -14,9 +14,11 @@ class ScreenProfile extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.white,
           title: const Center(
-            child: Text(
-              'Account',
-              style: TextStyle(color: Colors.black),
+            child: Expanded(
+              child: Text(
+                'Account',
+                style: TextStyle(color: Colors.black),
+              ),
             ),
           ),
         ),
