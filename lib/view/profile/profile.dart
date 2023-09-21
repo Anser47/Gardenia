@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gardenia/shared/bottomnavigation/core/constants.dart';
@@ -74,8 +76,11 @@ class ScreenProfile extends StatelessWidget {
               const SizedBox(
                 height: 130,
               ),
-              const CommonButton(
+              CommonButton(
                 name: 'Log Out',
+                voidCallback: () {
+                  FirebaseAuth.instance.signOut();
+                },
               )
             ],
           ),

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
 class CommonButton extends StatelessWidget {
-  const CommonButton({
-    super.key,
-    required this.name,
-  });
+  CommonButton({super.key, required this.name, required this.voidCallback});
   final String name;
+  VoidCallback voidCallback;
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {},
+      onPressed: () {
+        voidCallback();
+      },
       style: ButtonStyle(
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(

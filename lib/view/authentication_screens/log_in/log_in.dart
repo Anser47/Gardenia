@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+final _firebase = FirebaseAuth.instance;
 
 class ScreenLogin extends StatefulWidget {
   ScreenLogin({super.key});
@@ -8,12 +11,37 @@ class ScreenLogin extends StatefulWidget {
 }
 
 class _ScreenLoginState extends State<ScreenLogin> {
-  final _formKey = GlobalKey<FormState>();
+  final _form = GlobalKey<FormState>();
   var _isLogin = true;
   var _enteredEmail = '';
   var _enteredPassword = '';
   var _isAuthenticating = false;
-  void _submit() {}
+  void _submit() async {
+    final isValid = _form.currentState!.validate();
+
+    if (!isValid) {
+      return;
+    }
+    _form.currentState!.save();
+    try {
+      if (_isLogin) {
+        final userCredential = await _firebase.signInWithEmailAndPassword(
+            email: _enteredEmail, password: _enteredPassword);
+      } else {
+        final userCredentials = await _firebase.createUserWithEmailAndPassword(
+            email: _enteredEmail, password: _enteredPassword);
+      }
+    } on FirebaseAuthException catch (error) {
+      if (error.code == 'email-already-in-use') {}
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(error.message ?? 'Authentication faild'),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -21,7 +49,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
         body: Center(
           child: SingleChildScrollView(
             child: Form(
-              key: _formKey,
+              key: _form,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -106,9 +134,11 @@ class _ScreenLoginState extends State<ScreenLogin> {
                         ),
                         TextButton(
                           onPressed: () {
-                            setState(() {
-                              _isLogin = !_isLogin;
-                            });
+                            setState(
+                              () {
+                                _isLogin = !_isLogin;
+                              },
+                            );
                           },
                           child: Text(_isLogin
                               ? 'Create an account'
