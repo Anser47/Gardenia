@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class ProductDescriptionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height;
+    // var height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         title: Text(

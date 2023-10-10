@@ -53,10 +53,10 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAyW8SLXdgOnba0s54hmfFL9n33UV3p6S8',
-    appId: '1:1047446075570:android:152a721826e3e48a2cf1ab',
-    messagingSenderId: '1047446075570',
-    projectId: 'gardenia-faaf2',
-    storageBucket: 'gardenia-faaf2.appspot.com',
+    apiKey: 'AIzaSyBWzJcgODwbeMCXoOjt_IdkLp6NQYUo5UY',
+    appId: '1:1080129843459:android:ebb691986200aba3573936',
+    messagingSenderId: '1080129843459',
+    projectId: 'admin-gardenia',
+    storageBucket: 'admin-gardenia.appspot.com',
   );
 }

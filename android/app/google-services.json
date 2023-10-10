@@ -1,13 +1,32 @@
 {
   "project_info": {
-    "project_number": "1047446075570",
-    "project_id": "gardenia-faaf2",
-    "storage_bucket": "gardenia-faaf2.appspot.com"
+    "project_number": "1080129843459",
+    "project_id": "admin-gardenia",
+    "storage_bucket": "admin-gardenia.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1047446075570:android:152a721826e3e48a2cf1ab",
+        "mobilesdk_app_id": "1:1080129843459:android:417baee8531e0fed573936",
+        "android_client_info": {
+          "package_name": "com.example.admin_gardenia"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWzJcgODwbeMCXoOjt_IdkLp6NQYUo5UY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1080129843459:android:ebb691986200aba3573936",
         "android_client_info": {
           "package_name": "com.example.gardenia"
         }
@@ -15,7 +34,26 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAyW8SLXdgOnba0s54hmfFL9n33UV3p6S8"
+          "current_key": "AIzaSyBWzJcgODwbeMCXoOjt_IdkLp6NQYUo5UY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1080129843459:android:c1ef500c63c7c3d3573936",
+        "android_client_info": {
+          "package_name": "com.example.gardenia_admin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWzJcgODwbeMCXoOjt_IdkLp6NQYUo5UY"
         }
       ],
       "services": {

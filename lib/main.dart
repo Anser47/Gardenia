@@ -18,20 +18,21 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        // home: ScreenNavWidget(),
+      debugShowCheckedModeBanner: false,
+      // home: ScreenNavWidget(),
 
-        home: StreamBuilder(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const ScreenSplash();
-            }
-            if (snapshot.hasData) {
-              return ScreenNavWidget();
-            }
-            return ScreenLogin();
-          },
-        ));
+      home: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const ScreenSplash();
+          }
+          if (snapshot.hasData) {
+            return ScreenNavWidget();
+          }
+          return const ScreenLogin();
+        },
+      ),
+    );
   }
 }

@@ -37,62 +37,71 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(
-                          height: 20,
+                          height: 60,
+                          child: Row(
+                            children: [],
+                          ),
                         ),
                         LayoutBuilder(builder: (context, constraints) {
                           final crossAxisCount =
                               constraints.maxWidth > 600 ? 3 : 2;
                           const aspectRatio = 3.0 / 4.0;
-                          return GridView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                    childAspectRatio: aspectRatio,
-                                    crossAxisCount: crossAxisCount,
-                                    crossAxisSpacing: 16.0,
-                                    mainAxisSpacing: 16.0),
-                            itemCount: 5,
-                            itemBuilder: (context, index) {
-                              return const ProductTile(
-                                  name: 'sdaf',
-                                  subname: 'kjbdfvjkjklndvkln',
-                                  rate: 23,
-                                  image:
-                                      'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%3Fid%3DOIP.cmRHPqeRkBl0I2so0qf-NwHaJ4%26pid%3DApi&f=1&ipt=d851d30b7eb26026a889e36fb9f4bd923d4090835bf9271130ceae085fe8b899&ipo=images',
-                                  description: 'dsfdsfadf');
-                            },
-                          );
+                          return gridMethord(aspectRatio, crossAxisCount);
                         }),
                       ],
                     ),
-                    notifier.value == true
-                        ? AnimatedContainer(
-                            duration: const Duration(milliseconds: 1000),
-                            width: double.infinity,
-                            height: 130,
-                            color: Colors.white.withOpacity(0.6),
-                            child: const Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  'Gardenia',
-                                  style: TextStyle(
-                                    color: Colors.green,
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SearchWidget(),
-                              ],
-                            ),
-                          )
-                        : const Text(''),
+                    notifier.value == true ? topContainer() : const SizedBox(),
                   ],
                 ),
               );
             }),
       ),
+    );
+  }
+
+  AnimatedContainer topContainer() {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 1000),
+      width: double.infinity,
+      height: 130,
+      color: Colors.white.withOpacity(0.6),
+      child: const Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            'Gardenia',
+            style: TextStyle(
+              color: Colors.green,
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SearchWidget(),
+        ],
+      ),
+    );
+  }
+
+  GridView gridMethord(double aspectRatio, int crossAxisCount) {
+    return GridView.builder(
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        childAspectRatio: aspectRatio,
+        crossAxisCount: crossAxisCount,
+        crossAxisSpacing: 1.0,
+        mainAxisSpacing: 1.0,
+      ),
+      itemCount: 5,
+      itemBuilder: (context, index) {
+        return const ProductTile(
+            name: 'sdaf',
+            subname: 'kjbdfvjkjklndvkln',
+            rate: 23,
+            image:
+                'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%3Fid%3DOIP.cmRHPqeRkBl0I2so0qf-NwHaJ4%26pid%3DApi&f=1&ipt=d851d30b7eb26026a889e36fb9f4bd923d4090835bf9271130ceae085fe8b899&ipo=images',
+            description: 'dsfdsfadf');
+      },
     );
   }
 }
@@ -126,53 +135,6 @@ class SearchWidget extends StatelessWidget {
     );
   }
 }
-
-// class ProductCard extends StatefulWidget {
-//   final String imageUrl;
-//   final String name;
-//   final String description;
-//   final double price;
-
-//   ProductCard({
-//     required this.imageUrl,
-//     required this.name,
-//     required this.description,
-//     required this.price,
-//   });
-
-//   @override
-//   _ProductCardState createState() => _ProductCardState();
-// }
-
-// class _ProductCardState extends State<ProductCard> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Card(
-//       margin: const EdgeInsets.all(16.0),
-//       elevation: 1.0,
-//       child: Container(
-//         height: 300,
-//         child: Column(
-//           children: [
-//             Image.network(widget.imageUrl,
-//                 height: 200.0, width: double.infinity, fit: BoxFit.cover),
-//             ListTile(
-//               title: Text(
-//                 widget.name,
-//                 style: const TextStyle(fontWeight: FontWeight.bold),
-//               ),
-//               subtitle: Text(widget.description),
-//               trailing: Text(
-//                 '₹${widget.price.toStringAsFixed(2)}',
-//                 style: const TextStyle(fontSize: 20),
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
 
 class ProductTile extends StatefulWidget {
   final String name;
@@ -235,7 +197,7 @@ class _ProductTileState extends State<ProductTile> {
             widget.name,
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
-            style: TextStyle(
+            style: const TextStyle(
                 letterSpacing: .5,
                 fontSize: 15,
                 color: Colors.black,

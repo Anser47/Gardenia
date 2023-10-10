@@ -17,25 +17,57 @@ class CartScreen extends StatelessWidget {
             ),
           ),
         ),
-        body: SingleChildScrollView(
+        body: Container(
+          decoration: const BoxDecoration(
+            gradient: gcolor,
+          ),
           child: Column(
             children: [
-              Container(
-                decoration: const BoxDecoration(gradient: gcolor),
+              Expanded(
                 child: LayoutBuilder(
                   builder: (context, constraints) {
                     return ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
                       itemCount: 5,
-                      shrinkWrap: true,
                       itemBuilder: (context, index) {
                         return CartProductCard(
-                            name: 'sdf', price: 324, constraints: constraints);
+                          name: 'sdf',
+                          price: 324,
+                          constraints: constraints,
+                        );
                       },
                     );
                   },
                 ),
               ),
+              Container(
+                color: Colors.white,
+                height: 70,
+                width: double.infinity,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      ListTile(
+                        subtitle: Text('Total(8 items):'),
+                        title: Text(
+                          '₹ 340',
+                          style: TextStyle(
+                            fontSize: 20,
+                          ),
+                        ),
+                        trailing: ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                              shape: const StadiumBorder(),
+                              elevation: 8,
+                              shadowColor: Colors.grey,
+                              backgroundColor: Colors.green),
+                          child: const Text('Place Order'),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
             ],
           ),
         ),

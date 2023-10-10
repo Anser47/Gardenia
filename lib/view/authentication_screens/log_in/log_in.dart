@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 final _firebase = FirebaseAuth.instance;
 
 class ScreenLogin extends StatefulWidget {
-  ScreenLogin({super.key});
+  const ScreenLogin({super.key});
 
   @override
   State<ScreenLogin> createState() => _ScreenLoginState();
@@ -15,7 +15,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
   var _isLogin = true;
   var _enteredEmail = '';
   var _enteredPassword = '';
-  var _isAuthenticating = false;
+  // var _isAuthenticating = false;
   void _submit() async {
     final isValid = _form.currentState!.validate();
 

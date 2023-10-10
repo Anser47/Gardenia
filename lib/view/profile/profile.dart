@@ -25,6 +25,7 @@ class ScreenProfile extends StatelessWidget {
           ),
         ),
         body: Container(
+          width: double.infinity,
           decoration: const BoxDecoration(
             gradient: gcolor,
           ),

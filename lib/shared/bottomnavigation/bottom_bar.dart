@@ -44,12 +44,12 @@ class _ScreenNavWidgetState extends State<ScreenNavWidget> {
             padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
             child: GNav(
               rippleColor: Colors.amber[300]!,
-              hoverColor: Colors.blue[100]!,
+              hoverColor: Colors.blue[300]!,
               gap: 8,
               activeColor: Colors.white,
               iconSize: 27,
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-              duration: Duration(milliseconds: 400),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              duration: const Duration(milliseconds: 400),
               tabBackgroundColor: Colors.black,
               color: Colors.black,
               tabs: const [
