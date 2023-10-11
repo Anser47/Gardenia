@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:gardenia/shared/bottomnavigation/core/constants.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:gardenia/shared/bottomnavigation/product_discription.dart';
+import 'package:gardenia/view_model/fetch_product.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -29,25 +31,129 @@ class HomeScreen extends StatelessWidget {
                     ListView(
                       children: [
                         Container(
-                          decoration: const BoxDecoration(gradient: gcolor),
+                          decoration: const BoxDecoration(
+                            gradient: gcolor,
+                          ),
                           height: 300,
                           child: Image.network(
                             'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.5tFGU4QsY1cfsFm9QZJD1wHaE9%26pid%3DApi&f=1&ipt=f77b75f6c62783af2b2397e203912dfad58459e8bf93c7eb92b4fe5fe5921f3f&ipo=images',
                             fit: BoxFit.cover,
                           ),
                         ),
-                        const SizedBox(
-                          height: 60,
-                          child: Row(
-                            children: [],
+                        SizedBox(
+                          height: 130,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.only(top: 8.0, left: 10),
+                                child: Text(
+                                  'Category',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      left: 10,
+                                    ),
+                                    child: ElevatedButton(
+                                      onPressed: () {},
+                                      style: ElevatedButton.styleFrom(
+                                          shape: const StadiumBorder(),
+                                          elevation: 8,
+                                          shadowColor: Colors.grey,
+                                          backgroundColor: Colors.green),
+                                      child: const Text(
+                                        'Outdoor',
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {},
+                                    style: ElevatedButton.styleFrom(
+                                        shape: const StadiumBorder(),
+                                        elevation: 8,
+                                        shadowColor: Colors.grey,
+                                        backgroundColor: Colors.green),
+                                    child: const Text('Indoor'),
+                                  ),
+                                ],
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.only(
+                                  top: 9.0,
+                                  left: 14,
+                                ),
+                                child: Text(
+                                  'All',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        LayoutBuilder(builder: (context, constraints) {
-                          final crossAxisCount =
-                              constraints.maxWidth > 600 ? 3 : 2;
-                          const aspectRatio = 3.0 / 4.0;
-                          return gridMethord(aspectRatio, crossAxisCount);
-                        }),
+                        LayoutBuilder(
+                          builder: (context, constraints) {
+                            final crossAxisCount =
+                                constraints.maxWidth > 600 ? 3 : 2;
+                            const aspectRatio = 3.0 / 4.0;
+                            return FutureBuilder(
+                              future: fetchProducts(),
+                              builder: (context, snapshot) {
+                                print(
+                                    '================== ${snapshot.data!.length}');
+                                return GridView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                    childAspectRatio: aspectRatio,
+                                    crossAxisCount: crossAxisCount,
+                                    crossAxisSpacing: 1.0,
+                                    mainAxisSpacing: 1.0,
+                                  ),
+                                  itemCount: snapshot.data!.length,
+                                  itemBuilder: (context, index) {
+                                    if (snapshot.hasError) {
+                                      return Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    } else if (snapshot.hasData) {
+                                      return ProductTile(
+                                          name: snapshot.data![index].name ??
+                                              'Empty',
+                                          subname:
+                                              snapshot.data![index].category ??
+                                                  'Empty',
+                                          rate: snapshot.data![index].price ??
+                                              'Empty',
+                                          image: snapshot
+                                                  .data![index].imageUrl ??
+                                              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9k33VDGg4WcrLISmAosSXtH9LnRke9pcaBQ&usqp=CAU",
+                                          description: snapshot
+                                                  .data![index].description ??
+                                              "empty");
+                                    }
+                                    return Text('empty');
+                                  },
+                                );
+                              },
+                            );
+                          },
+                        ),
                       ],
                     ),
                     notifier.value == true ? topContainer() : const SizedBox(),
@@ -63,11 +169,14 @@ class HomeScreen extends StatelessWidget {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 1000),
       width: double.infinity,
-      height: 130,
+      height: 150,
       color: Colors.white.withOpacity(0.6),
       child: const Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          SizedBox(
+            height: 15,
+          ),
           Text(
             'Gardenia',
             style: TextStyle(
@@ -79,29 +188,6 @@ class HomeScreen extends StatelessWidget {
           SearchWidget(),
         ],
       ),
-    );
-  }
-
-  GridView gridMethord(double aspectRatio, int crossAxisCount) {
-    return GridView.builder(
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        childAspectRatio: aspectRatio,
-        crossAxisCount: crossAxisCount,
-        crossAxisSpacing: 1.0,
-        mainAxisSpacing: 1.0,
-      ),
-      itemCount: 5,
-      itemBuilder: (context, index) {
-        return const ProductTile(
-            name: 'sdaf',
-            subname: 'kjbdfvjkjklndvkln',
-            rate: 23,
-            image:
-                'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%3Fid%3DOIP.cmRHPqeRkBl0I2so0qf-NwHaJ4%26pid%3DApi&f=1&ipt=d851d30b7eb26026a889e36fb9f4bd923d4090835bf9271130ceae085fe8b899&ipo=images',
-            description: 'dsfdsfadf');
-      },
     );
   }
 }
@@ -139,7 +225,7 @@ class SearchWidget extends StatelessWidget {
 class ProductTile extends StatefulWidget {
   final String name;
   final String subname;
-  final int rate;
+  final String rate;
   final String image;
   final String description;
 
@@ -163,7 +249,17 @@ class _ProductTileState extends State<ProductTile> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => ProductDiscription(
+              name: 'Product',
+              price: '234',
+              category: 'Indoor',
+              discription: 'fdksmc',
+              img:
+                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3oHZXjvZxZHl8jlBHaIoIucAWsYf4wpqemA&usqp=CAU'),
+        ));
+      },
       child: Column(
         children: [
           Container(
