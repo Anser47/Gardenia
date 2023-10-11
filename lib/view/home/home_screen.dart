@@ -113,8 +113,8 @@ class HomeScreen extends StatelessWidget {
                             return FutureBuilder(
                               future: fetchProducts(),
                               builder: (context, snapshot) {
-                                print(
-                                    '================== ${snapshot.data!.length}');
+                                // print(
+                                //     '================== ${snapshot.data!.length}');
                                 return GridView.builder(
                                   physics: const NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
@@ -127,7 +127,8 @@ class HomeScreen extends StatelessWidget {
                                   ),
                                   itemCount: snapshot.data!.length,
                                   itemBuilder: (context, index) {
-                                    if (snapshot.hasError) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
                                       return Center(
                                         child: CircularProgressIndicator(),
                                       );
