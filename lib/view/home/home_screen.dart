@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:gardenia/shared/bottomnavigation/core/constants.dart';
@@ -9,195 +10,203 @@ import 'package:gardenia/view_model/fetch_product.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
+
+  CollectionReference productCollection =
+      FirebaseFirestore.instance.collection('Products');
   ValueNotifier<bool> notifier = ValueNotifier(true);
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: LayoutBuilder(
-          builder: (context, constraints) {
-            return ValueListenableBuilder(
-              valueListenable: notifier,
-              builder: (context, value, child) {
-                return NotificationListener<UserScrollNotification>(
-                  onNotification: (notification) {
-                    final ScrollDirection direction = notification.direction;
-                    if (direction == ScrollDirection.reverse) {
-                      notifier.value = false;
-                    } else if (direction == ScrollDirection.forward) {
-                      notifier.value = true;
-                    }
-                    return true;
-                  },
-                  child: Stack(
-                    children: [
-                      ListView(
-                        children: [
-                          Container(
-                            decoration: const BoxDecoration(
-                              gradient: gcolor,
+        child: Scaffold(
+            backgroundColor: Colors.white,
+            body: LayoutBuilder(builder: (context, constraints) {
+              return ValueListenableBuilder(
+                valueListenable: notifier,
+                builder: (context, value, child) {
+                  return NotificationListener<UserScrollNotification>(
+                    onNotification: (notification) {
+                      final ScrollDirection direction = notification.direction;
+                      if (direction == ScrollDirection.reverse) {
+                        notifier.value = false;
+                      } else if (direction == ScrollDirection.forward) {
+                        notifier.value = true;
+                      }
+                      return true;
+                    },
+                    child: Stack(
+                      children: [
+                        ListView(
+                          children: [
+                            Container(
+                              decoration: const BoxDecoration(
+                                gradient: gcolor,
+                              ),
+                              height: 180,
+                              child: Image.asset(
+                                'assets/gardenia1.png',
+                                fit: BoxFit.cover,
+                              ),
                             ),
-                            height: 180,
-                            child: Image.asset(
-                              'assets/gardenia1.png',
-                              fit: BoxFit.cover,
+                            CarouselSlider(
+                              options: CarouselOptions(
+                                height: 130,
+                                enableInfiniteScroll: true,
+                                scrollDirection: Axis.horizontal,
+                                autoPlay: true,
+                                autoPlayCurve: Curves.fastOutSlowIn,
+                                autoPlayAnimationDuration:
+                                    const Duration(milliseconds: 800),
+                                viewportFraction: 0.95,
+                                enlargeCenterPage: true,
+                              ),
+                              items: List.generate(10, (index) {
+                                return Builder(
+                                  builder: (context) {
+                                    return WishlistProductCard(
+                                      constraints: constraints,
+                                      name: 'Abc',
+                                      price: 45,
+                                    );
+                                  },
+                                );
+                              }),
                             ),
-                          ),
-                          CarouselSlider(
-                            options: CarouselOptions(
+                            SizedBox(
                               height: 130,
-                              enableInfiniteScroll: true,
-                              scrollDirection: Axis.horizontal,
-                              autoPlay: true,
-                              autoPlayCurve: Curves.fastOutSlowIn,
-                              autoPlayAnimationDuration:
-                                  const Duration(milliseconds: 800),
-                              viewportFraction: 0.95,
-                              enlargeCenterPage: true,
-                            ),
-                            items: List.generate(10, (index) {
-                              return Builder(
-                                builder: (context) {
-                                  return WishlistProductCard(
-                                    constraints: constraints,
-                                    name: 'Abc',
-                                    price: 45,
-                                  );
-                                },
-                              );
-                            }),
-                          ),
-                          SizedBox(
-                            height: 130,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Padding(
-                                  padding: EdgeInsets.only(top: 8.0, left: 10),
-                                  child: Text(
-                                    'Category',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Padding(
+                                    padding:
+                                        EdgeInsets.only(top: 8.0, left: 10),
+                                    child: Text(
+                                      'Category',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                Row(
-                                  children: [
-                                    const SizedBox(
-                                      height: 20,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                        left: 10,
+                                  Row(
+                                    children: [
+                                      const SizedBox(
+                                        height: 20,
                                       ),
-                                      child: ElevatedButton(
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                          left: 10,
+                                        ),
+                                        child: ElevatedButton(
+                                          onPressed: () {},
+                                          style: ElevatedButton.styleFrom(
+                                              shape: const StadiumBorder(),
+                                              elevation: 8,
+                                              shadowColor: Colors.grey,
+                                              backgroundColor: Colors.green),
+                                          child: const Text(
+                                            'Outdoor',
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      ElevatedButton(
                                         onPressed: () {},
                                         style: ElevatedButton.styleFrom(
                                             shape: const StadiumBorder(),
                                             elevation: 8,
                                             shadowColor: Colors.grey,
                                             backgroundColor: Colors.green),
-                                        child: const Text(
-                                          'Outdoor',
-                                        ),
+                                        child: const Text('Indoor'),
                                       ),
-                                    ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    ElevatedButton(
-                                      onPressed: () {},
-                                      style: ElevatedButton.styleFrom(
-                                          shape: const StadiumBorder(),
-                                          elevation: 8,
-                                          shadowColor: Colors.grey,
-                                          backgroundColor: Colors.green),
-                                      child: const Text('Indoor'),
-                                    ),
-                                  ],
-                                ),
-                                const Padding(
-                                  padding: EdgeInsets.only(
-                                    top: 9.0,
-                                    left: 14,
+                                    ],
                                   ),
-                                  child: Text(
-                                    'All',
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
+                                  const Padding(
+                                    padding: EdgeInsets.only(
+                                      top: 9.0,
+                                      left: 14,
+                                    ),
+                                    child: Text(
+                                      'All',
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                          LayoutBuilder(
-                            builder: (context, constraints) {
-                              final crossAxisCount =
-                                  constraints.maxWidth > 600 ? 3 : 2;
-                              const aspectRatio = 3.0 / 4.0;
-                              return FutureBuilder(
-                                future: fetchProducts(),
-                                builder: (context, snapshot) {
-                                  print(
-                                      '================== ${snapshot.data!.length}');
-                                  return GridView.builder(
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    gridDelegate:
-                                        SliverGridDelegateWithFixedCrossAxisCount(
-                                      childAspectRatio: aspectRatio,
-                                      crossAxisCount: crossAxisCount,
-                                      crossAxisSpacing: 1.0,
-                                      mainAxisSpacing: 1.0,
-                                    ),
-                                    itemCount: snapshot.data!.length,
-                                    itemBuilder: (context, index) {
-                                      if (snapshot.connectionState ==
-                                          ConnectionState.waiting) {
-                                        return const Center(
-                                          child: CircularProgressIndicator(),
-                                        );
-                                      } else if (snapshot.hasData) {
+                            LayoutBuilder(
+                              builder: (context, constraints) {
+                                final crossAxisCount =
+                                    constraints.maxWidth > 600 ? 3 : 2;
+                                const aspectRatio = 3.0 / 4.0;
+                                return StreamBuilder(
+                                  stream: productCollection.snapshots(),
+                                  builder: (context, snapshot) {
+                                    List<QueryDocumentSnapshot<Object?>> data =
+                                        [];
+                                    if (snapshot.data == null) {
+                                      return const Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    }
+                                    data = snapshot.data!.docs;
+                                    if (snapshot.data!.docs.isEmpty ||
+                                        data.isEmpty) {
+                                      return const Center(
+                                        child: Text('Add atleast one product'),
+                                      );
+                                    }
+                                    print('================== ${data.length}');
+                                    return GridView.builder(
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                        childAspectRatio: aspectRatio,
+                                        crossAxisCount: crossAxisCount,
+                                        crossAxisSpacing: 1.0,
+                                        mainAxisSpacing: 1.0,
+                                      ),
+                                      itemCount: data.length,
+                                      itemBuilder: (context, index) {
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.waiting) {
+                                          return const Center(
+                                            child: CircularProgressIndicator(),
+                                          );
+                                        }
                                         return ProductTile(
-                                            name: snapshot.data![index].name ??
-                                                'Empty',
-                                            subname: snapshot
-                                                    .data![index].category ??
-                                                'Empty',
-                                            rate: snapshot.data![index].price ??
-                                                'Empty',
-                                            image: snapshot
-                                                    .data![index].imageUrl ??
-                                                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9k33VDGg4WcrLISmAosSXtH9LnRke9pcaBQ&usqp=CAU",
-                                            description: snapshot
-                                                    .data![index].description ??
-                                                "empty");
-                                      }
-                                      return const Text('empty');
-                                    },
-                                  );
-                                },
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                      notifier.value == true
-                          ? topContainer()
-                          : const SizedBox(),
-                    ],
-                  ),
-                );
-              },
-            );
-          },
-        ),
-      ),
-    );
+                                          name: data[index]['name'] ?? 'Empty',
+                                          subname: data[index]['category'] ??
+                                              'Empty',
+                                          rate: data[index]['price'] ?? 'Empty',
+                                          image: data[index]['imageUrl'] ??
+                                              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9k33VDGg4WcrLISmAosSXtH9LnRke9pcaBQ&usqp=CAU",
+                                          description: data[index]
+                                                  ['description'] ??
+                                              "empty",
+                                        );
+                                      },
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                        notifier.value == true
+                            ? topContainer()
+                            : const SizedBox(),
+                      ],
+                    ),
+                  );
+                },
+              );
+            })));
   }
 
   AnimatedContainer topContainer() {
