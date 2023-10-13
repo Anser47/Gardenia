@@ -99,7 +99,9 @@ class Discription extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Expanded(child: Text(discription)),
+                child: Expanded(
+                  child: Text(discription),
+                ),
               ),
               ButtonBar(
                 alignment: MainAxisAlignment.center,
@@ -126,8 +128,8 @@ class Discription extends StatelessWidget {
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.black,
-                      padding: EdgeInsets.all(10),
-                      minimumSize: Size(150, 50),
+                      padding: const EdgeInsets.all(10),
+                      minimumSize: const Size(150, 50),
                     ),
                     onPressed: () {},
                     child: const Text(
