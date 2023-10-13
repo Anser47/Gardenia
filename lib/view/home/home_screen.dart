@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:gardenia/shared/bottomnavigation/core/constants.dart';
@@ -7,6 +9,9 @@ import 'package:gardenia/view_model/fetch_product.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
+
+  CollectionReference productCollection =
+      FirebaseFirestore.instance.collection('Products');
   ValueNotifier<bool> notifier = ValueNotifier(true);
   @override
   Widget build(BuildContext context) {
@@ -110,11 +115,23 @@ class HomeScreen extends StatelessWidget {
                             final crossAxisCount =
                                 constraints.maxWidth > 600 ? 3 : 2;
                             const aspectRatio = 3.0 / 4.0;
-                            return FutureBuilder(
-                              future: fetchProducts(),
+                            return StreamBuilder(
+                              stream: productCollection.snapshots(),
                               builder: (context, snapshot) {
-                                // print(
-                                //     '================== ${snapshot.data!.length}');
+                                List<QueryDocumentSnapshot<Object?>> data = [];
+                                if (snapshot.data == null) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                }
+                                data = snapshot.data!.docs;
+                                if (snapshot.data!.docs.isEmpty ||
+                                    data.isEmpty) {
+                                  return const Center(
+                                    child: Text('Add atleast one product'),
+                                  );
+                                }
+                                print('================== ${data.length}');
                                 return GridView.builder(
                                   physics: const NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
@@ -125,30 +142,18 @@ class HomeScreen extends StatelessWidget {
                                     crossAxisSpacing: 1.0,
                                     mainAxisSpacing: 1.0,
                                   ),
-                                  itemCount: snapshot.data!.length,
+                                  itemCount: data.length,
                                   itemBuilder: (context, index) {
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return Center(
-                                        child: CircularProgressIndicator(),
-                                      );
-                                    } else if (snapshot.hasData) {
-                                      return ProductTile(
-                                          name: snapshot.data![index].name ??
-                                              'Empty',
-                                          subname:
-                                              snapshot.data![index].category ??
-                                                  'Empty',
-                                          rate: snapshot.data![index].price ??
-                                              'Empty',
-                                          image: snapshot
-                                                  .data![index].imageUrl ??
-                                              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9k33VDGg4WcrLISmAosSXtH9LnRke9pcaBQ&usqp=CAU",
-                                          description: snapshot
-                                                  .data![index].description ??
-                                              "empty");
-                                    }
-                                    return Text('empty');
+                                    return ProductTile(
+                                      name: data[index]['name'] ?? 'Empty',
+                                      subname:
+                                          data[index]['category'] ?? 'Empty',
+                                      rate: data[index]['price'] ?? 'Empty',
+                                      image: data[index]['imageUrl'] ??
+                                          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9k33VDGg4WcrLISmAosSXtH9LnRke9pcaBQ&usqp=CAU",
+                                      description:
+                                          data[index]['description'] ?? "empty",
+                                    );
                                   },
                                 );
                               },
