@@ -19,9 +19,9 @@ class CommonButton extends StatelessWidget {
         backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
         minimumSize: MaterialStateProperty.all<Size>(const Size(350, 60)),
       ),
-      child: const Text(
-        'Log out',
-        style: TextStyle(fontSize: 20),
+      child: Text(
+        name,
+        style: TextStyle(fontSize: 20, color: Colors.white),
       ),
     );
   }

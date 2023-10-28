@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gardenia/view/checkout_page.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 Razorpay razorpay = Razorpay();
@@ -21,8 +22,12 @@ class ProductDiscription extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          iconTheme: IconThemeData(color: Colors.white),
           backgroundColor: const Color.fromARGB(255, 1, 52, 3),
-          title: const Text('Product discription'),
+          title: const Text(
+            'Product discription',
+            style: TextStyle(color: Colors.white),
+          ),
         ),
         body: Discription(
             img: img,
@@ -116,28 +121,33 @@ class Discription extends StatelessWidget {
                       minimumSize: const Size(150, 50),
                     ),
                     onPressed: () {
-                      var options = {
-                        'key': 'rzp_live_ILgsfZCZoFIKMb',
-                        'amount': 100,
-                        'name': 'Acme Corp.',
-                        'description': 'Fine T-Shirt',
-                        'retry': {'enabled': true, 'max_count': 1},
-                        'send_sms_hash': true,
-                        'prefill': {
-                          'contact': '8888888888',
-                          'email': 'test@razorpay.com'
-                        },
-                        'external': {
-                          'wallets': ['paytm']
-                        }
-                      };
-                      razorpay.on(Razorpay.EVENT_PAYMENT_ERROR,
-                          handlePaymentErrorResponse);
-                      razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS,
-                          handlePaymentSuccessResponse);
-                      razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET,
-                          handleExternalWalletSelected);
-                      razorpay.open(options);
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => CheckoutSreen(),
+                        ),
+                      );
+                      // var options = {
+                      //   'key': 'rzp_live_ILgsfZCZoFIKMb',
+                      //   'amount': 100,
+                      //   'name': 'Acme Corp.',
+                      //   'description': 'Fine T-Shirt',
+                      //   'retry': {'enabled': true, 'max_count': 1},
+                      //   'send_sms_hash': true,
+                      //   'prefill': {
+                      //     'contact': '8888888888',
+                      //     'email': 'test@razorpay.com'
+                      //   },
+                      //   'external': {
+                      //     'wallets': ['paytm']
+                      //   }
+                      // };
+                      // razorpay.on(Razorpay.EVENT_PAYMENT_ERROR,
+                      //     handlePaymentErrorResponse);
+                      // razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS,
+                      //     handlePaymentSuccessResponse);
+                      // razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET,
+                      //     handleExternalWalletSelected);
+                      // razorpay.open(options);
                     },
                     child: const Text(
                       'Buy',
