@@ -1,6 +1,7 @@
 import 'package:gardenia/view/cart/cart.dart';
 import 'package:gardenia/view/home/home_screen.dart';
 import 'package:gardenia/view/profile/profile.dart';
+import 'package:gardenia/view/search/search.dart';
 import 'package:gardenia/view/wishlist/wishlist.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
@@ -17,9 +18,9 @@ class _ScreenNavWidgetState extends State<ScreenNavWidget> {
   //     TextStyle(fontSize: 30, fontWeight: FontWeight.w600);
   static List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
+    SearchScreen(),
     WishlistScreen(),
     CartScreen(),
-    ScreenProfile(),
   ];
 
   @override
@@ -45,7 +46,7 @@ class _ScreenNavWidgetState extends State<ScreenNavWidget> {
             child: GNav(
               rippleColor: Colors.amber[300]!,
               hoverColor: Colors.blue[300]!,
-              gap: 8,
+              gap: 7,
               activeColor: Colors.white,
               iconSize: 27,
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
@@ -58,16 +59,16 @@ class _ScreenNavWidgetState extends State<ScreenNavWidget> {
                   text: 'Home',
                 ),
                 GButton(
+                  icon: LineIcons.search,
+                  text: 'Search',
+                ),
+                GButton(
                   icon: LineIcons.heart,
                   text: 'Wishlist',
                 ),
                 GButton(
                   icon: Icons.shopping_cart_outlined,
                   text: 'Cart',
-                ),
-                GButton(
-                  icon: LineIcons.user,
-                  text: 'Profile',
                 ),
               ],
               selectedIndex: _selectedIndex,
