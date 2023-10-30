@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:gardenia/shared/bottomnavigation/core/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:gardenia/shared/bottomnavigation/product_discription.dart';
+import 'package:gardenia/view/profile/profile.dart';
 import 'package:gardenia/view/wishlist/wishlist.dart';
 import 'package:gardenia/view_model/fetch_product.dart';
 
@@ -18,242 +19,189 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(title: Text('Welcome'), centerTitle: true, actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => WishlistScreen()));
+              },
+              icon: Icon(
+                Icons.favorite_border,
+                size: 25,
+              )),
+        ]),
         backgroundColor: Colors.white,
         body: LayoutBuilder(builder: (context, constraints) {
-          return ValueListenableBuilder(
-            valueListenable: notifier,
-            builder: (context, value, child) {
-              return NotificationListener<UserScrollNotification>(
-                onNotification: (notification) {
-                  final ScrollDirection direction = notification.direction;
-                  if (direction == ScrollDirection.reverse) {
-                    notifier.value = false;
-                  } else if (direction == ScrollDirection.forward) {
-                    notifier.value = true;
-                  }
-                  return true;
-                },
-                child: Stack(
+          return ListView(
+            children: [
+              Container(
+                decoration: const BoxDecoration(
+                  gradient: gcolor,
+                ),
+                height: 180,
+                child: Image.asset(
+                  'assets/gardenia1.png',
+                  fit: BoxFit.cover,
+                ),
+              ),
+              CarouselSlider(
+                options: CarouselOptions(
+                  height: 130,
+                  enableInfiniteScroll: true,
+                  scrollDirection: Axis.horizontal,
+                  autoPlay: true,
+                  autoPlayCurve: Curves.fastOutSlowIn,
+                  autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                  viewportFraction: 0.95,
+                  enlargeCenterPage: true,
+                ),
+                items: List.generate(10, (index) {
+                  return Builder(
+                    builder: (context) {
+                      return WishlistProductCard(
+                        constraints: constraints,
+                        name: 'Abc',
+                        price: 45,
+                      );
+                    },
+                  );
+                }),
+              ),
+              SizedBox(
+                height: 130,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ListView(
+                    const Padding(
+                      padding: EdgeInsets.only(top: 8.0, left: 10),
+                      child: Text(
+                        'Category',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Row(
                       children: [
-                        Container(
-                          decoration: const BoxDecoration(
-                            gradient: gcolor,
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            left: 10,
                           ),
-                          height: 180,
-                          child: Image.asset(
-                            'assets/gardenia1.png',
-                            fit: BoxFit.cover,
+                          child: ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                                shape: const StadiumBorder(),
+                                elevation: 8,
+                                shadowColor: Colors.grey,
+                                backgroundColor: Colors.green),
+                            child: const Text(
+                              'Outdoor',
+                            ),
                           ),
                         ),
-                        CarouselSlider(
-                          options: CarouselOptions(
-                            height: 130,
-                            enableInfiniteScroll: true,
-                            scrollDirection: Axis.horizontal,
-                            autoPlay: true,
-                            autoPlayCurve: Curves.fastOutSlowIn,
-                            autoPlayAnimationDuration:
-                                const Duration(milliseconds: 800),
-                            viewportFraction: 0.95,
-                            enlargeCenterPage: true,
-                          ),
-                          items: List.generate(10, (index) {
-                            return Builder(
-                              builder: (context) {
-                                return WishlistProductCard(
-                                  constraints: constraints,
-                                  name: 'Abc',
-                                  price: 45,
-                                );
-                              },
-                            );
-                          }),
+                        const SizedBox(
+                          width: 10,
                         ),
-                        SizedBox(
-                          height: 130,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.only(top: 8.0, left: 10),
-                                child: Text(
-                                  'Category',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              Row(
-                                children: [
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                      left: 10,
-                                    ),
-                                    child: ElevatedButton(
-                                      onPressed: () {},
-                                      style: ElevatedButton.styleFrom(
-                                          shape: const StadiumBorder(),
-                                          elevation: 8,
-                                          shadowColor: Colors.grey,
-                                          backgroundColor: Colors.green),
-                                      child: const Text(
-                                        'Outdoor',
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () {},
-                                    style: ElevatedButton.styleFrom(
-                                        shape: const StadiumBorder(),
-                                        elevation: 8,
-                                        shadowColor: Colors.grey,
-                                        backgroundColor: Colors.green),
-                                    child: const Text('Indoor'),
-                                  ),
-                                ],
-                              ),
-                              const Padding(
-                                padding: EdgeInsets.only(
-                                  top: 9.0,
-                                  left: 14,
-                                ),
-                                child: Text(
-                                  'All',
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        LayoutBuilder(
-                          builder: (context, constraints) {
-                            final crossAxisCount =
-                                constraints.maxWidth > 600 ? 3 : 2;
-                            const aspectRatio = 3.0 / 4.0;
-                            return StreamBuilder(
-                              stream: productCollection.snapshots(),
-                              builder: (context, snapshot) {
-                                List<QueryDocumentSnapshot<Object?>> data = [];
-                                if (snapshot.data == null) {
-                                  return const Center(
-                                    child: Text('Add Products'),
-                                  );
-                                }
-                                data = snapshot.data!.docs;
-                                if (snapshot.data!.docs.isEmpty ||
-                                    data.isEmpty) {
-                                  return const Center(
-                                    child: Text('No Products'),
-                                  );
-                                }
-                                print(
-                                  '--------------------${data.length}',
-                                );
-                                return GridView.builder(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                    childAspectRatio: aspectRatio,
-                                    crossAxisCount: crossAxisCount,
-                                    crossAxisSpacing: 1.0,
-                                    mainAxisSpacing: 1.0,
-                                  ),
-                                  itemCount: data.length,
-                                  itemBuilder: (context, index) {
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return Center(
-                                        child: CircularProgressIndicator(),
-                                      );
-                                    } else if (snapshot.hasData) {
-                                      return ProductTile(
-                                          name: data[index]['name'] ?? 'Empty',
-                                          subname: data[index]['category'] ??
-                                              'Empty',
-                                          rate: data[index]['price'] ?? 'Empty',
-                                          image: data[index]['imageUrl'] ??
-                                              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9k33VDGg4WcrLISmAosSXtH9LnRke9pcaBQ&usqp=CAU",
-                                          description: data[index]
-                                                  ['description'] ??
-                                              "empty");
-                                    }
-                                    return Text('empty');
-                                  },
-                                );
-                              },
-                            );
-                          },
+                        ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                              shape: const StadiumBorder(),
+                              elevation: 8,
+                              shadowColor: Colors.grey,
+                              backgroundColor: Colors.green),
+                          child: const Text('Indoor'),
                         ),
                       ],
                     ),
-                    notifier.value == true ? topContainer() : const SizedBox(),
+                    const Padding(
+                      padding: EdgeInsets.only(
+                        top: 9.0,
+                        left: 14,
+                      ),
+                      child: Text(
+                        'All',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                    ),
                   ],
                 ),
-              );
-            },
+              ),
+              HomeScreenGrid(productCollection: productCollection),
+            ],
           );
         }),
       ),
     );
   }
-
-  AnimatedContainer topContainer() {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 1000),
-      width: double.infinity,
-      height: 115,
-      color: Colors.white.withOpacity(0.6),
-      child: const Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SizedBox(
-            height: 10,
-          ),
-          SearchWidget(),
-        ],
-      ),
-    );
-  }
 }
 
-class SearchWidget extends StatelessWidget {
-  const SearchWidget({
+class HomeScreenGrid extends StatelessWidget {
+  const HomeScreenGrid({
     super.key,
+    required this.productCollection,
   });
+
+  final CollectionReference<Object?> productCollection;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: TextField(
-        decoration: InputDecoration(
-          prefixIcon: const Icon(Icons.search_rounded),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15.0),
-          ),
-          border: InputBorder.none,
-          labelText: "Search",
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15.0),
-            borderSide: const BorderSide(
-              color: Colors.green,
-              width: 2.0,
-            ),
-          ),
-        ),
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final crossAxisCount = constraints.maxWidth > 600 ? 3 : 2;
+        const aspectRatio = 3.0 / 4.0;
+        return StreamBuilder(
+          stream: productCollection.snapshots(),
+          builder: (context, snapshot) {
+            List<QueryDocumentSnapshot<Object?>> data = [];
+            if (snapshot.data == null) {
+              return const Center(
+                child: Text('Add Products'),
+              );
+            }
+            data = snapshot.data!.docs;
+            if (snapshot.data!.docs.isEmpty || data.isEmpty) {
+              return const Center(
+                child: Text('No Products'),
+              );
+            }
+            print(
+              '--------------------${data.length}',
+            );
+            return GridView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                childAspectRatio: aspectRatio,
+                crossAxisCount: crossAxisCount,
+                crossAxisSpacing: 1.0,
+                mainAxisSpacing: 1.0,
+              ),
+              itemCount: data.length,
+              itemBuilder: (context, index) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (snapshot.hasData) {
+                  return ProductTile(
+                      name: data[index]['name'] ?? 'Empty',
+                      subname: data[index]['category'] ?? 'Empty',
+                      rate: data[index]['price'] ?? 'Empty',
+                      image: data[index]['imageUrl'] ??
+                          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9k33VDGg4WcrLISmAosSXtH9LnRke9pcaBQ&usqp=CAU",
+                      description: data[index]['description'] ?? "empty");
+                }
+                return const Text('empty');
+              },
+            );
+          },
+        );
+      },
     );
   }
 }

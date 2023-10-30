@@ -47,8 +47,8 @@ class CartScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       ListTile(
-                        subtitle: Text('Total(8 items):'),
-                        title: Text(
+                        subtitle: const Text('Total(8 items):'),
+                        title: const Text(
                           '₹ 340',
                           style: TextStyle(
                             fontSize: 20,

@@ -5,6 +5,7 @@ import 'package:gardenia/firebase_options.dart';
 import 'package:gardenia/shared/bottomnavigation/bottom_bar.dart';
 import 'package:gardenia/view/authentication_screens/log_in/log_in.dart';
 import 'package:gardenia/view/authentication_screens/log_in/splash.dart';
+import 'package:gardenia/view/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,18 +22,19 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const ScreenSplash();
-          }
-          if (snapshot.hasData) {
-            return ScreenNavWidget();
-          }
-          return const ScreenLogin();
-        },
-      ),
+      // home: StreamBuilder(
+      //   stream: FirebaseAuth.instance.authStateChanges(),
+      //   builder: (context, snapshot) {
+      //     if (snapshot.connectionState == ConnectionState.waiting) {
+      //       return const ScreenSplash();
+      //     }
+      //     if (snapshot.hasData) {
+      //       return ScreenNavWidget();
+      //     }
+      //     return const ScreenLogin();
+      //   },
+      // ),
+      home: SplashScreen(),
     );
   }
 }
