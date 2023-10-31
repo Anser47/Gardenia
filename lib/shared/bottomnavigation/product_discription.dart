@@ -19,7 +19,7 @@ class ProductDiscription extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          iconTheme: IconThemeData(color: Colors.white),
+          iconTheme: const IconThemeData(color: Colors.white),
           backgroundColor: const Color.fromARGB(255, 1, 52, 3),
           title: const Text(
             'Product discription',
