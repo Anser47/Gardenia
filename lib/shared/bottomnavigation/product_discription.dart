@@ -52,7 +52,7 @@ class Discription extends StatelessWidget {
   final String price;
   final String category;
   final String discription;
-
+  // final String quatity;
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -120,7 +120,11 @@ class Discription extends StatelessWidget {
                     onPressed: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => const CheckoutSreen(),
+                          builder: (context) => CheckoutSreen(
+                              discription: discription,
+                              image: img,
+                              name: name,
+                              price: price),
                         ),
                       );
                     },

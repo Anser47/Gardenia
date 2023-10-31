@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gardenia/provider/checkout_provider/checkout_provider.dart';
 import 'package:gardenia/shared/common_widget/common_button.dart';
 import 'package:gardenia/shared/core/constants.dart';
+import 'package:gardenia/view/address/address_screen.dart';
 import 'package:gardenia/view/checkout_page/address_card.dart';
 import 'package:gardenia/view/checkout_page/checkout_product_card.dart';
 import 'package:gardenia/view/checkout_page/payment_AlertDialog.dart';
@@ -10,15 +11,19 @@ import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 Razorpay razorpay = Razorpay();
 
-class CheckoutSreen extends StatefulWidget {
-  const CheckoutSreen({super.key});
-
-  @override
-  State<CheckoutSreen> createState() => _CheckoutSreenState();
-}
-
-//
-class _CheckoutSreenState extends State<CheckoutSreen> {
+class CheckoutSreen extends StatelessWidget {
+  const CheckoutSreen({
+    super.key,
+    required this.name,
+    required this.price,
+    required this.discription,
+    required this.image,
+  });
+  final String name;
+  final String price;
+  final String discription;
+  final String image;
+  // final String quatity;
   @override
   Widget build(BuildContext context) {
     final alertDialogProvider = Provider.of<AlertDialogProvider>(context);
@@ -93,7 +98,10 @@ class _CheckoutSreenState extends State<CheckoutSreen> {
                     Padding(
                       padding: const EdgeInsets.only(top: 9.0, bottom: 20),
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => ScreenAddNewAddress()));
+                        },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.black),
                         child: const Row(
@@ -114,7 +122,12 @@ class _CheckoutSreenState extends State<CheckoutSreen> {
                   ],
                 ),
                 kHeight20,
-                const CheckOutProuductCard(),
+                CheckOutProuductCard(
+                  discription: discription,
+                  image: image,
+                  name: name,
+                  price: price,
+                ),
                 kHeight20,
                 ListTile(
                   leading: Radio<PaymentCategory>(

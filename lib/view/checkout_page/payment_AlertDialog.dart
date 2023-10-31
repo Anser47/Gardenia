@@ -23,7 +23,7 @@ class PaymentSuccessAlertDialog extends StatelessWidget {
               ),
             );
           },
-          child: Text('Cancel'),
+          child: Text('Ok'),
         ),
       ],
     );
