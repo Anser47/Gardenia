@@ -1,35 +1,29 @@
+import 'package:gardenia/provider/bottomnavbar/bottom_nav_bar_provider.dart';
 import 'package:gardenia/view/cart/cart.dart';
 import 'package:gardenia/view/home/home_screen.dart';
 import 'package:gardenia/view/profile/profile.dart';
 import 'package:gardenia/view/search/search.dart';
-import 'package:gardenia/view/wishlist/wishlist.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class ScreenNavWidget extends StatefulWidget {
-  @override
-  _ScreenNavWidgetState createState() => _ScreenNavWidgetState();
-}
-
-class _ScreenNavWidgetState extends State<ScreenNavWidget> {
-  int _selectedIndex = 0;
-  // static const TextStyle optionStyle =
-  //     TextStyle(fontSize: 30, fontWeight: FontWeight.w600);
-  static List<Widget> _widgetOptions = <Widget>[
-    HomeScreen(),
-    SearchScreen(),
-    WishlistScreen(),
-    CartScreen(),
-  ];
+class ScreenNavWidget extends StatelessWidget {
+  const ScreenNavWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<NavBarBottom>(context);
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
-      ),
+          child: provider.selectedIndex == 0
+              ? HomeScreen()
+              : provider.selectedIndex == 1
+                  ? SearchScreen()
+                  : provider.selectedIndex == 2
+                      ? const CartScreen()
+                      : const ScreenProfile()),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -63,19 +57,17 @@ class _ScreenNavWidgetState extends State<ScreenNavWidget> {
                   text: 'Search',
                 ),
                 GButton(
-                  icon: LineIcons.heart,
-                  text: 'Wishlist',
-                ),
-                GButton(
                   icon: Icons.shopping_cart_outlined,
                   text: 'Cart',
                 ),
+                GButton(
+                  icon: Icons.person,
+                  text: 'Profile',
+                ),
               ],
-              selectedIndex: _selectedIndex,
+              selectedIndex: provider.selectedIndex,
               onTabChange: (index) {
-                setState(() {
-                  _selectedIndex = index;
-                });
+                provider.selectedIndex = index;
               },
             ),
           ),

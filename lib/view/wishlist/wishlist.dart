@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gardenia/shared/bottomnavigation/core/constants.dart';
+import 'package:gardenia/shared/core/constants.dart';
 
 class WishlistScreen extends StatelessWidget {
   const WishlistScreen({super.key});

@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gardenia/shared/bottomnavigation/core/constants.dart';
+import 'package:gardenia/shared/core/constants.dart';
 import 'package:gardenia/shared/common_widget/common_button.dart';
 import 'package:gardenia/view/profile/accountile.dart';
 

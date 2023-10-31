@@ -2,30 +2,30 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:gardenia/shared/bottomnavigation/core/constants.dart';
+import 'package:gardenia/shared/core/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:gardenia/shared/bottomnavigation/product_discription.dart';
-import 'package:gardenia/view/profile/profile.dart';
 import 'package:gardenia/view/wishlist/wishlist.dart';
 import 'package:gardenia/view_model/fetch_product.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
-
   CollectionReference productCollection =
       FirebaseFirestore.instance.collection('Products');
   ValueNotifier<bool> notifier = ValueNotifier(true);
   @override
   Widget build(BuildContext context) {
+    fetchProducts();
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(title: Text('Welcome'), centerTitle: true, actions: [
+        appBar:
+            AppBar(title: const Text('Welcome'), centerTitle: true, actions: [
           IconButton(
               onPressed: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => WishlistScreen()));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const WishlistScreen()));
               },
-              icon: Icon(
+              icon: const Icon(
                 Icons.favorite_border,
                 size: 25,
               )),
@@ -140,7 +140,7 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class HomeScreenGrid extends StatelessWidget {
+class HomeScreenGrid extends StatefulWidget {
   const HomeScreenGrid({
     super.key,
     required this.productCollection,
@@ -149,13 +149,18 @@ class HomeScreenGrid extends StatelessWidget {
   final CollectionReference<Object?> productCollection;
 
   @override
+  State<HomeScreenGrid> createState() => _HomeScreenGridState();
+}
+
+class _HomeScreenGridState extends State<HomeScreenGrid> {
+  @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
         final crossAxisCount = constraints.maxWidth > 600 ? 3 : 2;
         const aspectRatio = 3.0 / 4.0;
         return StreamBuilder(
-          stream: productCollection.snapshots(),
+          stream: widget.productCollection.snapshots(),
           builder: (context, snapshot) {
             List<QueryDocumentSnapshot<Object?>> data = [];
             if (snapshot.data == null) {

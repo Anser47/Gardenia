@@ -12,7 +12,7 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: Future.delayed(
-        const Duration(seconds: 1),
+        const Duration(seconds: 2),
       ),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
@@ -21,7 +21,9 @@ class SplashScreen extends StatelessWidget {
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Scaffold(
-                  body: Center(child: Image.asset('assets/2.png')),
+                  body: Center(
+                    child: CircularProgressIndicator(),
+                  ),
                 );
               }
               if (snapshot.hasData) {
@@ -31,9 +33,12 @@ class SplashScreen extends StatelessWidget {
             },
           );
         } else {
-          return const Scaffold(
+          return Scaffold(
             body: Center(
-              child: CircularProgressIndicator(),
+              child: Image.asset(
+                'assets/2.png',
+                fit: BoxFit.cover,
+              ),
             ),
           );
         }

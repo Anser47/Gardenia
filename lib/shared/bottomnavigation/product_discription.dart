@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gardenia/view/checkout_page.dart';
-import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'package:gardenia/view/checkout_page/checkout_page.dart';
 
 class ProductDiscription extends StatelessWidget {
   const ProductDiscription(
