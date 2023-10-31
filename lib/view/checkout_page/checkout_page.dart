@@ -5,7 +5,6 @@ import 'package:gardenia/shared/core/constants.dart';
 import 'package:gardenia/view/checkout_page/address_card.dart';
 import 'package:gardenia/view/checkout_page/checkout_product_card.dart';
 import 'package:gardenia/view/checkout_page/payment_AlertDialog.dart';
-import 'package:gardenia/view/home/home_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
