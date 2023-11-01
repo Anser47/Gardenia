@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 enum PaymentCategory { cashondelivery, paynow }
 
@@ -42,5 +43,42 @@ class AlertDialogProvider with ChangeNotifier {
   void hideAlertDialog() {
     _showDialog = false;
     notifyListeners();
+  }
+}
+
+class RazorpayProvider with ChangeNotifier {
+  final Razorpay _razorpay = Razorpay();
+  late Function(PaymentFailureResponse) _onPaymentFailure;
+  late Function(PaymentSuccessResponse) _onPaymentSuccess;
+
+  RazorpayProvider() {
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, handlePaymentErrorResponse);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, handlePaymentSuccessResponse);
+    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, handleExternalWalletSelected);
+  }
+
+  void openRazorpayPayment({
+    required Map<String, dynamic> options,
+    required Function(PaymentFailureResponse) onError,
+    required Function(PaymentSuccessResponse) onSuccess,
+  }) {
+    _razorpay.open(options);
+    _onPaymentFailure = onError;
+    _onPaymentSuccess = onSuccess;
+  }
+
+  void handlePaymentErrorResponse(PaymentFailureResponse response) {
+    _onPaymentFailure(response);
+  }
+
+  void handlePaymentSuccessResponse(PaymentSuccessResponse response) {
+    _onPaymentSuccess(response);
+  }
+
+  void handleExternalWalletSelected(ExternalWalletResponse response) {}
+
+  void dispose() {
+    _razorpay.clear();
+    super.dispose();
   }
 }

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gardenia/provider/checkout_provider/checkout_provider.dart';
 import 'package:gardenia/shared/common_widget/common_button.dart';
@@ -28,6 +29,8 @@ class CheckoutSreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final alertDialogProvider = Provider.of<AlertDialogProvider>(context);
     final checkoutProvider = Provider.of<CheckoutProvider>(context);
+    final razorpayProvider = Provider.of<RazorpayProvider>(context);
+
     final size = MediaQuery.of(context).size;
     return ChangeNotifierProvider(
       create: (context) => AlertDialogProvider(),
@@ -99,8 +102,11 @@ class CheckoutSreen extends StatelessWidget {
                       padding: const EdgeInsets.only(top: 9.0, bottom: 20),
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => ScreenAddNewAddress()));
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const ScreenAddNewAddress(),
+                            ),
+                          );
                         },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.black),
@@ -155,28 +161,31 @@ class CheckoutSreen extends StatelessWidget {
                   voidCallback: () {
                     if (checkoutProvider.paymentCategory ==
                         PaymentCategory.paynow) {
+                      final user = FirebaseAuth.instance.currentUser;
                       var options = {
-                        'key': 'rzp_live_ILgsfZCZoFIKMb',
-                        'amount': 100,
-                        'name': 'Acme Corp.',
-                        'description': 'Fine T-Shirt',
+                        'key': 'rzp_test_EunImdr5xuJGFC',
+                        'amount': int.parse(price) * 100,
+                        'name': 'Gardenia',
+                        'description': name,
                         'retry': {'enabled': true, 'max_count': 1},
                         'send_sms_hash': true,
                         'prefill': {
-                          'contact': '8888888888',
-                          'email': 'test@razorpay.com'
+                          'contact': '8078711479',
+                          'email': user!.email
                         },
                         'external': {
                           'wallets': ['paytm']
                         }
                       };
-                      razorpay.on(Razorpay.EVENT_PAYMENT_ERROR,
-                          handlePaymentErrorResponse);
-                      razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS,
-                          handlePaymentSuccessResponse);
-                      razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET,
-                          handleExternalWalletSelected);
-                      razorpay.open(options);
+                      razorpayProvider.openRazorpayPayment(
+                        options: options,
+                        onError: (response) {
+                          handlePaymentErrorResponse(response, context);
+                        },
+                        onSuccess: (response) {
+                          handlePaymentSuccessResponse(response, context);
+                        },
+                      );
                     } else {
                       if (!alertDialogProvider.showDialog) {
                         showDialog(
@@ -205,8 +214,8 @@ class CheckoutSreen extends StatelessWidget {
     * 2. Error Description
     * 3. Metadata
     * */
-    showAlertDialog(context, "Payment Failed",
-        "Code: ${response.code}\nDescription: ${response.message}\nMetadata:${response.error.toString()}");
+    showAlertDialog(
+        context, "Payment Failed", "\nDescription: ${response.message}}");
   }
 
   void handlePaymentSuccessResponse(
@@ -231,7 +240,9 @@ class CheckoutSreen extends StatelessWidget {
     // set up the buttons
     Widget continueButton = ElevatedButton(
       child: const Text("Continue"),
-      onPressed: () {},
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
     );
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(

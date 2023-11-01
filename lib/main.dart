@@ -36,7 +36,10 @@ class MyApp extends StatelessWidget {
           create: (context) => AlertDialogProvider(),
         ),
         ChangeNotifierProvider(
-          create: (context) => AddAdressProvider(),
+          create: (context) => AdressProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => RazorpayProvider(),
         ),
       ],
       child: const MaterialApp(

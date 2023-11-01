@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gardenia/shared/core/constants.dart';
 import 'package:gardenia/view/checkout_page/checkout_page.dart';
 
 class ProductDiscription extends StatelessWidget {
@@ -19,12 +20,13 @@ class ProductDiscription extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          iconTheme: const IconThemeData(color: Colors.white),
-          backgroundColor: const Color.fromARGB(255, 1, 52, 3),
+          iconTheme: const IconThemeData(color: Colors.black),
+          backgroundColor: Colors.white,
           title: const Text(
             'Product discription',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.black),
           ),
+          centerTitle: true,
         ),
         body: Discription(
             img: img,
@@ -160,7 +162,8 @@ class Discription extends StatelessWidget {
                     height: 60,
                   )
                 ],
-              )
+              ),
+              kHeight40,
             ],
           );
         },

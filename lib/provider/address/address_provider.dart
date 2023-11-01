@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gardenia/model/address_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class AddAdressProvider extends ChangeNotifier {
+class AdressProvider extends ChangeNotifier {
   // BuildContext context;
   // AddressModel address;
   Future<void> uploadAddressToFirebase({
@@ -59,5 +59,24 @@ class AddAdressProvider extends ChangeNotifier {
 
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
     notifyListeners();
+  }
+
+  Future<List<AddressModel>> fetchAddress() async {
+    List<AddressModel> productList = [];
+    try {
+      var productCollectionSnapshot =
+          await FirebaseFirestore.instance.collection('Address').get();
+
+      productList = productCollectionSnapshot.docs.map(
+        (doc) {
+          Map<String, dynamic> data = doc.data();
+          return AddressModel.fromJson(data);
+        },
+      ).toList();
+    } catch (e) {
+      print("Error fetching products: $e");
+    }
+
+    return productList;
   }
 }
