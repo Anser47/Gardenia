@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:gardenia/shared/core/constants.dart';
 import 'package:gardenia/shared/common_widget/common_button.dart';
 import 'package:gardenia/view/profile/accountile.dart';
+import 'package:gardenia/view/profile/address_screen.dart';
 
 class ScreenProfile extends StatelessWidget {
   const ScreenProfile({super.key});
@@ -58,7 +59,14 @@ class ScreenProfile extends StatelessWidget {
                               AccountTile(
                                 icon: Icons.directions_bike,
                                 name: 'Address',
-                                voidCallback: () {},
+                                voidCallback: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const AddressScreen(),
+                                    ),
+                                  );
+                                },
                               ),
                               AccountTile(
                                   icon: Icons.privacy_tip,

@@ -4,8 +4,10 @@ import 'package:gardenia/provider/checkout_provider/checkout_provider.dart';
 import 'package:gardenia/shared/common_widget/common_button.dart';
 import 'package:gardenia/shared/core/constants.dart';
 import 'package:gardenia/view/address/address_screen.dart';
+import 'package:gardenia/view/checkout_page/add_edit_buttons.dart';
 import 'package:gardenia/view/checkout_page/address_card.dart';
 import 'package:gardenia/view/checkout_page/checkout_product_card.dart';
+import 'package:gardenia/view/checkout_page/heading_delivery.dart';
 import 'package:gardenia/view/checkout_page/payment_AlertDialog.dart';
 import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
@@ -44,26 +46,7 @@ class CheckoutSreen extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: SizedBox(
                     height: size.height / 12,
-                    child: Row(
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          icon: const Icon(Icons.arrow_back_ios),
-                        ),
-                        SizedBox(
-                          width: size.width / 8,
-                        ),
-                        const Text(
-                          'Delivery Address',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
+                    child: DeliveryHeading(size: size),
                   ),
                 ),
                 Padding(
@@ -73,60 +56,7 @@ class CheckoutSreen extends StatelessWidget {
                   ),
                   child: AddressCard(size: size),
                 ),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(top: 9.0, bottom: 20, right: 9),
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black),
-                        child: const Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.edit,
-                              color: Colors.white,
-                            ),
-                            Text(
-                              '  Edit Address',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 9.0, bottom: 20),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => const ScreenAddNewAddress(),
-                            ),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black),
-                        child: const Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.add,
-                              color: Colors.white,
-                            ),
-                            Text(
-                              ' Add Address',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                const AddEditAddressButtons(),
                 kHeight20,
                 CheckOutProuductCard(
                   discription: discription,
@@ -156,47 +86,53 @@ class CheckoutSreen extends StatelessWidget {
                   title: const Text('Cash on delivery'),
                 ),
                 kHeight50,
-                CommonButton(
-                  name: "Confirm order",
-                  voidCallback: () {
-                    if (checkoutProvider.paymentCategory ==
-                        PaymentCategory.paynow) {
-                      final user = FirebaseAuth.instance.currentUser;
-                      var options = {
-                        'key': 'rzp_test_EunImdr5xuJGFC',
-                        'amount': int.parse(price) * 100,
-                        'name': 'Gardenia',
-                        'description': name,
-                        'retry': {'enabled': true, 'max_count': 1},
-                        'send_sms_hash': true,
-                        'prefill': {
-                          'contact': '8078711479',
-                          'email': user!.email
-                        },
-                        'external': {
-                          'wallets': ['paytm']
-                        }
-                      };
-                      razorpayProvider.openRazorpayPayment(
-                        options: options,
-                        onError: (response) {
-                          handlePaymentErrorResponse(response, context);
-                        },
-                        onSuccess: (response) {
-                          handlePaymentSuccessResponse(response, context);
-                        },
-                      );
-                    } else {
-                      if (!alertDialogProvider.showDialog) {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return PaymentSuccessAlertDialog();
+                Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16.0),
+                  ),
+                  elevation: 12,
+                  child: CommonButton(
+                    name: "Confirm order",
+                    voidCallback: () {
+                      if (checkoutProvider.paymentCategory ==
+                          PaymentCategory.paynow) {
+                        final user = FirebaseAuth.instance.currentUser;
+                        var options = {
+                          'key': 'rzp_test_EunImdr5xuJGFC',
+                          'amount': int.parse(price) * 100,
+                          'name': 'Gardenia',
+                          'description': name,
+                          'retry': {'enabled': true, 'max_count': 1},
+                          'send_sms_hash': true,
+                          'prefill': {
+                            'contact': '8078711479',
+                            'email': user!.email
+                          },
+                          'external': {
+                            'wallets': ['paytm']
+                          }
+                        };
+                        razorpayProvider.openRazorpayPayment(
+                          options: options,
+                          onError: (response) {
+                            handlePaymentErrorResponse(response, context);
+                          },
+                          onSuccess: (response) {
+                            handlePaymentSuccessResponse(response, context);
                           },
                         );
+                      } else {
+                        if (!alertDialogProvider.showDialog) {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return PaymentSuccessAlertDialog();
+                            },
+                          );
+                        }
                       }
-                    }
-                  },
+                    },
+                  ),
                 )
               ],
             ),
