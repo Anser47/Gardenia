@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:gardenia/firebase_options.dart';
+import 'package:gardenia/provider/address/address_provider.dart';
 import 'package:gardenia/provider/bottomnavbar/bottom_nav_bar_provider.dart';
 import 'package:gardenia/provider/checkout_provider/checkout_provider.dart';
 import 'package:gardenia/view/splash_screen.dart';
@@ -17,7 +18,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
+//
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -33,6 +34,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => AlertDialogProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => AddAdressProvider(),
         ),
       ],
       child: const MaterialApp(

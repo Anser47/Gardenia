@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gardenia/model/address_model.dart';
+import 'package:gardenia/provider/address/address_provider.dart';
 import 'package:gardenia/shared/common_widget/common_button.dart';
 import 'package:gardenia/shared/core/constants.dart';
+import 'package:provider/provider.dart';
 
 class ScreenAddNewAddress extends StatelessWidget {
   const ScreenAddNewAddress({Key? key}) : super(key: key);
@@ -129,13 +131,16 @@ class AddressFormState extends State<AddressForm> {
                     pincode: _pincodeController.text.trim(),
                     state: _stateController.text.trim(),
                   );
-                  await FirebaseFirestore.instance
-                      .collection('Address')
-                      .doc(addressModel.id)
-                      .set({
-                    'area': addressModel.area,
-                  });
+                  // await FirebaseFirestore.instance
+                  //     .collection('Address')
+                  //     .doc(addressModel.id)
+                  //     .set({
+                  //   'area': addressModel.area,
+                  // });
+                  context.read<AddAdressProvider>().uploadAddressToFirebase(
+                      value: addressModel, context: context);
                   debugPrint('fdsa============================');
+                  Navigator.of(context).pop();
                 }
               })
         ],
@@ -167,7 +172,6 @@ class AddressFormState extends State<AddressForm> {
         filled: true,
         fillColor: Colors.white70,
       ),
-      obscureText: obscureText,
       validator: (value) {
         if (value!.isEmpty) {
           return 'Please enter $label';

@@ -33,11 +33,13 @@ class SplashScreen extends StatelessWidget {
             },
           );
         } else {
-          return Scaffold(
-            body: Center(
-              child: Image.asset(
-                'assets/2.png',
-                fit: BoxFit.cover,
+          return SafeArea(
+            child: Scaffold(
+              body: Center(
+                child: Image.asset(
+                  'assets/2.png',
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           );
