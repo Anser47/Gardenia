@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:gardenia/model/address_model.dart';
 import 'package:gardenia/view/address/address_screen.dart';
 import 'package:gardenia/view/profile/editing_screens.dart/editing_screen.dart';
 
 class AddEditAddressButtons extends StatelessWidget {
-  const AddEditAddressButtons({
+  AddEditAddressButtons({
+    required this.id,
     super.key,
   });
-
+  String id;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -19,7 +21,9 @@ class AddEditAddressButtons extends StatelessWidget {
               showDialog(
                 context: context,
                 builder: (context) {
-                  return const EditingScreen();
+                  return EditingScreen(
+                    id: id,
+                  );
                 },
               );
             },

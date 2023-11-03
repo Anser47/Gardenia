@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:gardenia/provider/checkout_provider/checkout_provider.dart';
 import 'package:gardenia/shared/common_widget/common_button.dart';
 import 'package:gardenia/shared/core/constants.dart';
-import 'package:gardenia/view/address/address_screen.dart';
 import 'package:gardenia/view/checkout_page/add_edit_buttons.dart';
 import 'package:gardenia/view/checkout_page/address_card.dart';
 import 'package:gardenia/view/checkout_page/checkout_product_card.dart';
@@ -54,9 +53,11 @@ class CheckoutSreen extends StatelessWidget {
                     left: 9,
                     right: 9,
                   ),
-                  child: AddressCard(size: size),
+                  child: AddressCard(
+                    size: size,
+                  ),
                 ),
-                const AddEditAddressButtons(),
+                // const AddEditAddressButtons(),
                 kHeight20,
                 CheckOutProuductCard(
                   discription: discription,

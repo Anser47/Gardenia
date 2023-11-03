@@ -4,10 +4,11 @@ import 'package:gardenia/shared/core/constants.dart';
 import 'package:gardenia/view/profile/editing_screens.dart/editing_page.dart';
 
 class EditingScreen extends StatelessWidget {
-  const EditingScreen({
+  EditingScreen({
+    required this.id,
     super.key,
   });
-
+  String id;
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -33,7 +34,7 @@ class EditingScreen extends StatelessWidget {
                 voidCallback: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => NameEditScreen(id: ''),
+                      builder: (context) => NameEditScreen(id: id),
                     ),
                   );
                 }),

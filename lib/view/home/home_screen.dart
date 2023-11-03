@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:gardenia/shared/core/constants.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:gardenia/shared/bottomnavigation/product_discription.dart';
+import 'package:gardenia/shared/product_discription.dart';
 import 'package:gardenia/view/wishlist/wishlist.dart';
 import 'package:gardenia/view_model/fetch_product.dart';
 

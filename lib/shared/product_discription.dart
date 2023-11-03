@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:gardenia/model/cart_model.dart';
+import 'package:gardenia/provider/cart/cart_provider.dart';
 import 'package:gardenia/shared/core/constants.dart';
 import 'package:gardenia/view/checkout_page/checkout_page.dart';
+import 'package:provider/provider.dart';
 
 class ProductDiscription extends StatelessWidget {
   const ProductDiscription(
@@ -148,7 +151,20 @@ class Discription extends StatelessWidget {
                       padding: const EdgeInsets.all(10),
                       minimumSize: const Size(150, 50),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      final addToCart = CartModel(
+                        name: name,
+                        price: price,
+                        category: category,
+                        description: discription,
+                        imageUrl: img,
+                        id: '3',
+                        quantity: '5',
+                      );
+                      context
+                          .read<CartProvider>()
+                          .addToCart(context: context, value: addToCart);
+                    },
                     child: const Text(
                       'Add to Cart',
                       style: TextStyle(

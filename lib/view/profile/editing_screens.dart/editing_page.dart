@@ -1,10 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:gardenia/model/address_model.dart';
 import 'package:gardenia/shared/core/constants.dart';
 
 class NameEditScreen extends StatelessWidget {
-  NameEditScreen({super.key, required this.id});
-  final String id;
+  NameEditScreen({
+    required this.id,
+    super.key,
+  });
+  String id;
   final _nameControllor = TextEditingController();
   @override
   Widget build(BuildContext context) {
