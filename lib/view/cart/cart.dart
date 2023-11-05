@@ -1,12 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:gardenia/model/cart_model.dart';
+
 import 'package:gardenia/provider/cart/cart_provider.dart';
 import 'package:gardenia/shared/core/constants.dart';
 import 'package:provider/provider.dart';
 
 class CartScreen extends StatelessWidget {
-  const CartScreen({super.key});
-
+  CartScreen({super.key});
+  final CollectionReference cartCollection =
+      FirebaseFirestore.instance.collection('Cart');
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -26,45 +28,48 @@ class CartScreen extends StatelessWidget {
           ),
           child: Column(
             children: [
+              kHeight20,
               Expanded(
                 child: LayoutBuilder(
                   builder: (context, constraints) {
-                    return FutureBuilder<List<CartModel>>(
-                      future: context.read<CartProvider>().fetchCart(),
-                      builder: (contex, snapshot) {
-                        if (snapshot.hasError) {
-                          return Center(
-                            child: Text('error ${snapshot.error}'),
-                          );
-                        } else if (!snapshot.hasData ||
-                            snapshot.data!.isEmpty) {
-                          return const Center(
-                            child: Text('Add item to your cart'),
-                          );
-                        } else if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        } else {
-                          final cart = snapshot.data;
+                    return StreamBuilder(
+                        stream: cartCollection.snapshots(),
+                        builder: (context, snapshot) {
+                          List<QueryDocumentSnapshot<Object?>> data = [];
+                          if (snapshot.data == null) {
+                            return const Center(
+                              child: Text('Add Prodducts'),
+                            );
+                          }
+                          data = snapshot.data!.docs;
+                          if (snapshot.data!.docs.isEmpty || data.isEmpty) {
+                            return const Center(
+                              child: Text('No Products'),
+                            );
+                          }
                           return ListView.builder(
-                            itemCount: cart!.length,
+                            itemCount: data.length,
                             itemBuilder: (context, index) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+
                               return CartProductCard(
-                                name: cart[index].name!,
-                                price: cart[index].price!,
+                                name: data[index]['name'] ?? 'name',
+                                price: data[index]['price'] ?? '84',
                                 constraints: constraints,
-                                image: cart[index].imageUrl!,
-                                quantity: cart[index].imageUrl!,
-                                discription: cart[index].description!,
-                                id: cart[index].id!,
+                                image: data[index]['imageUrl'] ?? 'shi',
+                                quantity: data[index]['quantity'] ?? 'quantity',
+                                discription:
+                                    data[index]['description'] ?? 'discription',
+                                id: data[index]['id'] ?? '23',
                               );
                             },
                           );
-                        }
-                      },
-                    );
+                        });
                   },
                 ),
               ),
@@ -174,12 +179,17 @@ class CartProductCard extends StatelessWidget {
                       const Text('quantity:'),
                       IconButton(
                         icon: const Icon(Icons.remove),
-                        onPressed: () {},
+                        onPressed: () {
+                          // context.read<CartProvider>().reducek(id);
+                        },
                       ),
-                      const Text('4'),
+                      Text(quantity),
                       IconButton(
                         icon: const Icon(Icons.add),
-                        onPressed: () {},
+                        onPressed: () async {
+                          // context.read<CartProvider>().addk(id);
+                          // context.read<CartProvider>().fetchCart();
+                        },
                       ),
                     ],
                   ),
@@ -189,7 +199,11 @@ class CartProductCard extends StatelessWidget {
 
             IconButton(
               icon: const Icon(Icons.delete_outline),
-              onPressed: () {},
+              onPressed: () {
+                context
+                    .read<CartProvider>()
+                    .showMyDialog(id: id, context: context);
+              },
             ),
           ],
         ),

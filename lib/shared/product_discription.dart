@@ -6,18 +6,22 @@ import 'package:gardenia/view/checkout_page/checkout_page.dart';
 import 'package:provider/provider.dart';
 
 class ProductDiscription extends StatelessWidget {
-  const ProductDiscription(
-      {super.key,
-      required this.name,
-      required this.price,
-      required this.category,
-      required this.discription,
-      required this.img});
+  const ProductDiscription({
+    super.key,
+    required this.name,
+    required this.price,
+    required this.category,
+    required this.discription,
+    required this.img,
+    required this.id,
+  });
   final String name;
   final String price;
   final String category;
   final String discription;
   final String img;
+  final String id;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -32,11 +36,13 @@ class ProductDiscription extends StatelessWidget {
           centerTitle: true,
         ),
         body: Discription(
-            img: img,
-            name: name,
-            price: price,
-            category: category,
-            discription: discription),
+          img: img,
+          name: name,
+          price: price,
+          category: category,
+          discription: discription,
+          id: id,
+        ),
       ),
     );
   }
@@ -50,14 +56,15 @@ class Discription extends StatelessWidget {
     required this.price,
     required this.category,
     required this.discription,
+    required this.id,
   });
-
+  final String id;
   final String img;
   final String name;
   final String price;
   final String category;
   final String discription;
-  // final String quatity;
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -158,8 +165,7 @@ class Discription extends StatelessWidget {
                         category: category,
                         description: discription,
                         imageUrl: img,
-                        id: '3',
-                        quantity: '5',
+                        id: id,
                       );
                       context
                           .read<CartProvider>()

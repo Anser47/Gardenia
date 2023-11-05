@@ -22,7 +22,7 @@ class ScreenNavWidget extends StatelessWidget {
               : provider.selectedIndex == 1
                   ? SearchScreen()
                   : provider.selectedIndex == 2
-                      ? const CartScreen()
+                      ? CartScreen()
                       : const ScreenProfile()),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(

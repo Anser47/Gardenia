@@ -3,6 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:gardenia/model/cart_model.dart';
 
 class CartProvider extends ChangeNotifier {
+  List<CartModel> cartList = [];
+  int _k = 1;
+  int get k => _k;
+  addK(id) async {
+    _k++;
+    await FirebaseFirestore.instance.collection('Cart').doc(id).update(
+      {
+        'quantity': _k.toString(),
+      },
+    );
+  }
+
   // BuildContext context;
   // AddressModel address;
   Future<void> addToCart({
@@ -60,7 +72,6 @@ class CartProvider extends ChangeNotifier {
   }
 
   Future<List<CartModel>> fetchCart() async {
-    List<CartModel> cartList = [];
     try {
       var productCollectionSnapshot =
           await FirebaseFirestore.instance.collection('Cart').get();
@@ -76,5 +87,39 @@ class CartProvider extends ChangeNotifier {
     }
     notifyListeners();
     return cartList;
+  }
+
+  Future<void> showMyDialog({context, required String id}) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: const SingleChildScrollView(
+            child: Text('Are sure you want to delete'),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Delete'),
+              onPressed: () async {
+                await FirebaseFirestore.instance
+                    .collection('Cart')
+                    .doc(id)
+                    .delete();
+                Navigator.of(context).pop();
+                notifyListeners();
+              },
+            ),
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                notifyListeners();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

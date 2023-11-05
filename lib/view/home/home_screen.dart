@@ -194,6 +194,7 @@ class _HomeScreenGridState extends State<HomeScreenGrid> {
                   );
                 } else if (snapshot.hasData) {
                   return ProductTile(
+                      id: data[index]['id'],
                       name: data[index]['name'] ?? 'Empty',
                       subname: data[index]['category'] ?? 'Empty',
                       rate: data[index]['price'] ?? 'Empty',
@@ -217,9 +218,10 @@ class ProductTile extends StatefulWidget {
   final String rate;
   final String image;
   final String description;
-
+  final String id;
   const ProductTile({
     Key? key,
+    required this.id,
     required this.name,
     required this.subname,
     required this.rate,
@@ -242,6 +244,10 @@ class _ProductTileState extends State<ProductTile> {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => ProductDiscription(
+              id: widget.id
+              
+              
+              ,
               name: widget.name,
               price: widget.rate,
               category: widget.subname,
