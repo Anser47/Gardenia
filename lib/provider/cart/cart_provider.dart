@@ -4,15 +4,33 @@ import 'package:gardenia/model/cart_model.dart';
 
 class CartProvider extends ChangeNotifier {
   List<CartModel> cartList = [];
-  int _k = 1;
-  int get k => _k;
-  addK(id) async {
-    _k++;
+
+  addK(id, quantity) async {
+    int num = int.parse(quantity);
+
+    num++;
     await FirebaseFirestore.instance.collection('Cart').doc(id).update(
       {
-        'quantity': _k.toString(),
+        'quantity': num.toString(),
       },
     );
+    notifyListeners();
+  }
+
+  reduceK(id, quantity) async {
+    int num = int.parse(quantity);
+    num--;
+    if (num < 1) {
+      await FirebaseFirestore.instance.collection('Cart').doc(id).delete();
+
+      notifyListeners();
+    }
+    await FirebaseFirestore.instance.collection('Cart').doc(id).update(
+      {
+        'quantity': '$num',
+      },
+    );
+    notifyListeners();
   }
 
   // BuildContext context;

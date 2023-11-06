@@ -166,6 +166,7 @@ class Discription extends StatelessWidget {
                         description: discription,
                         imageUrl: img,
                         id: id,
+                        quantity: '1',
                       );
                       context
                           .read<CartProvider>()

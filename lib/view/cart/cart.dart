@@ -176,18 +176,18 @@ class CartProductCard extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      const Text('quantity:'),
+                      Text('quantity: '),
                       IconButton(
                         icon: const Icon(Icons.remove),
                         onPressed: () {
-                          // context.read<CartProvider>().reducek(id);
+                          context.read<CartProvider>().reduceK(id, quantity);
                         },
                       ),
                       Text(quantity),
                       IconButton(
                         icon: const Icon(Icons.add),
                         onPressed: () async {
-                          // context.read<CartProvider>().addk(id);
+                          context.read<CartProvider>().addK(id, quantity);
                           // context.read<CartProvider>().fetchCart();
                         },
                       ),
