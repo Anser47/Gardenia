@@ -5,6 +5,7 @@ import 'package:gardenia/provider/address/address_provider.dart';
 import 'package:gardenia/provider/bottomnavbar/bottom_nav_bar_provider.dart';
 import 'package:gardenia/provider/cart/cart_provider.dart';
 import 'package:gardenia/provider/checkout_provider/checkout_provider.dart';
+import 'package:gardenia/provider/wishlist/wishlist_provider.dart';
 import 'package:gardenia/view/splash_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -44,6 +45,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => CartProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => WishlistProvider(),
         ),
       ],
       child: const MaterialApp(

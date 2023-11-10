@@ -37,10 +37,6 @@ class CartScreen extends StatelessWidget {
                     Expanded(
                       child: LayoutBuilder(
                         builder: (context, constraints) {
-                          // return StreamBuilder(
-                          //   stream: cartCollection.snapshots(),
-                          //   builder: (context, snapshot) {
-                          // List<QueryDocumentSnapshot<Object?>> data = [];
                           if (snapshot.data == null) {
                             return const Center(
                               child: Text('Add Products'),

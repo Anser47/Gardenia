@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:gardenia/model/product_model.dart';
-import 'package:gardenia/view/home/home_screen.dart';
+import 'package:gardenia/view/home/home_grid.dart';
 import 'package:gardenia/view/search/search_card.dart';
 
 class SearchScreen extends StatefulWidget {
