@@ -26,22 +26,29 @@ class CartScreen extends StatelessWidget {
           decoration: const BoxDecoration(
             gradient: gcolor,
           ),
-          child: Column(
-            children: [
-              kHeight20,
-              Expanded(
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    return StreamBuilder(
-                        stream: cartCollection.snapshots(),
-                        builder: (context, snapshot) {
-                          List<QueryDocumentSnapshot<Object?>> data = [];
+          child: StreamBuilder(
+              stream: cartCollection.snapshots(),
+              builder: (context, snapshot) {
+                List<QueryDocumentSnapshot<Object?>> data = [];
+                String total = '0';
+                return Column(
+                  children: [
+                    kHeight20,
+                    Expanded(
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          // return StreamBuilder(
+                          //   stream: cartCollection.snapshots(),
+                          //   builder: (context, snapshot) {
+                          // List<QueryDocumentSnapshot<Object?>> data = [];
                           if (snapshot.data == null) {
                             return const Center(
-                              child: Text('Add Prodducts'),
+                              child: Text('Add Products'),
                             );
                           }
                           data = snapshot.data!.docs;
+                          total = calculateTotalPrice(snapshot.data!.docs);
+
                           if (snapshot.data!.docs.isEmpty || data.isEmpty) {
                             return const Center(
                               child: Text('No Products'),
@@ -69,44 +76,60 @@ class CartScreen extends StatelessWidget {
                               );
                             },
                           );
-                        });
-                  },
-                ),
-              ),
-              Container(
-                color: Colors.white,
-                height: 70,
-                width: double.infinity,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      ListTile(
-                        subtitle: const Text('Total(8 items):'),
-                        title: const Text(
-                          '₹ 340',
-                          style: TextStyle(
-                            fontSize: 20,
-                          ),
-                        ),
-                        trailing: ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                              shape: const StadiumBorder(),
-                              elevation: 8,
-                              shadowColor: Colors.grey,
-                              backgroundColor: Colors.green),
-                          child: const Text('Place Order'),
+                          //   },
+                          // );
+                        },
+                      ),
+                    ),
+                    Container(
+                      color: Colors.white,
+                      height: 70,
+                      width: double.infinity,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            ListTile(
+                              subtitle: Text(
+                                  'Total (${snapshot.data!.docs.length} items):'),
+                              title: Text(
+                                '₹ $total',
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                ),
+                              ),
+                              trailing: ElevatedButton(
+                                onPressed: () {
+                                  debugPrint('==  ======  =====${data.length}');
+                                  print(data);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    shape: const StadiumBorder(),
+                                    elevation: 8,
+                                    shadowColor: Colors.grey,
+                                    backgroundColor: Colors.green),
+                                child: const Text('Place Order'),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
-                ),
-              )
-            ],
-          ),
+                    )
+                  ],
+                );
+              }),
         ),
       ),
     );
+  }
+
+  String calculateTotalPrice(List<QueryDocumentSnapshot<Object?>> data) {
+    double total = 0;
+    for (var item in data) {
+      double price = double.tryParse(item['price'] ?? '0') ?? 0;
+      int quantity = int.tryParse(item['quantity'] ?? '0') ?? 0;
+      total += price * quantity;
+    }
+    return total.toStringAsFixed(2); // Format the total price as a string
   }
 }
 
@@ -176,7 +199,7 @@ class CartProductCard extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      Text('quantity: '),
+                      const Text('quantity: '),
                       IconButton(
                         icon: const Icon(Icons.remove),
                         onPressed: () {

@@ -89,23 +89,23 @@ class CartProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<List<CartModel>> fetchCart() async {
-    try {
-      var productCollectionSnapshot =
-          await FirebaseFirestore.instance.collection('Cart').get();
+  // Future<List<CartModel>> fetchCart() async {
+  //   try {
+  //     var productCollectionSnapshot =
+  //         await FirebaseFirestore.instance.collection('Cart').get();
 
-      cartList = productCollectionSnapshot.docs.map(
-        (doc) {
-          Map<String, dynamic> data = doc.data();
-          return CartModel.fromJson(data);
-        },
-      ).toList();
-    } catch (e) {
-      print("Error fetching products: $e");
-    }
-    notifyListeners();
-    return cartList;
-  }
+  //     cartList = productCollectionSnapshot.docs.map(
+  //       (doc) {
+  //         Map<String, dynamic> data = doc.data();
+  //         return CartModel.fromJson(data);
+  //       },
+  //     ).toList();
+  //   } catch (e) {
+  //     print("Error fetching products: $e");
+  //   }
+  //   notifyListeners();
+  //   return cartList;
+  // }
 
   Future<void> showMyDialog({context, required String id}) async {
     return showDialog<void>(

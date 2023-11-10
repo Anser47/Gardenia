@@ -61,7 +61,7 @@ class HomeScreen extends StatelessWidget {
                       return WishlistProductCard(
                         constraints: constraints,
                         name: 'Abc',
-                        price: 45,
+                        price: '45',
                       );
                     },
                   );
@@ -244,10 +244,7 @@ class _ProductTileState extends State<ProductTile> {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => ProductDiscription(
-              id: widget.id
-              
-              
-              ,
+              id: widget.id,
               name: widget.name,
               price: widget.rate,
               category: widget.subname,

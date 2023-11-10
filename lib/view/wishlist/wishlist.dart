@@ -28,7 +28,7 @@ class WishlistScreen extends StatelessWidget {
                 return WishlistProductCard(
                   constraints: constraints,
                   name: 'add',
-                  price: 33,
+                  price: '33',
                 );
               },
             );
@@ -47,7 +47,7 @@ class WishlistProductCard extends StatelessWidget {
     required this.price,
   });
   final String name;
-  final double price;
+  final String price;
   final BoxConstraints constraints;
 
   @override
