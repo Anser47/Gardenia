@@ -103,8 +103,9 @@ class _SearchScreenState extends State<SearchScreen> {
   Future<List<ProductClass>> fetchSearchResults() async {
     try {
       var querySnapshot = await productCollection
-          .where('name', isGreaterThanOrEqualTo: searchValue.toLowerCase())
-          .where('name',
+          .where('searchName',
+              isGreaterThanOrEqualTo: searchValue.trim().toLowerCase())
+          .where('searchName',
               isLessThanOrEqualTo: searchValue.toLowerCase() + '\uf8ff')
           .get();
 
@@ -128,7 +129,7 @@ emptySearch() {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            'File not found',
+            'Not found',
             style: TextStyle(
               fontSize: 20,
               color: Color(0xFF9C9C9C),
