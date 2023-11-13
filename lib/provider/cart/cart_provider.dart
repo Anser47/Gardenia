@@ -51,6 +51,7 @@ class CartProvider extends ChangeNotifier {
           'id': value.id,
         },
       );
+      showSnackbar(context!, "Product added to Cart");
       notifyListeners();
     } on FirebaseException catch (error) {
       String errorMessage = 'An error occurred while adding the product.';
@@ -75,7 +76,7 @@ class CartProvider extends ChangeNotifier {
   void showSnackbar(BuildContext context, String message) {
     final snackBar = SnackBar(
       behavior: SnackBarBehavior.floating,
-      margin: const EdgeInsets.only(bottom: 100.0),
+      margin: const EdgeInsets.only(bottom: 10.0),
       content: Text(message),
       action: SnackBarAction(
         label: 'Dismiss',
@@ -107,7 +108,7 @@ class CartProvider extends ChangeNotifier {
   //   return cartList;
   // }
 
-  Future<void> showMyDialog({context, required String id}) async {
+  Future<void> deleteCart({context, required String id}) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false,

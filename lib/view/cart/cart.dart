@@ -221,7 +221,7 @@ class CartProductCard extends StatelessWidget {
               onPressed: () {
                 context
                     .read<CartProvider>()
-                    .showMyDialog(id: id, context: context);
+                    .deleteCart(id: id, context: context);
               },
             ),
           ],

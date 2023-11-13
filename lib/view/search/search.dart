@@ -13,11 +13,11 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  final TextEditingController searchController = TextEditingController();
   String searchValue = '';
   CollectionReference productCollection =
       FirebaseFirestore.instance.collection('Products');
   List<ProductClass> productList = [];
+  final TextEditingController searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -38,20 +38,25 @@ class _SearchScreenState extends State<SearchScreen> {
                     Padding(
                       padding: const EdgeInsets.all(20.0),
                       child: TextFormField(
+                        controller: searchController,
                         onChanged: (value) {
-                          setState(() {
-                            searchValue = value;
-                          });
+                          setState(
+                            () {
+                              searchValue = value;
+                            },
+                          );
                         },
                         decoration: InputDecoration(
                           prefixIcon: const Icon(Icons.search_rounded),
                           suffixIcon: IconButton(
                             icon: const Icon(Icons.clear),
                             onPressed: () {
-                              searchController.clear();
-                              setState(() {
-                                searchValue = '';
-                              });
+                              setState(
+                                () {
+                                  searchController.clear();
+                                  searchValue = '';
+                                },
+                              );
                             },
                           ),
                           enabledBorder: OutlineInputBorder(
@@ -87,6 +92,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           return Text('Error: ${snapshot.error}');
                         } else {
                           List<ProductClass>? searchResults = snapshot.data;
+
                           return searchResults != null &&
                                   searchResults.isNotEmpty
                               ? SearchCard(searchResults: searchResults)

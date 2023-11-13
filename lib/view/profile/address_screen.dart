@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gardenia/model/address_model.dart';
 import 'package:gardenia/provider/address/address_provider.dart';
 import 'package:gardenia/shared/core/constants.dart';
-import 'package:gardenia/view/checkout_page/address_card.dart';
+import 'package:gardenia/view/address/address_card.dart';
 import 'package:gardenia/view/checkout_page/heading_delivery.dart';
 import 'package:provider/provider.dart';
 

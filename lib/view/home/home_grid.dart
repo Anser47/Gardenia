@@ -122,10 +122,11 @@ class _ProductTileState extends State<ProductTile> {
         );
       },
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            width: 180,
-            height: 180,
+            width: size.width / 2.2,
+            height: size.height / 4.5,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25),
                 image: DecorationImage(
@@ -136,7 +137,7 @@ class _ProductTileState extends State<ProductTile> {
               children: [
                 Positioned(
                   left: size.width / 3.2,
-                  top: -4,
+                  top: 2,
                   child: IconButton(
                     icon: Icon(
                       isAddedToWishlist

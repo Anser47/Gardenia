@@ -1,7 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:gardenia/model/cart_model.dart';
+import 'package:gardenia/provider/cart/cart_provider.dart';
+import 'package:gardenia/provider/wishlist/wishlist_provider.dart';
 import 'package:gardenia/shared/core/constants.dart';
 import 'package:gardenia/view/search/search_card.dart';
+import 'package:provider/provider.dart';
 
 class WishlistScreen extends StatelessWidget {
   WishlistScreen({super.key});
@@ -99,11 +103,32 @@ class WishlistScreen extends StatelessWidget {
                                   IconButton(
                                     icon: const Icon(
                                         Icons.shopping_cart_outlined),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      final addToCart = CartModel(
+                                        name: data[index]['name'],
+                                        price: data[index]['price'],
+                                        category: data[index]['category'],
+                                        description: data[index]['description'],
+                                        imageUrl: data[index]['imageUrl'],
+                                        id: data[index]['id'],
+                                        quantity: '1',
+                                      );
+                                      context.read<CartProvider>().addToCart(
+                                          context: context, value: addToCart);
+                                    },
                                   ),
                                   IconButton(
                                     icon: const Icon(Icons.favorite),
-                                    onPressed: () {},
+                                    onPressed: () async {
+                                      final String id = data[index]['id'];
+                                      await context
+                                          .read<WishlistProvider>()
+                                          .deleteWishlist(
+                                            id: id,
+                                          );
+                                      debugPrint(
+                                          '=========================== ${data[index]['id']}');
+                                    },
                                   ),
                                 ],
                               ),

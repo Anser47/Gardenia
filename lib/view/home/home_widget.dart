@@ -16,14 +16,12 @@ class HomeScreenWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(gradient: gcolor),
+      decoration: const BoxDecoration(color: Colors.white30),
       child: LayoutBuilder(builder: (context, constraints) {
         return ListView(
           children: [
             Container(
-              decoration: const BoxDecoration(
-                gradient: gcolor,
-              ),
+              decoration: const BoxDecoration(color: Colors.black),
               height: 180,
               child: Image.asset(
                 'assets/gardenia1.png',

@@ -44,7 +44,7 @@ class WishlistProvider extends ChangeNotifier {
   void showSnackbar(BuildContext context, String message) {
     final snackBar = SnackBar(
       behavior: SnackBarBehavior.floating,
-      margin: const EdgeInsets.only(bottom: 100.0),
+      margin: const EdgeInsets.only(bottom: 10.0),
       content: Text(message),
       action: SnackBarAction(
         label: 'Dismiss',
@@ -55,6 +55,11 @@ class WishlistProvider extends ChangeNotifier {
     );
 
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    notifyListeners();
+  }
+
+  deleteWishlist({required String id}) async {
+    await FirebaseFirestore.instance.collection('wishlist').doc(id).delete();
     notifyListeners();
   }
 }

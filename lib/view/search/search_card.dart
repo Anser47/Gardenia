@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:gardenia/model/cart_model.dart';
 import 'package:gardenia/model/product_model.dart';
+import 'package:gardenia/model/wishlist_model.dart';
+import 'package:gardenia/provider/cart/cart_provider.dart';
+import 'package:gardenia/provider/wishlist/wishlist_provider.dart';
 import 'package:gardenia/shared/product_discription.dart';
+import 'package:provider/provider.dart';
 
 class SearchCard extends StatelessWidget {
   const SearchCard({
@@ -19,13 +24,14 @@ class SearchCard extends StatelessWidget {
       itemBuilder: (context, index) {
         return GestureDetector(
           onTap: () {
+            // final er = searchResults![index];
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => ProductDiscription(
                   category: searchResults![index].category ?? "outdoor",
                   discription:
                       searchResults![index].description ?? "description",
-                  id: '345',
+                  id: searchResults![index].id ?? "null",
                   img: searchResults![index].imageUrl ?? 'null',
                   name: searchResults![index].name ?? "name",
                   price: searchResults![index].price ?? "null",
@@ -91,11 +97,37 @@ class SearchCard extends StatelessWidget {
                     children: [
                       IconButton(
                         icon: const Icon(Icons.shopping_cart_outlined),
-                        onPressed: () {},
+                        onPressed: () {
+                          final addToCart = CartModel(
+                            name: searchResults![index].name,
+                            price: searchResults![index].price,
+                            category: searchResults![index].category,
+                            description: searchResults![index].description,
+                            imageUrl: searchResults![index].imageUrl,
+                            id: "324",
+                            quantity: '1',
+                          );
+                          context
+                              .read<CartProvider>()
+                              .addToCart(context: context, value: addToCart);
+                        },
                       ),
                       IconButton(
                         icon: const Icon(Icons.favorite),
-                        onPressed: () {},
+                        onPressed: () {
+                          final _value = WishlistModel(
+                            name: searchResults![index].name,
+                            price: searchResults![index].price,
+                            category: searchResults![index].category,
+                            description: searchResults![index].description,
+                            imageUrl: searchResults![index].imageUrl,
+                            id: "324",
+                            quantity: '1',
+                          );
+                          context
+                              .read<WishlistProvider>()
+                              .addToWishlist(value: _value, context: context);
+                        },
                       ),
                     ],
                   ),

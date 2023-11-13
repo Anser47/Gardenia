@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gardenia/model/address_model.dart';
 import 'package:gardenia/view/address/address_screen.dart';
 import 'package:gardenia/view/profile/editing_screens.dart/editing_screen.dart';
 

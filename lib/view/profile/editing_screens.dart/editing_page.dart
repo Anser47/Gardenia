@@ -12,6 +12,7 @@ class NameEditScreen extends StatelessWidget {
   final _nameControllor = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    debugPrint('===== ===== $id ');
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -36,9 +37,11 @@ class NameEditScreen extends StatelessWidget {
               await FirebaseFirestore.instance
                   .collection('Address')
                   .doc(id)
-                  .update({
-                'name': _nameControllor.text.trim(),
-              });
+                  .update(
+                {
+                  'fullname': _nameControllor.text.trim(),
+                },
+              );
             },
           ),
         ],
