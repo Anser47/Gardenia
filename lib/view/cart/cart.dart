@@ -29,7 +29,18 @@ class CartScreen extends StatelessWidget {
           child: StreamBuilder(
               stream: cartCollection.snapshots(),
               builder: (context, snapshot) {
-                List<QueryDocumentSnapshot<Object?>> data = [];
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text('Error: ${snapshot.error}'),
+                  );
+                }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                List<QueryDocumentSnapshot<Object?>> data =
+                    snapshot.data?.docs ?? [];
                 String total = '0';
                 return Column(
                   children: [
@@ -37,13 +48,18 @@ class CartScreen extends StatelessWidget {
                     Expanded(
                       child: LayoutBuilder(
                         builder: (context, constraints) {
+                          if (data.isEmpty) {
+                            return const Center(
+                              child: Text('No Products'),
+                            );
+                          }
                           if (snapshot.data == null) {
                             return const Center(
                               child: Text('Add Products'),
                             );
                           }
-                          data = snapshot.data!.docs;
-                          total = calculateTotalPrice(snapshot.data!.docs);
+                          // data = snapshot.data!.docs;
+                          total = calculateTotalPrice(data);
 
                           if (snapshot.data!.docs.isEmpty || data.isEmpty) {
                             return const Center(
@@ -96,7 +112,7 @@ class CartScreen extends StatelessWidget {
                               trailing: ElevatedButton(
                                 onPressed: () {
                                   debugPrint('==  ======  =====${data.length}');
-                                  print(data);
+                                  debugPrint('========$total = = == =');
                                 },
                                 style: ElevatedButton.styleFrom(
                                     shape: const StadiumBorder(),
@@ -118,14 +134,16 @@ class CartScreen extends StatelessWidget {
     );
   }
 
-  String calculateTotalPrice(List<QueryDocumentSnapshot<Object?>> data) {
+  String calculateTotalPrice(
+    List<QueryDocumentSnapshot<Object?>> data,
+  ) {
     double total = 0;
     for (var item in data) {
       double price = double.tryParse(item['price'] ?? '0') ?? 0;
       int quantity = int.tryParse(item['quantity'] ?? '0') ?? 0;
       total += price * quantity;
     }
-    return total.toStringAsFixed(2); // Format the total price as a string
+    return total.toString(); // Format the total price as a string
   }
 }
 
