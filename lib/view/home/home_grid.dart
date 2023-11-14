@@ -2,24 +2,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:gardenia/model/product_model.dart';
 import 'package:gardenia/model/wishlist_model.dart';
 import 'package:gardenia/provider/wishlist/wishlist_provider.dart';
 import 'package:gardenia/shared/product_discription.dart';
 import 'package:provider/provider.dart';
 
-class HomeScreenGrid extends StatefulWidget {
-  const HomeScreenGrid({
+class HomeScreenGrid extends StatelessWidget {
+  HomeScreenGrid({
     super.key,
     required this.productCollection,
   });
-
+  List<ProductClass> productList = [];
   final CollectionReference<Object?> productCollection;
 
-  @override
-  State<HomeScreenGrid> createState() => _HomeScreenGridState();
-}
-
-class _HomeScreenGridState extends State<HomeScreenGrid> {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -27,7 +23,7 @@ class _HomeScreenGridState extends State<HomeScreenGrid> {
         final crossAxisCount = constraints.maxWidth > 600 ? 3 : 2;
         const aspectRatio = 3.0 / 4.0;
         return StreamBuilder(
-          stream: widget.productCollection.snapshots(),
+          stream: productCollection.snapshots(),
           builder: (context, snapshot) {
             List<QueryDocumentSnapshot<Object?>> data = [];
             if (snapshot.data == null) {

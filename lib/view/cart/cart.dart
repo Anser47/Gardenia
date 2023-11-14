@@ -41,7 +41,7 @@ class CartScreen extends StatelessWidget {
                 }
                 List<QueryDocumentSnapshot<Object?>> data =
                     snapshot.data?.docs ?? [];
-                String total = '0';
+                String total = calculateTotalPrice(data);
                 return Column(
                   children: [
                     kHeight20,
@@ -53,19 +53,7 @@ class CartScreen extends StatelessWidget {
                               child: Text('No Products'),
                             );
                           }
-                          if (snapshot.data == null) {
-                            return const Center(
-                              child: Text('Add Products'),
-                            );
-                          }
-                          // data = snapshot.data!.docs;
-                          total = calculateTotalPrice(data);
 
-                          if (snapshot.data!.docs.isEmpty || data.isEmpty) {
-                            return const Center(
-                              child: Text('No Products'),
-                            );
-                          }
                           return ListView.builder(
                             itemCount: data.length,
                             itemBuilder: (context, index) {
@@ -80,7 +68,8 @@ class CartScreen extends StatelessWidget {
                                 name: data[index]['name'] ?? 'name',
                                 price: data[index]['price'] ?? '84',
                                 constraints: constraints,
-                                image: data[index]['imageUrl'] ?? 'shi',
+                                image: data[index]['imageUrl'] ??
+                                    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShiq-YDkgihdO9XD29qY3p58tiBINmzqZD8Q&usqp=CAU',
                                 quantity: data[index]['quantity'] ?? 'quantity',
                                 discription:
                                     data[index]['description'] ?? 'discription',
@@ -102,7 +91,8 @@ class CartScreen extends StatelessWidget {
                           children: [
                             ListTile(
                               subtitle: Text(
-                                  'Total (${snapshot.data!.docs.length} items):'),
+                                'Total (${snapshot.data!.docs.length} items):',
+                              ),
                               title: Text(
                                 '₹ $total',
                                 style: const TextStyle(
@@ -134,16 +124,22 @@ class CartScreen extends StatelessWidget {
     );
   }
 
-  String calculateTotalPrice(
-    List<QueryDocumentSnapshot<Object?>> data,
-  ) {
+  String calculateTotalPrice(List<QueryDocumentSnapshot<Object?>> data) {
     double total = 0;
+
     for (var item in data) {
-      double price = double.tryParse(item['price'] ?? '0') ?? 0;
-      int quantity = int.tryParse(item['quantity'] ?? '0') ?? 0;
-      total += price * quantity;
+      try {
+        double price = double.tryParse(item['price'].toString()) ?? 0;
+        int quantity = int.tryParse(item['quantity'].toString()) ?? 0;
+        total += price * quantity;
+        print(
+            '=============   Price: $price, Quantity: $quantity, Total: $total');
+      } catch (e) {
+        print('Error calculating total price: $e');
+      }
     }
-    return total.toString(); // Format the total price as a string
+
+    return total.toStringAsFixed(2);
   }
 }
 
