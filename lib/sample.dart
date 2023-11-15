@@ -1,232 +1,201 @@
-// // import 'package:flutter/cupertino.dart';
-// // import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
-// // class ProductTile extends StatefulWidget {
-// //   final String name;
-// //   final String subname;
-// //   final int rate;
-// //   final List<dynamic> image;
-// //   final String description;
+import 'package:gardenia/provider/checkout_provider/checkout_provider.dart';
+import 'package:gardenia/shared/common_widget/common_button.dart';
+import 'package:gardenia/view/address/address_card.dart';
+import 'package:gardenia/view/checkout_page/heading_delivery.dart';
+import 'package:gardenia/view/checkout_page/payment_AlertDialog.dart';
+import 'package:provider/provider.dart';
 
-// //   const ProductTile({
-// //     Key? key,
-// //     required this.name,
-// //     required this.subname,
-// //     required this.rate,
-// //     required this.image,
-// //     required this.description,
-// //   }) : super(key: key);
+class CheckoutScree extends StatelessWidget {
+  CheckoutScree({
+    Key? key,
+    required this.total,
+  }) : super(key: key);
+  final String total;
+  @override
+  Widget build(BuildContext context) {
+    final alertDialogProvider = Provider.of<AlertDialogProvider>(context);
+    final checkoutProvider = Provider.of<CheckoutProvider>(context);
+    final size = MediaQuery.of(context).size;
+    final CollectionReference cartCollection =
+        FirebaseFirestore.instance.collection('Cart');
+    return SafeArea(
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: StreamBuilder(
+              stream: cartCollection.snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text('Error: ${snapshot.error}'),
+                  );
+                }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                List<QueryDocumentSnapshot<Object?>> data =
+                    snapshot.data?.docs ?? [];
 
-// //   @override
-// //   State<ProductTile> createState() => _ProductTileState();
-// // }
+                return Column(
+                  children: [
+                    const SizedBox(height: 20),
+                    // Padding(
+                    //   padding: const EdgeInsets.all(8.0),
+                    //   child: ,
+                    // ),
+                    Padding(
+                      padding: const EdgeInsets.all(9),
+                      child: AddressCard(size: size),
+                    ),
+                    const SizedBox(height: 20),
+                    // Displaying Cart Items
 
-// // class _ProductTileState extends State<ProductTile> {
-// //   bool isAddedToWishlist = false;
+                    ListView.builder(
+                      itemCount: data.length,
+                      itemBuilder: (context, index) {
+                        return CartProductCard(
+                          description:
+                              data[index]['description'] ?? 'discription',
+                          name: data[index]['name'] ?? 'name',
+                          price: data[index]['price'] ?? '84',
+                          image: data[index]['imageUrl'] ??
+                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShiq-YDkgihdO9XD29qY3p58tiBINmzqZD8Q&usqp=CAU',
+                          quantity: data[index]['quantity'] ?? 'quantity',
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    // Payment Options
+                    ListTile(
+                      leading: Radio<PaymentCategory>(
+                        groupValue: checkoutProvider.paymentCategory,
+                        value: PaymentCategory.paynow,
+                        onChanged: (PaymentCategory? value) {
+                          checkoutProvider.setPaymentCategory(value!);
+                        },
+                      ),
+                      title: const Text('Pay Now'),
+                    ),
+                    ListTile(
+                      leading: Radio<PaymentCategory>(
+                        groupValue: checkoutProvider.paymentCategory,
+                        value: PaymentCategory.cashondelivery,
+                        onChanged: (PaymentCategory? value) {
+                          checkoutProvider.setPaymentCategory(value!);
+                        },
+                      ),
+                      title: const Text('Cash on delivery'),
+                    ),
+                    const SizedBox(height: 50),
+                    // Confirm Order Button
+                    CommonButton(
+                      name: "Confirm order",
+                      voidCallback: () {
+                        // Handle payment and order confirmation logic here
+                      },
+                    ),
+                  ],
+                );
+              }),
+        ),
+      ),
+    );
+  }
+}
 
-// //   @override
-// //   Widget build(BuildContext context) {
-// //     var size = MediaQuery.of(context).size;
-// //     return GestureDetector(
-// //       onTap: () {},
-// //       child: Column(
-// //         children: [
-// //           Container(
-// //             width: 180,
-// //             height: 180,
-// //             decoration: BoxDecoration(
-// //                 borderRadius: BorderRadius.circular(25),
-// //                 image: DecorationImage(
-// //                   image: NetworkImage(widget.image[0]),
-// //                   fit: BoxFit.cover,
-// //                 )),
-// //             child: Stack(
-// //               children: [
-// //                 Positioned(
-// //                     left: size.width / 3.2,
-// //                     top: -4,
-// //                     child: IconButton(
-// //                       icon: Icon(
-// //                         isAddedToWishlist
-// //                             ? CupertinoIcons.suit_heart_fill
-// //                             : CupertinoIcons.heart,
-// //                         color: Colors.black,
-// //                         size: 24,
-// //                       ),
-// //                       onPressed: () async {},
-// //                     ))
-// //               ],
-// //             ),
-// //           ),
-// //           Text(
-// //             widget.name,
-// //             overflow: TextOverflow.ellipsis,
-// //             maxLines: 1,
-// //             style: TextStyle(
-// //                 letterSpacing: .5,
-// //                 fontSize: 15,
-// //                 color: Colors.black,
-// //                 fontWeight: FontWeight.w900),
-// //           ),
-// //           Text(
-// //             widget.subname,
-// //             maxLines: 1,
-// //             overflow: TextOverflow.clip,
-// //             style: const TextStyle(
-// //                 letterSpacing: .5,
-// //                 fontSize: 12,
-// //                 color: Colors.black54,
-// //                 fontWeight: FontWeight.w700),
-// //           ),
-// //           Text(
-// //             "₹${widget.rate}.00",
-// //             style: const TextStyle(
-// //                 letterSpacing: .5,
-// //                 fontSize: 15,
-// //                 color: Colors.black,
-// //                 fontWeight: FontWeight.w900),
-// //           ),
-// //         ],
-// //       ),
-// //     );
-// //   }
-// // }
-// import 'package:carousel_slider/carousel_slider.dart';
-// import 'package:flutter/material.dart';
-// import 'package:gardenia/shared/core/constants.dart';
-// import 'package:gardenia/view/home/home_screen.dart';
-// import 'package:gardenia/view/wishlist/wishlist.dart';
+class CartProductCard extends StatelessWidget {
+  const CartProductCard({
+    Key? key,
+    required this.name,
+    required this.price,
+    required this.image,
+    required this.quantity,
+    required this.description,
+  }) : super(key: key);
 
-// class Homw extends StatefulWidget {
-//   const Homw({super.key});
+  final String name;
+  final String price;
+  final String image;
+  final String quantity;
+  final String description;
 
-//   @override
-//   State<Homw> createState() => _HomwState();
-// }
-
-// class _HomwState extends State<Homw> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return SafeArea(
-//       child: Scaffold(
-//         appBar:
-//             AppBar(title: const Text('Welcome'), centerTitle: true, actions: [
-//           IconButton(
-//               onPressed: () {
-//                 Navigator.of(context).push(MaterialPageRoute(
-//                     builder: (context) => const WishlistScreen()));
-//               },
-//               icon: const Icon(
-//                 Icons.favorite_border,
-//                 size: 25,
-//               )),
-//         ]),
-//         backgroundColor: Colors.white,
-//         body: LayoutBuilder(builder: (context, constraints) {
-//           return ListView(
-//             children: [
-//               Container(
-//                 decoration: const BoxDecoration(
-//                   gradient: gcolor,
-//                 ),
-//                 height: 180,
-//                 child: Image.asset(
-//                   'assets/gardenia1.png',
-//                   fit: BoxFit.cover,
-//                 ),
-//               ),
-//               CarouselSlider(
-//                 options: CarouselOptions(
-//                   height: 130,
-//                   enableInfiniteScroll: true,
-//                   scrollDirection: Axis.horizontal,
-//                   autoPlay: true,
-//                   autoPlayCurve: Curves.fastOutSlowIn,
-//                   autoPlayAnimationDuration: const Duration(milliseconds: 800),
-//                   viewportFraction: 0.95,
-//                   enlargeCenterPage: true,
-//                 ),
-//                 items: List.generate(10, (index) {
-//                   return Builder(
-//                     builder: (context) {
-//                       return WishlistProductCard(
-//                         constraints: constraints,
-//                         name: 'Abc',
-//                         price: '45',
-//                       );
-//                     },
-//                   );
-//                 }),
-//               ),
-//               SizedBox(
-//                 height: 130,
-//                 child: Column(
-//                   crossAxisAlignment: CrossAxisAlignment.start,
-//                   children: [
-//                     const Padding(
-//                       padding: EdgeInsets.only(top: 8.0, left: 10),
-//                       child: Text(
-//                         'Category',
-//                         style: TextStyle(
-//                           fontSize: 20,
-//                           fontWeight: FontWeight.bold,
-//                         ),
-//                       ),
-//                     ),
-//                     Row(
-//                       children: [
-//                         const SizedBox(
-//                           height: 20,
-//                         ),
-//                         Padding(
-//                           padding: const EdgeInsets.only(
-//                             left: 10,
-//                           ),
-//                           child: ElevatedButton(
-//                             onPressed: () {},
-//                             style: ElevatedButton.styleFrom(
-//                                 shape: const StadiumBorder(),
-//                                 elevation: 8,
-//                                 shadowColor: Colors.grey,
-//                                 backgroundColor: Colors.green),
-//                             child: const Text(
-//                               'Outdoor',
-//                             ),
-//                           ),
-//                         ),
-//                         const SizedBox(
-//                           width: 10,
-//                         ),
-//                         ElevatedButton(
-//                           onPressed: () {},
-//                           style: ElevatedButton.styleFrom(
-//                               shape: const StadiumBorder(),
-//                               elevation: 8,
-//                               shadowColor: Colors.grey,
-//                               backgroundColor: Colors.green),
-//                           child: const Text('Indoor'),
-//                         ),
-//                       ],
-//                     ),
-//                     const Padding(
-//                       padding: EdgeInsets.only(
-//                         top: 9.0,
-//                         left: 14,
-//                       ),
-//                       child: Text(
-//                         'All',
-//                         style: TextStyle(
-//                             fontSize: 20, fontWeight: FontWeight.bold),
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//               // HomeScreenGrid(productCollection: productCollection),
-//             ],
-//           );
-//         }),
-//       ),
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 5,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(25.0),
+      ),
+      margin: const EdgeInsets.all(10.0),
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 100,
+              height: 100,
+              child: Image.network(
+                image,
+                fit: BoxFit.cover,
+              ),
+            ),
+            const SizedBox(width: 16.0),
+            // Product Details
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    name,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Text(
+                      '₹ $price',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.green,
+                      ),
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      const Text('Quantity: '),
+                      IconButton(
+                        icon: const Icon(Icons.remove),
+                        onPressed: () {
+                          // Handle decreasing quantity logic
+                        },
+                      ),
+                      Text(quantity),
+                      IconButton(
+                        icon: const Icon(Icons.add),
+                        onPressed: () {
+                          // Handle increasing quantity logic
+                        },
+                      ),
+                    ],
+                  ),
+                  Text(
+                    'Description: $description',
+                    style: const TextStyle(fontSize: 14),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

@@ -132,11 +132,12 @@ class Discription extends StatelessWidget {
                     onPressed: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => CheckoutSreen(
-                              discription: discription,
-                              image: img,
-                              name: name,
-                              price: price),
+                          builder: (context) => CheckoutScreen(
+                            discription: discription,
+                            image: img,
+                            name: name,
+                            price: price,
+                          ),
                         ),
                       );
                     },

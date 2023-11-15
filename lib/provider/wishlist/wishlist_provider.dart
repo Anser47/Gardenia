@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gardenia/model/wishlist_model.dart';
 
 class WishlistProvider extends ChangeNotifier {
+  bool isAddedToWishlist = false;
   Future<void> addToWishlist({
     required WishlistModel value,
     required BuildContext? context,
@@ -58,8 +59,24 @@ class WishlistProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  deleteWishlist({required String id}) async {
+  deleteWishlist({required String id, required BuildContext context}) async {
     await FirebaseFirestore.instance.collection('wishlist').doc(id).delete();
+    showSnackbar(context, 'Removed from');
     notifyListeners();
+  }
+
+  checkIfIdExists(String id) async {
+    try {
+      CollectionReference collectionReference =
+          FirebaseFirestore.instance.collection('wishlist');
+
+      DocumentSnapshot documentSnapshot =
+          await collectionReference.doc(id).get();
+
+      isAddedToWishlist = documentSnapshot.exists;
+    } catch (e) {
+      print("Error checking if id exists: $e");
+      isAddedToWishlist = false;
+    }
   }
 }

@@ -108,9 +108,9 @@ class CartProvider extends ChangeNotifier {
   //   return cartList;
   // }
 
-  Future<void> deleteCart({context, required String id}) async {
+  Future<void> deleteCart({BuildContext? context, required String id}) async {
     return showDialog<void>(
-      context: context,
+      context: context!,
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
@@ -128,7 +128,7 @@ class CartProvider extends ChangeNotifier {
                 Navigator.of(context).pop();
                 notifyListeners();
               },
-            ),
+            ), //'
             TextButton(
               child: const Text('Cancel'),
               onPressed: () {

@@ -4,6 +4,33 @@ import 'package:razorpay_flutter/razorpay_flutter.dart';
 enum PaymentCategory { cashondelivery, paynow }
 
 class CheckoutProvider extends ChangeNotifier {
+  int _totalNum = 1;
+  set totalNum(int value) {
+    _totalNum = value;
+  }
+
+  int get totalNum => _totalNum;
+  void addNum() {
+    _totalNum++;
+    notifyListeners();
+  }
+
+  void reduceNum() {
+    _totalNum--;
+    notifyListeners();
+  }
+
+  int calulateTotal(String value) {
+    int price = int.tryParse(value) ?? 0;
+    if (_totalNum != 0 || _totalNum <= 0) {
+      int lastprice = price * _totalNum;
+      return lastprice;
+    } else {
+      debugPrint('== ======== =calculating price have error==========');
+      return 0;
+    }
+  }
+
   PaymentCategory _paymentCategory = PaymentCategory.paynow;
 
   PaymentCategory get paymentCategory => _paymentCategory;

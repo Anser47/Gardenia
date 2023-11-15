@@ -4,7 +4,6 @@ import 'package:gardenia/model/cart_model.dart';
 import 'package:gardenia/provider/cart/cart_provider.dart';
 import 'package:gardenia/provider/wishlist/wishlist_provider.dart';
 import 'package:gardenia/shared/core/constants.dart';
-import 'package:gardenia/view/search/search_card.dart';
 import 'package:provider/provider.dart';
 
 class WishlistScreen extends StatelessWidget {
@@ -114,7 +113,9 @@ class WishlistScreen extends StatelessWidget {
                                         quantity: '1',
                                       );
                                       context.read<CartProvider>().addToCart(
-                                          context: context, value: addToCart);
+                                            context: context,
+                                            value: addToCart,
+                                          );
                                     },
                                   ),
                                   IconButton(
@@ -124,8 +125,7 @@ class WishlistScreen extends StatelessWidget {
                                       await context
                                           .read<WishlistProvider>()
                                           .deleteWishlist(
-                                            id: id,
-                                          );
+                                              id: id, context: context);
                                       debugPrint(
                                           '=========================== ${data[index]['id']}');
                                     },

@@ -1,11 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gardenia/provider/checkout_provider/checkout_provider.dart';
+import 'package:gardenia/shared/bottomnavigation/bottom_bar.dart';
 import 'package:gardenia/shared/common_widget/common_button.dart';
 import 'package:gardenia/shared/core/constants.dart';
-import 'package:gardenia/view/address/add_edit_buttons.dart';
 import 'package:gardenia/view/address/address_card.dart';
-import 'package:gardenia/view/checkout_page/checkout_product_card.dart';
 import 'package:gardenia/view/checkout_page/heading_delivery.dart';
 import 'package:gardenia/view/checkout_page/payment_AlertDialog.dart';
 import 'package:provider/provider.dart';
@@ -13,8 +12,8 @@ import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 Razorpay razorpay = Razorpay();
 
-class CheckoutSreen extends StatelessWidget {
-  const CheckoutSreen({
+class CheckoutScreen extends StatelessWidget {
+  const CheckoutScreen({
     super.key,
     required this.name,
     required this.price,
@@ -25,7 +24,7 @@ class CheckoutSreen extends StatelessWidget {
   final String price;
   final String discription;
   final String image;
-  // final String quatity;
+
   @override
   Widget build(BuildContext context) {
     final alertDialogProvider = Provider.of<AlertDialogProvider>(context);
@@ -33,110 +32,188 @@ class CheckoutSreen extends StatelessWidget {
     final razorpayProvider = Provider.of<RazorpayProvider>(context);
 
     final size = MediaQuery.of(context).size;
-    return ChangeNotifierProvider(
-      create: (context) => AlertDialogProvider(),
-      child: SafeArea(
-        child: Scaffold(
-          body: SingleChildScrollView(
-            child: Column(
-              children: [
-                kHeight30,
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SizedBox(
-                    height: size.height / 12,
-                    child: DeliveryHeading(size: size),
+    return SafeArea(
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Consumer<CheckoutProvider>(
+            builder: (context, value, widget) {
+              int totalPrice = value.calulateTotal(price);
+              return Column(
+                children: [
+                  kHeight20,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      height: size.height / 12,
+                      child: DeliveryHeading(size: size),
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: 9,
-                    right: 9,
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 9,
+                      right: 9,
+                    ),
+                    child: AddressCard(
+                      size: size,
+                    ),
                   ),
-                  child: AddressCard(
-                    size: size,
+                  // const AddEditAddressButtons(),
+                  kHeight20,
+                  Card(
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25.0),
+                    ),
+                    margin: const EdgeInsets.all(10.0),
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            width: 100,
+                            height: 100,
+                            child: Image.network(
+                              image,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          const SizedBox(width: 16.0),
+                          // Product Details
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  name,
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 8.0),
+                                  child: Text(
+                                    '₹ $price',
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.green,
+                                    ),
+                                  ),
+                                ),
+                                Row(
+                                  children: [
+                                    const Text('quantity: '),
+                                    IconButton(
+                                      icon: const Icon(Icons.remove),
+                                      onPressed: () {
+                                        if (checkoutProvider.totalNum <= 0) {
+                                          value.totalNum = 1;
+                                          Navigator.pop(context);
+                                        }
+                                        context
+                                            .read<CheckoutProvider>()
+                                            .reduceNum();
+                                      },
+                                    ),
+                                    Text(value.totalNum.toString()),
+                                    IconButton(
+                                      icon: const Icon(Icons.add),
+                                      onPressed: () async {
+                                        context
+                                            .read<CheckoutProvider>()
+                                            .addNum();
+                                      },
+                                    ),
+                                  ],
+                                ),
+                                Text(
+                                  'Total : $totalPrice',
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-                // const AddEditAddressButtons(),
-                kHeight20,
-                CheckOutProuductCard(
-                  discription: discription,
-                  image: image,
-                  name: name,
-                  price: price,
-                ),
-                kHeight20,
-                ListTile(
-                  leading: Radio<PaymentCategory>(
-                    groupValue: checkoutProvider.paymentCategory,
-                    value: PaymentCategory.paynow,
-                    onChanged: (PaymentCategory? value) {
-                      checkoutProvider.setPaymentCategory(value!);
-                    },
+                  kHeight20,
+                  ListTile(
+                    leading: Radio<PaymentCategory>(
+                      groupValue: checkoutProvider.paymentCategory,
+                      value: PaymentCategory.paynow,
+                      onChanged: (PaymentCategory? value) {
+                        checkoutProvider.setPaymentCategory(value!);
+                      },
+                    ),
+                    title: const Text('Pay Now'),
                   ),
-                  title: const Text('Pay Now'),
-                ),
-                ListTile(
-                  leading: Radio<PaymentCategory>(
-                    groupValue: checkoutProvider.paymentCategory,
-                    value: PaymentCategory.cashondelivery,
-                    onChanged: (PaymentCategory? value) {
-                      checkoutProvider.setPaymentCategory(value!);
-                    },
+                  ListTile(
+                    leading: Radio<PaymentCategory>(
+                      groupValue: checkoutProvider.paymentCategory,
+                      value: PaymentCategory.cashondelivery,
+                      onChanged: (PaymentCategory? value) {
+                        checkoutProvider.setPaymentCategory(value!);
+                      },
+                    ),
+                    title: const Text('Cash on delivery'),
                   ),
-                  title: const Text('Cash on delivery'),
-                ),
-                kHeight50,
-                Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16.0),
-                  ),
-                  elevation: 12,
-                  child: CommonButton(
-                    name: "Confirm order",
-                    voidCallback: () {
-                      if (checkoutProvider.paymentCategory ==
-                          PaymentCategory.paynow) {
-                        final user = FirebaseAuth.instance.currentUser;
-                        var options = {
-                          'key': 'rzp_test_EunImdr5xuJGFC',
-                          'amount': int.parse(price) * 100,
-                          'name': 'Gardenia',
-                          'description': name,
-                          'retry': {'enabled': true, 'max_count': 1},
-                          'send_sms_hash': true,
-                          'prefill': {
-                            'contact': '8078711479',
-                            'email': user!.email
-                          },
-                          'external': {
-                            'wallets': ['paytm']
-                          }
-                        };
-                        razorpayProvider.openRazorpayPayment(
-                          options: options,
-                          onError: (response) {
-                            handlePaymentErrorResponse(response, context);
-                          },
-                          onSuccess: (response) {
-                            handlePaymentSuccessResponse(response, context);
-                          },
-                        );
-                      } else {
-                        if (!alertDialogProvider.showDialog) {
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return PaymentSuccessAlertDialog();
+                  kHeight50,
+                  Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16.0),
+                    ),
+                    elevation: 12,
+                    child: CommonButton(
+                      name: "Confirm order",
+                      voidCallback: () {
+                        if (checkoutProvider.paymentCategory ==
+                            PaymentCategory.paynow) {
+                          final user = FirebaseAuth.instance.currentUser;
+                          var options = {
+                            'key': 'rzp_test_EunImdr5xuJGFC',
+                            'amount': totalPrice * 100,
+                            'name': 'Gardenia',
+                            'description': name,
+                            'retry': {'enabled': true, 'max_count': 1},
+                            'send_sms_hash': true,
+                            'prefill': {
+                              'contact': '8078711479',
+                              'email': user!.email
+                            },
+                            'external': {
+                              'wallets': ['paytm']
+                            }
+                          };
+                          razorpayProvider.openRazorpayPayment(
+                            options: options,
+                            onError: (response) {
+                              handlePaymentErrorResponse(response, context);
+                            },
+                            onSuccess: (response) {
+                              handlePaymentSuccessResponse(response, context);
                             },
                           );
+                        } else {
+                          if (!alertDialogProvider.showDialog) {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return const ScreenNavWidget();
+                              },
+                            );
+                          }
                         }
-                      }
-                    },
-                  ),
-                )
-              ],
-            ),
+                      },
+                    ),
+                  )
+                ],
+              );
+            },
           ),
         ),
       ),
@@ -157,6 +234,8 @@ class CheckoutSreen extends StatelessWidget {
 
   void handlePaymentSuccessResponse(
       PaymentSuccessResponse response, BuildContext context) {
+    String id = response.orderId.toString();
+
     /*
     * Payment Success Response contains three values:
     * 1. Order ID

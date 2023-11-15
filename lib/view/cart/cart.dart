@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:gardenia/model/cart_model.dart';
 
 import 'package:gardenia/provider/cart/cart_provider.dart';
+import 'package:gardenia/sample.dart';
 import 'package:gardenia/shared/core/constants.dart';
 import 'package:provider/provider.dart';
 
@@ -101,8 +103,13 @@ class CartScreen extends StatelessWidget {
                               ),
                               trailing: ElevatedButton(
                                 onPressed: () {
-                                  debugPrint('==  ======  =====${data.length}');
-                                  debugPrint('========$total = = == =');
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => CheckoutScree(
+                                            total: total,
+                                          )));
+                                  // CheckoutScree(products: products);
+                                  // debugPrint('==  ======  =====${data.length}');
+                                  // debugPrint('========$total = = == =');
                                 },
                                 style: ElevatedButton.styleFrom(
                                     shape: const StadiumBorder(),
