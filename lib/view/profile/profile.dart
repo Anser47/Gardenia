@@ -22,80 +22,79 @@ class ScreenProfile extends StatelessWidget {
             style: TextStyle(color: Colors.black),
           ),
         ),
-        body: Column(
-          children: [
-            Expanded(
-              child: Container(
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                  gradient: gcolor,
-                ),
-                child: Column(
-                  children: [
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 28.0),
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(25),
+        body: SingleChildScrollView(
+          child: Expanded(
+            child: Container(
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                gradient: gcolor,
+              ),
+              child: Column(
+                children: [
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 28.0),
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(25),
+                          ),
+                        ),
+                        height: 350,
+                        width: 350,
+                        child: Column(
+                          children: [
+                            AccountTile(
+                              icon: Icons.person,
+                              name: 'Personal Details',
+                              voidCallback: () {},
                             ),
-                          ),
-                          height: 350,
-                          width: 350,
-                          child: Column(
-                            children: [
-                              AccountTile(
-                                icon: Icons.person,
-                                name: 'Personal Details',
-                                voidCallback: () {},
-                              ),
-                              AccountTile(
-                                icon: CupertinoIcons.bag_fill,
-                                name: 'My Order',
-                                voidCallback: () {},
-                              ),
-                              AccountTile(
-                                icon: Icons.directions_bike,
-                                name: 'Address',
-                                voidCallback: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const AddressScreen(),
-                                    ),
-                                  );
-                                },
-                              ),
-                              AccountTile(
-                                  icon: Icons.privacy_tip,
-                                  name: 'Privacy and Policy',
-                                  voidCallback: () {}),
-                              AccountTile(
-                                icon: Icons.file_copy,
-                                name: 'Terms and Conditions',
-                                voidCallback: () {},
-                              ),
-                            ],
-                          ),
+                            AccountTile(
+                              icon: CupertinoIcons.bag_fill,
+                              name: 'My Order',
+                              voidCallback: () {},
+                            ),
+                            AccountTile(
+                              icon: Icons.directions_bike,
+                              name: 'Address',
+                              voidCallback: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => const AddressScreen(),
+                                  ),
+                                );
+                              },
+                            ),
+                            AccountTile(
+                              icon: Icons.privacy_tip,
+                              name: 'Privacy and Policy',
+                              voidCallback: () {},
+                            ),
+                            AccountTile(
+                              icon: Icons.file_copy,
+                              name: 'Terms and Conditions',
+                              voidCallback: () {},
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 130,
-                    ),
-                    CommonButton(
-                      name: 'Log Out',
-                      voidCallback: () {
-                        FirebaseAuth.instance.signOut();
-                      },
-                    )
-                  ],
-                ),
+                  ),
+                  const SizedBox(
+                    height: 130,
+                  ),
+                  CommonButton(
+                    name: 'Log Out',
+                    voidCallback: () {
+                      FirebaseAuth.instance.signOut();
+                    },
+                  ),
+                  const SizedBox(height: 140),
+                ],
               ),
             ),
-          ],
+          ),
         ),
       ),
     );

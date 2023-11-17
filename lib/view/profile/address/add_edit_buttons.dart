@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gardenia/view/address/address_screen.dart';
+import 'package:gardenia/view/profile/address/address_screen.dart';
 import 'package:gardenia/view/profile/editing_screens.dart/editing_screen.dart';
 
 class AddEditAddressButtons extends StatelessWidget {
@@ -8,13 +8,15 @@ class AddEditAddressButtons extends StatelessWidget {
     super.key,
   });
   String id;
+
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 9.0, bottom: 20, right: 9),
+          padding:
+              const EdgeInsets.only(top: 9.0, bottom: 20, right: 5, left: 10),
           child: ElevatedButton(
             onPressed: () {
               showDialog(
@@ -26,7 +28,9 @@ class AddEditAddressButtons extends StatelessWidget {
                 },
               );
             },
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.black,
+            ),
             child: const Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -43,7 +47,7 @@ class AddEditAddressButtons extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 9.0, bottom: 20),
+          padding: const EdgeInsets.only(top: 9.0, bottom: 20, right: 1),
           child: ElevatedButton(
             onPressed: () {
               Navigator.of(context).push(
@@ -57,11 +61,11 @@ class AddEditAddressButtons extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(
-                  Icons.add,
+                  Icons.delete,
                   color: Colors.white,
                 ),
                 Text(
-                  ' Add Address',
+                  ' Remove Address',
                   style: TextStyle(color: Colors.white),
                 ),
               ],

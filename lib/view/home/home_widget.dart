@@ -2,7 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gardenia/view/home/home_grid.dart';
-import 'package:gardenia/view/wishlist/wishlist.dart';
+import 'package:gardenia/view/wishlist/wishlist_product_card.dart';
 
 class HomeScreenWidget extends StatelessWidget {
   const HomeScreenWidget({
