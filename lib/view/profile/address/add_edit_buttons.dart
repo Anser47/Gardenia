@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:gardenia/view/profile/address/address_screen.dart';
+import 'package:gardenia/provider/address/address_provider.dart';
 import 'package:gardenia/view/profile/editing_screens.dart/editing_screen.dart';
+import 'package:provider/provider.dart';
 
 class AddEditAddressButtons extends StatelessWidget {
   AddEditAddressButtons({
@@ -49,12 +50,9 @@ class AddEditAddressButtons extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(top: 9.0, bottom: 20, right: 1),
           child: ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const ScreenAddNewAddress(),
-                ),
-              );
+            onPressed: () async {
+              context.read<AddressProvider>().deleteAddress(id);
+              debugPrint('$id================== =');
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
             child: const Row(

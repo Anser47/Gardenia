@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gardenia/model/address_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class AdressProvider extends ChangeNotifier {
+class AddressProvider extends ChangeNotifier {
   // BuildContext context;
   // AddressModel address;
   Future<void> uploadAddressToFirebase({
@@ -78,5 +78,9 @@ class AdressProvider extends ChangeNotifier {
     }
 
     return productList;
+  }
+
+  void deleteAddress(String id) async {
+    await FirebaseFirestore.instance.collection('Address').doc(id).delete();
   }
 }

@@ -61,7 +61,7 @@ class ScreenProfile extends StatelessWidget {
                               voidCallback: () {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (context) => const AddressScreen(),
+                                    builder: (context) => AddressScreen(),
                                   ),
                                 );
                               },

@@ -137,7 +137,7 @@ class AddressFormState extends State<AddressForm> {
                   //     .set({
                   //   'area': addressModel.area,
                   // });
-                  context.read<AdressProvider>().uploadAddressToFirebase(
+                  context.read<AddressProvider>().uploadAddressToFirebase(
                       value: addressModel, context: context);
                   debugPrint('fdsa============================');
                   Navigator.of(context).pop();

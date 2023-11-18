@@ -53,9 +53,9 @@ class CheckoutScreen extends StatelessWidget {
                       left: 9,
                       right: 9,
                     ),
-                    child: AddressCard(
-                      size: size,
-                    ),
+                    // child: AddressCard(id: ,
+                    //   size: size,
+                    // ),
                   ),
                   // const AddEditAddressButtons(),
                   kHeight20,
@@ -130,7 +130,7 @@ class CheckoutScreen extends StatelessWidget {
                                 ),
                                 Text(
                                   'Total : $totalPrice',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold),
                                 ),

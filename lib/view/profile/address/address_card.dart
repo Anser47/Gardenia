@@ -26,63 +26,59 @@ class AddressCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16.0),
-          ),
-          elevation: 6,
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(14),
-              color: const Color.fromARGB(255, 216, 215, 215),
-            ),
-            height: size.height / 3.2,
-            width: double.infinity,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 10.0, right: 90, top: 9),
-                  child: Text(
-                    'Name: ${fullname}',
-                    style: const TextStyle(
-                        fontSize: 17, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10.0, right: 85, top: 4),
-                  child: Text(
-                    'Address: ${house}, ${area}, ${city}, ${state}, ${pincode}, ',
-                    style: const TextStyle(
-                      fontSize: 17,
-                    ),
-                    maxLines: 4,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10.0, right: 85, top: 4),
-                  child: Text(
-                    'Phone Number: ${phone}',
-                    style: const TextStyle(
-                      fontSize: 17,
-                    ),
-                    maxLines: 4,
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {},
-                  child: Text('Make this default'),
-                ),
-                AddEditAddressButtons(
-                  id: id,
-                ),
-              ],
-            ),
-          ),
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16.0),
+      ),
+      elevation: 6,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(14),
+          color: const Color.fromARGB(255, 216, 215, 215),
         ),
-      ],
+        height: size.height / 3.2,
+        width: double.infinity,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0, right: 90, top: 9),
+              child: Text(
+                'Name: ${fullname}',
+                style:
+                    const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0, right: 85, top: 4),
+              child: Text(
+                'Address: ${house}, ${area}, ${city}, ${state}, ${pincode}, ',
+                style: const TextStyle(
+                  fontSize: 17,
+                ),
+                maxLines: 4,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0, right: 85, top: 4),
+              child: Text(
+                'Phone Number: ${phone}',
+                style: const TextStyle(
+                  fontSize: 17,
+                ),
+                maxLines: 4,
+              ),
+            ),
+            TextButton(
+              onPressed: () {},
+              child: Text('Make this default'),
+            ),
+            AddEditAddressButtons(
+              id: id,
+            ),
+          ],
+        ),
+      ),
     );
     //   },
     // );

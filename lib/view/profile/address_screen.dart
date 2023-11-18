@@ -1,14 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:gardenia/model/address_model.dart';
-import 'package:gardenia/provider/address/address_provider.dart';
 import 'package:gardenia/shared/core/constants.dart';
 import 'package:gardenia/view/profile/address/address_card.dart';
 import 'package:gardenia/view/checkout_page/heading_delivery.dart';
-import 'package:provider/provider.dart';
 
 class AddressScreen extends StatelessWidget {
-  const AddressScreen({super.key});
-
+  AddressScreen({super.key});
+  final CollectionReference addressCollection =
+      FirebaseFirestore.instance.collection('Address');
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -16,7 +15,7 @@ class AddressScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: Container(
-          decoration: const BoxDecoration(gradient: gcolor),
+          decoration: const BoxDecoration(),
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -25,37 +24,41 @@ class AddressScreen extends StatelessWidget {
                 kHeight20,
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: FutureBuilder<List<AddressModel>>(
-                    future: context.read<AdressProvider>().fetchAddress(),
+                  child: StreamBuilder(
+                    stream: addressCollection.snapshots(),
                     builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        return Center(child: Text('Error: ${snapshot.error}'));
-                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      List<QueryDocumentSnapshot<Object?>> data = [];
+                      if (snapshot.data == null) {
                         return const Center(
-                          child: Text('No addresses available.'),
+                          child: Text('Add Address'),
                         );
-                      } else {
-                        final address = snapshot.data!;
-                        return ListView.builder(
-                            physics: ScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: address.length,
-                            itemBuilder: (context, index) {
-                              return AddressCard(
-                                size: size,
-                                area: address[index].area ?? 'address',
-                                city: address[index].city ?? 'city',
-                                fullname: address[index].fullname ?? 'fullname',
-                                house: address[index].house ?? 'house',
-                                id: address[index].id ?? "id",
-                                phone: address[index].phone ?? "phone",
-                                pincode: address[index].pincode ?? "pincode",
-                                state: address[index].state ?? "state",
-                              );
-                            });
                       }
+
+                      data = snapshot.data!.docs;
+                      if (snapshot.data!.docs.isEmpty || data.isEmpty) {
+                        return const Center(
+                          child: Text('Empty'),
+                        );
+                      }
+
+                      return ListView.builder(
+                        physics: ScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: data.length,
+                        itemBuilder: (context, index) {
+                          return AddressCard(
+                            size: size,
+                            area: data[index]['area'],
+                            city: data[index]['city'],
+                            fullname: data[index]['fullname'],
+                            house: data[index]['house'],
+                            id: data[index]['id'],
+                            phone: data[index]['phone'],
+                            pincode: data[index]["pincode"],
+                            state: data[index]["state"],
+                          );
+                        },
+                      );
                     },
                   ),
                 ),
