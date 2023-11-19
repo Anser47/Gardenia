@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gardenia/shared/core/constants.dart';
 import 'package:gardenia/view/profile/address/address_card.dart';
 import 'package:gardenia/view/checkout_page/heading_delivery.dart';
+import 'package:gardenia/view/profile/address/dafault_card.dart';
 
 class AddressScreen extends StatelessWidget {
   AddressScreen({super.key});
@@ -22,6 +23,7 @@ class AddressScreen extends StatelessWidget {
                 kHeight20,
                 DeliveryHeading(size: size),
                 kHeight20,
+                DefaultAddress(size: size),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: StreamBuilder(

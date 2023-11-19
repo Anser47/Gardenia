@@ -1,19 +1,20 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gardenia/view/profile/address/add_edit_buttons.dart';
 
 class AddressCard extends StatelessWidget {
-  AddressCard(
-      {Key? key,
-      required this.size,
-      required this.id,
-      required this.fullname,
-      required this.pincode,
-      required this.city,
-      required this.state,
-      required this.phone,
-      required this.house,
-      required this.area})
-      : super(key: key);
+  AddressCard({
+    Key? key,
+    required this.size,
+    required this.id,
+    required this.fullname,
+    required this.pincode,
+    required this.city,
+    required this.state,
+    required this.phone,
+    required this.house,
+    required this.area,
+  }) : super(key: key);
   String id;
   String fullname;
   String pincode;
@@ -44,7 +45,7 @@ class AddressCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 10.0, right: 90, top: 9),
               child: Text(
-                'Name: ${fullname}',
+                'Name: $fullname',
                 style:
                     const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
               ),
@@ -70,10 +71,33 @@ class AddressCard extends StatelessWidget {
               ),
             ),
             TextButton(
-              onPressed: () {},
-              child: Text('Make this default'),
+              onPressed: () async {
+                await FirebaseFirestore.instance
+                    .collection('default_address')
+                    .doc('1')
+                    .set(
+                  {
+                    'id': id,
+                    'fullname': fullname,
+                    'pincode': pincode,
+                    'city': city,
+                    'state': state,
+                    'phone': phone,
+                    'house': house,
+                    'area': area,
+                  },
+                );
+              },
+              child: const Text('Make this default'),
             ),
             AddEditAddressButtons(
+              state: state,
+              area: area,
+              city: city,
+              fullname: fullname,
+              house: house,
+              phone: phone,
+              pincode: pincode,
               id: id,
             ),
           ],

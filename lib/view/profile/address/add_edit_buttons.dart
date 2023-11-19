@@ -6,10 +6,23 @@ import 'package:provider/provider.dart';
 class AddEditAddressButtons extends StatelessWidget {
   AddEditAddressButtons({
     required this.id,
+    required this.fullname,
+    required this.pincode,
+    required this.city,
+    required this.state,
+    required this.phone,
+    required this.house,
+    required this.area,
     super.key,
   });
   String id;
-
+  String fullname;
+  String pincode;
+  String city;
+  String state;
+  String phone;
+  String house;
+  String area;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -20,14 +33,21 @@ class AddEditAddressButtons extends StatelessWidget {
               const EdgeInsets.only(top: 9.0, bottom: 20, right: 5, left: 10),
           child: ElevatedButton(
             onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return EditingScreen(
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => EditAddressScreen(
+                    area: area,
+                    city: city,
+                    fullname: fullname,
+                    house: house,
                     id: id,
-                  );
-                },
+                    phone: phone,
+                    pincode: pincode,
+                    state: state,
+                  ),
+                ),
               );
+              debugPrint('======== pressed');
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.black,

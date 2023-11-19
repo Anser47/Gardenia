@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gardenia/shared/core/constants.dart';
+
 import 'package:gardenia/view/profile/address/address_screen.dart';
 
 class DeliveryHeading extends StatelessWidget {
@@ -39,8 +39,11 @@ class DeliveryHeading extends StatelessWidget {
           width: double.infinity,
           child: TextButton(
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const ScreenAddNewAddress()));
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const ScreenAddNewAddress(),
+                  ),
+                );
               },
               child: const Row(
                 mainAxisSize: MainAxisSize.min,

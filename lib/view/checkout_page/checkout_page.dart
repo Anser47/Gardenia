@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gardenia/provider/address/address_provider.dart';
 import 'package:gardenia/provider/checkout_provider/checkout_provider.dart';
 import 'package:gardenia/shared/bottomnavigation/bottom_bar.dart';
 import 'package:gardenia/shared/common_widget/common_button.dart';
@@ -7,6 +8,8 @@ import 'package:gardenia/shared/core/constants.dart';
 import 'package:gardenia/view/profile/address/address_card.dart';
 import 'package:gardenia/view/checkout_page/heading_delivery.dart';
 import 'package:gardenia/view/checkout_page/payment_AlertDialog.dart';
+import 'package:gardenia/view/profile/address/dafault_card.dart';
+import 'package:gardenia/view/profile/address_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
@@ -44,7 +47,7 @@ class CheckoutScreen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: SizedBox(
-                      height: size.height / 12,
+                      height: size.height / 8,
                       child: DeliveryHeading(size: size),
                     ),
                   ),
@@ -53,11 +56,21 @@ class CheckoutScreen extends StatelessWidget {
                       left: 9,
                       right: 9,
                     ),
-                    // child: AddressCard(id: ,
-                    //   size: size,
-                    // ),
+                    child: DefaultAddress(size: size),
                   ),
-                  // const AddEditAddressButtons(),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => AddressScreen(),
+                        ),
+                      );
+                      context
+                          .read<AddressProvider>()
+                          .showSnackbar(context, 'Change address default');
+                    },
+                    child: const Text('Change Address'),
+                  ),
                   kHeight20,
                   Card(
                     elevation: 5,
