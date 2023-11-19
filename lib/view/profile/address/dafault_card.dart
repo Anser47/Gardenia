@@ -21,7 +21,7 @@ class DefaultAddress extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(14),
-                color: Color.fromARGB(255, 148, 148, 148),
+                color: const Color.fromARGB(255, 148, 148, 148),
               ),
               height: size.height / 4,
               width: double.infinity,

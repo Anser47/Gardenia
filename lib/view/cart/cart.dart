@@ -1,12 +1,36 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:gardenia/model/product_model.dart';
 import 'package:gardenia/shared/core/constants.dart';
+import 'package:gardenia/shared/product_discription.dart';
 import 'package:gardenia/view/cart/cart_product_card.dart';
+import 'package:gardenia/view/checkout_page/check_out2.dart';
+import 'package:gardenia/view/checkout_page/checkout_page.dart';
 
 class CartScreen extends StatelessWidget {
   CartScreen({super.key});
   final CollectionReference cartCollection =
       FirebaseFirestore.instance.collection('Cart');
+  List<ProductClass> getProductsFromCart(QuerySnapshot cartSnapshot) {
+    List<ProductClass> products = [];
+
+    for (QueryDocumentSnapshot<Object?> item in cartSnapshot.docs) {
+      Map<String, dynamic> productData = item.data() as Map<String, dynamic>;
+
+      products.add(ProductClass(
+        name: productData['name'],
+        price: productData['price'],
+        quantity: productData['quantity'],
+        description: productData['description'],
+        category: productData['category'],
+        imageUrl: productData['imageUrl'],
+        id: productData['id'],
+      ));
+    }
+
+    return products;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -62,16 +86,33 @@ class CartScreen extends StatelessWidget {
                                 );
                               }
 
-                              return CartCard(
-                                  name: data[index]['name'] ?? 'name',
-                                  price: data[index]['price'] ?? '84',
-                                  image: data[index]['imageUrl'] ??
-                                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShiq-YDkgihdO9XD29qY3p58tiBINmzqZD8Q&usqp=CAU',
-                                  quantity:
-                                      data[index]['quantity'] ?? 'quantit',
-                                  description:
-                                      data[index]['description'] ?? 'quantity',
-                                  id: data[index]['id'] ?? 'null');
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => ProductDiscription(
+                                        category:
+                                            data[index]['category'] ?? 'null',
+                                        discription: data[index]['description'],
+                                        id: data[index]['id'],
+                                        img: data[index]['imageUrl'],
+                                        name: data[index]['name'],
+                                        price: data[index]['price'],
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: CartCard(
+                                    name: data[index]['name'] ?? 'name',
+                                    price: data[index]['price'] ?? '84',
+                                    image: data[index]['imageUrl'] ??
+                                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShiq-YDkgihdO9XD29qY3p58tiBINmzqZD8Q&usqp=CAU',
+                                    quantity:
+                                        data[index]['quantity'] ?? 'quantit',
+                                    description: data[index]['description'] ??
+                                        'quantity',
+                                    id: data[index]['id'] ?? 'null'),
+                              );
                             },
                           );
                         },
@@ -96,13 +137,17 @@ class CartScreen extends StatelessWidget {
                               ),
                               trailing: ElevatedButton(
                                 onPressed: () {
-                                  // Navigator.of(context).push(MaterialPageRoute(
-                                  //     builder: (context) => CheckoutScree(
-                                  //           total: total,
-                                  //         )));
-                                  // CheckoutScree(products: products);
-                                  // debugPrint('==  ======  =====${data.length}');
-                                  // debugPrint('========$total = = == =');
+                                  cartCollection.get().then((cartSnapshot) {
+                                    List<ProductClass> products =
+                                        getProductsFromCart(cartSnapshot);
+
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            CheckoutScreen2(products: products),
+                                      ),
+                                    );
+                                  });
                                 },
                                 style: ElevatedButton.styleFrom(
                                     shape: const StadiumBorder(),
