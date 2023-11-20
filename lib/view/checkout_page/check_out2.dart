@@ -124,7 +124,7 @@ class CheckoutScreen2 extends StatelessWidget {
                                           .reduceNum();
                                     },
                                   ),
-                                  Text(checkoutProvider.totalNum.toString()),
+                                  Text(product.quantity ?? '45'),
                                   IconButton(
                                     icon: const Icon(Icons.add),
                                     onPressed: () async {

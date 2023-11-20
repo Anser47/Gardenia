@@ -17,15 +17,17 @@ class CartScreen extends StatelessWidget {
     for (QueryDocumentSnapshot<Object?> item in cartSnapshot.docs) {
       Map<String, dynamic> productData = item.data() as Map<String, dynamic>;
 
-      products.add(ProductClass(
-        name: productData['name'],
-        price: productData['price'],
-        quantity: productData['quantity'],
-        description: productData['description'],
-        category: productData['category'],
-        imageUrl: productData['imageUrl'],
-        id: productData['id'],
-      ));
+      products.add(
+        ProductClass(
+          name: productData['name'],
+          price: productData['price'],
+          quantity: productData['quantity'],
+          description: productData['description'],
+          category: productData['category'],
+          imageUrl: productData['imageUrl'],
+          id: productData['id'],
+        ),
+      );
     }
 
     return products;
@@ -137,17 +139,19 @@ class CartScreen extends StatelessWidget {
                               ),
                               trailing: ElevatedButton(
                                 onPressed: () {
-                                  cartCollection.get().then((cartSnapshot) {
-                                    List<ProductClass> products =
-                                        getProductsFromCart(cartSnapshot);
+                                  cartCollection.get().then(
+                                    (cartSnapshot) {
+                                      List<ProductClass> products =
+                                          getProductsFromCart(cartSnapshot);
 
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            CheckoutScreen2(products: products),
-                                      ),
-                                    );
-                                  });
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) => CheckoutScreen2(
+                                              products: products),
+                                        ),
+                                      );
+                                    },
+                                  );
                                 },
                                 style: ElevatedButton.styleFrom(
                                     shape: const StadiumBorder(),
@@ -187,9 +191,3 @@ class CartScreen extends StatelessWidget {
     return total.toStringAsFixed(2);
   }
 }
-
-final e = Container(
-  height: 200,
-  width: 300,
-  color: Colors.amber,
-);
