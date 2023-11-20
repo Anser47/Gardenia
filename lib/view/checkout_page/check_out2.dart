@@ -63,7 +63,7 @@ class CheckoutScreen2 extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => AddressScreen(),
+                      builder: (context) => ScreenAddress(),
                     ),
                   );
                   context
@@ -214,14 +214,17 @@ class CheckoutScreen2 extends StatelessWidget {
                         );
                       }
                     } else {
-                      if (!alertDialogProvider.showDialog) {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return const ScreenNavWidget();
-                          },
-                        );
-                      }
+                      // if (!alertDialogProvider.showDialog) {
+                      //   showDialog(
+                      //     context: context,
+                      //     builder: (context) {
+                      //       return const ScreenNavWidget();
+                      //     },
+                      //   );
+                      // }
+                      context
+                          .read<CheckoutProvider>()
+                          .showPaymentCompletedDialog(context);
                     }
                   },
                 ),

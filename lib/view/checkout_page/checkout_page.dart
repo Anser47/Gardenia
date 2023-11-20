@@ -2,9 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gardenia/provider/address/address_provider.dart';
 import 'package:gardenia/provider/checkout_provider/checkout_provider.dart';
-import 'package:gardenia/shared/bottomnavigation/bottom_bar.dart';
 import 'package:gardenia/shared/common_widget/common_button.dart';
 import 'package:gardenia/shared/core/constants.dart';
+import 'package:gardenia/view/checkout_page/card_checkout.dart';
 import 'package:gardenia/view/checkout_page/heading_delivery.dart';
 import 'package:gardenia/view/profile/address/dafault_card.dart';
 import 'package:gardenia/view/profile/address_screen.dart';
@@ -28,7 +28,7 @@ class CheckoutScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final alertDialogProvider = Provider.of<AlertDialogProvider>(context);
+    // final alertDialogProvider = Provider.of<AlertDialogProvider>(context);
     final checkoutProvider = Provider.of<CheckoutProvider>(context);
     final razorpayProvider = Provider.of<RazorpayProvider>(context);
 
@@ -60,7 +60,7 @@ class CheckoutScreen extends StatelessWidget {
                     onPressed: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => AddressScreen(),
+                          builder: (context) => ScreenAddress(),
                         ),
                       );
                       context
@@ -70,88 +70,12 @@ class CheckoutScreen extends StatelessWidget {
                     child: const Text('Change Address'),
                   ),
                   kHeight20,
-                  Card(
-                    elevation: 5,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25.0),
-                    ),
-                    margin: const EdgeInsets.all(10.0),
-                    child: Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(16.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            width: 100,
-                            height: 100,
-                            child: Image.network(
-                              image,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          const SizedBox(width: 16.0),
-                          // Product Details
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  name,
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 8.0),
-                                  child: Text(
-                                    '₹ $price',
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.green,
-                                    ),
-                                  ),
-                                ),
-                                Row(
-                                  children: [
-                                    const Text('quantity: '),
-                                    IconButton(
-                                      icon: const Icon(Icons.remove),
-                                      onPressed: () {
-                                        if (checkoutProvider.totalNum <= 0) {
-                                          value.totalNum = 1;
-                                          Navigator.pop(context);
-                                        }
-                                        context
-                                            .read<CheckoutProvider>()
-                                            .reduceNum();
-                                      },
-                                    ),
-                                    Text(value.totalNum.toString()),
-                                    IconButton(
-                                      icon: const Icon(Icons.add),
-                                      onPressed: () async {
-                                        context
-                                            .read<CheckoutProvider>()
-                                            .addNum();
-                                      },
-                                    ),
-                                  ],
-                                ),
-                                Text(
-                                  'Total : $totalPrice',
-                                  style: const TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  CheckoutCard(
+                      image: image,
+                      name: name,
+                      price: price,
+                      checkoutProvider: checkoutProvider,
+                      totalPrice: totalPrice),
                   kHeight20,
                   ListTile(
                     leading: Radio<PaymentCategory>(
@@ -210,14 +134,15 @@ class CheckoutScreen extends StatelessWidget {
                             },
                           );
                         } else {
-                          if (!alertDialogProvider.showDialog) {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return const ScreenNavWidget();
-                              },
-                            );
-                          }
+                          value.showPaymentCompletedDialog(context);
+                          // if (!alertDialogProvider.showDialog) {
+                          //   showDialog(
+                          //     context: context,
+                          //     builder: (context) {
+                          //       return const ScreenNavWidget();
+                          //     },
+                          //   );
+                          // }
                         }
                       },
                     ),

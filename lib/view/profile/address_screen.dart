@@ -5,8 +5,8 @@ import 'package:gardenia/view/profile/address/address_card.dart';
 import 'package:gardenia/view/checkout_page/heading_delivery.dart';
 import 'package:gardenia/view/profile/address/dafault_card.dart';
 
-class AddressScreen extends StatelessWidget {
-  AddressScreen({super.key});
+class ScreenAddress extends StatelessWidget {
+  ScreenAddress({super.key});
   final CollectionReference addressCollection =
       FirebaseFirestore.instance.collection('Address');
   @override

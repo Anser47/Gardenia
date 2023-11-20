@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gardenia/shared/bottomnavigation/bottom_bar.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 enum PaymentCategory { cashondelivery, paynow }
@@ -29,6 +30,33 @@ class CheckoutProvider extends ChangeNotifier {
       debugPrint('== ======== =calculating price have error==========');
       return 0;
     }
+  }
+
+  void showPaymentCompletedDialog(BuildContext context) {
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Payment Completed"),
+      content: Text("Your payment has been successfully completed."),
+      actions: [
+        ElevatedButton(
+          child: Text("OK"),
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const ScreenNavWidget(),
+              ),
+            );
+          },
+        ),
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   PaymentCategory _paymentCategory = PaymentCategory.paynow;

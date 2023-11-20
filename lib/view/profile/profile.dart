@@ -6,6 +6,7 @@ import 'package:gardenia/shared/core/constants.dart';
 import 'package:gardenia/shared/common_widget/common_button.dart';
 import 'package:gardenia/view/profile/accountile.dart';
 import 'package:gardenia/view/profile/address_screen.dart';
+import 'package:gardenia/view/profile/my_order.dart';
 
 class ScreenProfile extends StatelessWidget {
   const ScreenProfile({super.key});
@@ -53,7 +54,13 @@ class ScreenProfile extends StatelessWidget {
                             AccountTile(
                               icon: CupertinoIcons.bag_fill,
                               name: 'My Order',
-                              voidCallback: () {},
+                              voidCallback: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => OrderScreen(),
+                                  ),
+                                );
+                              },
                             ),
                             AccountTile(
                               icon: Icons.directions_bike,
@@ -61,7 +68,7 @@ class ScreenProfile extends StatelessWidget {
                               voidCallback: () {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (context) => AddressScreen(),
+                                    builder: (context) => ScreenAddress(),
                                   ),
                                 );
                               },
