@@ -21,6 +21,15 @@ class CheckoutScreen2 extends StatelessWidget {
   }) : super(key: key);
 
   final List<ProductClass> products;
+  int calculateTotalAmount(List<ProductClass> products) {
+    int totalAmount = 0;
+    for (var product in products) {
+      int price = int.tryParse(product.price ?? '0') ?? 0;
+      int quantity = int.tryParse(product.quantity ?? '0') ?? 0;
+      totalAmount += price * quantity;
+    }
+    return totalAmount;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,15 +87,17 @@ class CheckoutScreen2 extends StatelessWidget {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
+                        const SizedBox(width: 10.0),
                         SizedBox(
-                          width: 100,
                           height: 100,
+                          width: 100,
                           child: Image.network(
-                            product.imageUrl ?? '',
+                            product.imageUrl ??
+                                'https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.salonlfc.com%2Fwp-content%2Fuploads%2F2018%2F01%2Fimage-not-found-scaled.png&tbnid=EQhG80gDXt9AJM&vet=12ahUKEwixkcr9xdKCAxWBoekKHQTjCBAQMygBegQIARBH..i&imgrefurl=https%3A%2F%2Fwww.salonlfc.com%2Fen%2Fimage-not-found%2F&docid=rb42RVdX5acoCM&w=2560&h=1440&q=image%20not%20found&ved=2ahUKEwixkcr9xdKCAxWBoekKHQTjCBAQMygBegQIARBH',
                             fit: BoxFit.cover,
                           ),
                         ),
-                        const SizedBox(width: 16.0),
+                        const SizedBox(width: 10.0),
                         // Product Details
                         Expanded(
                           child: Column(
@@ -112,33 +123,8 @@ class CheckoutScreen2 extends StatelessWidget {
                               Row(
                                 children: [
                                   const Text('quantity: '),
-                                  IconButton(
-                                    icon: const Icon(Icons.remove),
-                                    onPressed: () {
-                                      if (checkoutProvider.totalNum <= 0) {
-                                        checkoutProvider.totalNum = 1;
-                                        Navigator.pop(context);
-                                      }
-                                      context
-                                          .read<CheckoutProvider>()
-                                          .reduceNum();
-                                    },
-                                  ),
-                                  Text(product.quantity ?? '45'),
-                                  IconButton(
-                                    icon: const Icon(Icons.add),
-                                    onPressed: () async {
-                                      context.read<CheckoutProvider>().addNum();
-                                    },
-                                  ),
+                                  Text(product.quantity ?? ''),
                                 ],
-                              ),
-                              Text(
-                                'Total : ${product.price ?? ''}',
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
                               ),
                             ],
                           ),
@@ -147,8 +133,25 @@ class CheckoutScreen2 extends StatelessWidget {
                     ),
                   ),
                 ),
-                kHeight20,
               ],
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Total : ',
+                    style: const TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                  Text(
+                    ' ₹ ${calculateTotalAmount(products)}',
+                    style: const TextStyle(
+                      fontSize: 20,
+                      color: Colors.green,
+                    ),
+                  ),
+                ],
+              ),
               ListTile(
                 leading: Radio<PaymentCategory>(
                   groupValue: checkoutProvider.paymentCategory,
@@ -183,9 +186,10 @@ class CheckoutScreen2 extends StatelessWidget {
                       final user = FirebaseAuth.instance.currentUser;
 
                       for (var product in products) {
+                        int total = calculateTotalAmount(products);
                         var options = {
                           'key': 'rzp_test_EunImdr5xuJGFC',
-                          'amount': int.parse(product.price ?? '0') * 100,
+                          'amount': total * 100,
                           'name': 'Gardenia',
                           'description': product.name ?? '',
                           'retry': {'enabled': true, 'max_count': 1},
