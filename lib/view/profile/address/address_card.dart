@@ -37,7 +37,7 @@ class AddressCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(14),
           color: const Color.fromARGB(255, 216, 215, 215),
         ),
-        height: size.height / 3.2,
+        height: size.height / 3,
         width: double.infinity,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -104,7 +104,5 @@ class AddressCard extends StatelessWidget {
         ),
       ),
     );
-    //   },
-    // );
   }
 }

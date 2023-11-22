@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gardenia/model/order_model.dart';
 import 'package:gardenia/model/product_model.dart';
 import 'package:gardenia/provider/address/address_provider.dart';
 import 'package:gardenia/provider/checkout_provider/checkout_provider.dart';
@@ -31,9 +32,15 @@ class CheckoutScreen2 extends StatelessWidget {
     return totalAmount;
   }
 
+  DateTime currentDate = DateTime.now();
+  String _uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
+  String date = '0';
   @override
   Widget build(BuildContext context) {
-    final alertDialogProvider = Provider.of<AlertDialogProvider>(context);
+    String formattedDate =
+        "${currentDate.day}-${currentDate.month}-${currentDate.year}";
+    date = formattedDate;
+
     final checkoutProvider = Provider.of<CheckoutProvider>(context);
     final razorpayProvider = Provider.of<RazorpayProvider>(context);
 
@@ -137,9 +144,9 @@ class CheckoutScreen2 extends StatelessWidget {
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
+                  const Text(
                     'Total : ',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 20,
                     ),
                   ),
@@ -202,7 +209,24 @@ class CheckoutScreen2 extends StatelessWidget {
                             'wallets': ['paytm']
                           }
                         };
-
+                        final obj = OrderModel(
+                          orderId: _uniqueFileName,
+                          status: 'Pending',
+                          quantity: context
+                              .read<CheckoutProvider>()
+                              .totalNum
+                              .toString(),
+                          id: product.id,
+                          description: product.description,
+                          category: product.category,
+                          imageUrl: product.imageUrl,
+                          productName: product.name,
+                          totalPrice: product.price,
+                          date: date,
+                        );
+                        context
+                            .read<ProductPayment>()
+                            .confirm(value: obj, context: context);
                         razorpayProvider.openRazorpayPayment(
                           options: options,
                           onError: (response) {
@@ -214,17 +238,29 @@ class CheckoutScreen2 extends StatelessWidget {
                         );
                       }
                     } else {
-                      // if (!alertDialogProvider.showDialog) {
-                      //   showDialog(
-                      //     context: context,
-                      //     builder: (context) {
-                      //       return const ScreenNavWidget();
-                      //     },
-                      //   );
-                      // }
-                      context
-                          .read<CheckoutProvider>()
-                          .showPaymentCompletedDialog(context);
+                      for (var product in products) {
+                        final obj = OrderModel(
+                          orderId: _uniqueFileName,
+                          status: 'Pending',
+                          quantity: context
+                              .read<CheckoutProvider>()
+                              .totalNum
+                              .toString(),
+                          id: product.id,
+                          description: product.description,
+                          category: product.category,
+                          imageUrl: product.imageUrl,
+                          productName: product.name,
+                          totalPrice: product.price,
+                          date: date,
+                        );
+                        context
+                            .read<ProductPayment>()
+                            .confirm(value: obj, context: context);
+                        context
+                            .read<CheckoutProvider>()
+                            .showPaymentCompletedDialog(context);
+                      }
                     }
                   },
                 ),

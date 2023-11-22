@@ -130,15 +130,11 @@ class AddressFormState extends State<AddressForm> {
                     pincode: _pincodeController.text.trim(),
                     state: _stateController.text.trim(),
                   );
-                  // await FirebaseFirestore.instance
-                  //     .collection('Address')
-                  //     .doc(addressModel.id)
-                  //     .set({
-                  //   'area': addressModel.area,
-                  // });
+
                   context.read<AddressProvider>().uploadAddressToFirebase(
                       value: addressModel, context: context);
-                  debugPrint('fdsa============================');
+                  debugPrint(
+                      'Address sending to firebase============================');
                   Navigator.of(context).pop();
                 }
               })

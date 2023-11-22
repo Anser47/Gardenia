@@ -41,7 +41,6 @@ class CheckoutCard extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 16.0),
-            // Product Details
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

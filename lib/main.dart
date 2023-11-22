@@ -50,6 +50,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => WishlistProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => ProductPayment(),
+        ),
       ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -59,4 +62,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-//

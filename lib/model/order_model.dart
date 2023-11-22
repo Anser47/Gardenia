@@ -7,6 +7,8 @@ class OrderModel {
   String? description;
   String? category;
   String? imageUrl;
+  String? orderId;
+  String? date;
   OrderModel({
     this.id,
     this.status,
@@ -16,6 +18,8 @@ class OrderModel {
     this.category,
     this.description,
     this.imageUrl,
+    this.orderId,
+    this.date,
   });
 
   OrderModel.fromJson(Map<String, dynamic> json) {
@@ -27,6 +31,8 @@ class OrderModel {
     category = json['category'];
     description = json['description'];
     imageUrl = json['imageUrl'];
+    orderId = json['orderId'];
+    date = json['date'];
   }
 
   Map<String, dynamic> toJson() {
@@ -39,6 +45,8 @@ class OrderModel {
     data['category'] = category;
     data['description'] = description;
     data['imageUrl'] = imageUrl;
+    data['orderId'] = orderId;
+    data['date'] = date;
     return data;
   }
 }

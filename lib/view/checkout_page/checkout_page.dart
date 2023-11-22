@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gardenia/model/order_model.dart';
 import 'package:gardenia/provider/address/address_provider.dart';
 import 'package:gardenia/provider/checkout_provider/checkout_provider.dart';
 import 'package:gardenia/shared/common_widget/common_button.dart';
@@ -14,21 +15,30 @@ import 'package:razorpay_flutter/razorpay_flutter.dart';
 Razorpay razorpay = Razorpay();
 
 class CheckoutScreen extends StatelessWidget {
-  const CheckoutScreen({
+  CheckoutScreen({
     super.key,
+    required this.category,
     required this.name,
     required this.price,
     required this.discription,
     required this.image,
+    required this.id,
   });
+  final String category;
+  final String id;
   final String name;
   final String price;
   final String discription;
   final String image;
-
+  String _uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
+  DateTime currentDate = DateTime.now();
+  String date = '0';
   @override
   Widget build(BuildContext context) {
-    // final alertDialogProvider = Provider.of<AlertDialogProvider>(context);
+    String formattedDate =
+        "${currentDate.day}-${currentDate.month}-${currentDate.year}";
+    date = formattedDate;
+
     final checkoutProvider = Provider.of<CheckoutProvider>(context);
     final razorpayProvider = Provider.of<RazorpayProvider>(context);
 
@@ -105,7 +115,7 @@ class CheckoutScreen extends StatelessWidget {
                     elevation: 12,
                     child: CommonButton(
                       name: "Confirm order",
-                      voidCallback: () {
+                      voidCallback: () async {
                         if (checkoutProvider.paymentCategory ==
                             PaymentCategory.paynow) {
                           final user = FirebaseAuth.instance.currentUser;
@@ -124,6 +134,7 @@ class CheckoutScreen extends StatelessWidget {
                               'wallets': ['paytm']
                             }
                           };
+
                           razorpayProvider.openRazorpayPayment(
                             options: options,
                             onError: (response) {
@@ -134,15 +145,22 @@ class CheckoutScreen extends StatelessWidget {
                             },
                           );
                         } else {
+                          final obj = OrderModel(
+                            orderId: _uniqueFileName.toString(),
+                            status: 'Pending',
+                            quantity: checkoutProvider.totalNum.toString(),
+                            id: id,
+                            description: discription,
+                            category: category,
+                            imageUrl: image,
+                            productName: name,
+                            totalPrice: price,
+                            date: formattedDate,
+                          );
+                          await context
+                              .read<ProductPayment>()
+                              .confirm(value: obj, context: context);
                           value.showPaymentCompletedDialog(context);
-                          // if (!alertDialogProvider.showDialog) {
-                          //   showDialog(
-                          //     context: context,
-                          //     builder: (context) {
-                          //       return const ScreenNavWidget();
-                          //     },
-                          //   );
-                          // }
                         }
                       },
                     ),
@@ -170,8 +188,25 @@ class CheckoutScreen extends StatelessWidget {
 
   void handlePaymentSuccessResponse(
       PaymentSuccessResponse response, BuildContext context) {
-    String id = response.orderId.toString();
+    String idOrder = response.orderId.toString();
+    String paymentId = response.paymentId.toString();
+    print('Response:=================  $response');
+    print('Response:=================  $idOrder');
+    context.read<ProductPayment>().orderId = paymentId;
 
+    final obj = OrderModel(
+      orderId: _uniqueFileName,
+      status: 'Pending',
+      quantity: context.read<CheckoutProvider>().totalNum.toString(),
+      id: id,
+      description: discription,
+      category: category,
+      imageUrl: image,
+      productName: name,
+      totalPrice: price,
+      date: date,
+    );
+    context.read<ProductPayment>().confirm(value: obj, context: context);
     /*
     * Payment Success Response contains three values:
     * 1. Order ID

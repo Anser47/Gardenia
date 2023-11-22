@@ -133,6 +133,8 @@ class Discription extends StatelessWidget {
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => CheckoutScreen(
+                            category: category,
+                            id: id,
                             discription: discription,
                             image: img,
                             name: name,

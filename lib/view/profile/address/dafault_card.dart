@@ -23,7 +23,7 @@ class DefaultAddress extends StatelessWidget {
                 borderRadius: BorderRadius.circular(14),
                 color: const Color.fromARGB(255, 148, 148, 148),
               ),
-              height: size.height / 4,
+              height: size.height / 3.7,
               width: double.infinity,
               child: StreamBuilder(
                   stream: _addressCollection.snapshots(),

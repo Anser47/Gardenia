@@ -6,7 +6,7 @@ import 'package:gardenia/shared/core/constants.dart';
 import 'package:gardenia/shared/common_widget/common_button.dart';
 import 'package:gardenia/view/profile/accountile.dart';
 import 'package:gardenia/view/profile/address_screen.dart';
-import 'package:gardenia/view/profile/my_order.dart';
+import 'package:gardenia/view/profile/orders/my_order.dart';
 
 class ScreenProfile extends StatelessWidget {
   const ScreenProfile({super.key});
@@ -42,15 +42,15 @@ class ScreenProfile extends StatelessWidget {
                             Radius.circular(25),
                           ),
                         ),
-                        height: 350,
+                        height: 300,
                         width: 350,
                         child: Column(
                           children: [
-                            AccountTile(
-                              icon: Icons.person,
-                              name: 'Personal Details',
-                              voidCallback: () {},
-                            ),
+                            // AccountTile(
+                            //   icon: Icons.person,
+                            //   name: 'Personal Details',
+                            //   voidCallback: () {},
+                            // ),
                             AccountTile(
                               icon: CupertinoIcons.bag_fill,
                               name: 'My Order',
@@ -89,7 +89,7 @@ class ScreenProfile extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(
-                    height: 130,
+                    height: 170,
                   ),
                   CommonButton(
                     name: 'Log Out',
