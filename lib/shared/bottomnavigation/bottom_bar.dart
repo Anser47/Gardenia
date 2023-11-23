@@ -1,7 +1,7 @@
 import 'package:gardenia/provider/bottomnavbar/bottom_nav_bar_provider.dart';
 import 'package:gardenia/view/cart/cart.dart';
 import 'package:gardenia/view/home/home_screen.dart';
-import 'package:gardenia/view/profile/profile.dart';
+import 'package:gardenia/view/profile/screens/profile.dart';
 import 'package:gardenia/view/search/search.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
@@ -17,13 +17,14 @@ class ScreenNavWidget extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-          child: provider.selectedIndex == 0
-              ? HomeScreen()
-              : provider.selectedIndex == 1
-                  ? SearchScreen()
-                  : provider.selectedIndex == 2
-                      ? CartScreen()
-                      : const ScreenProfile()),
+        child: provider.selectedIndex == 0
+            ? HomeScreen()
+            : provider.selectedIndex == 1
+                ? const SearchScreen()
+                : provider.selectedIndex == 2
+                    ? CartScreen()
+                    : const ScreenProfile(),
+      ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           color: Colors.white,

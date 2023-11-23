@@ -23,7 +23,7 @@ class CheckOutProuductCard extends StatelessWidget {
       margin: const EdgeInsets.all(10.0),
       child: Container(
         decoration: BoxDecoration(
-            color: Color.fromARGB(255, 216, 215, 215),
+            color: const Color.fromARGB(255, 216, 215, 215),
             borderRadius: BorderRadius.circular(12)),
         width: double.infinity,
         padding: const EdgeInsets.all(16.0),

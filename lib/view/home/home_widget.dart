@@ -27,29 +27,6 @@ class HomeScreenWidget extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
-            CarouselSlider(
-              options: CarouselOptions(
-                height: 130,
-                enableInfiniteScroll: true,
-                scrollDirection: Axis.horizontal,
-                autoPlay: true,
-                autoPlayCurve: Curves.fastOutSlowIn,
-                autoPlayAnimationDuration: const Duration(milliseconds: 800),
-                viewportFraction: 0.95,
-                enlargeCenterPage: true,
-              ),
-              items: List.generate(10, (index) {
-                return Builder(
-                  builder: (context) {
-                    return WishlistProductCard(
-                      constraints: constraints,
-                      name: 'Abc',
-                      price: '45',
-                    );
-                  },
-                );
-              }),
-            ),
             SizedBox(
               height: 130,
               child: Column(

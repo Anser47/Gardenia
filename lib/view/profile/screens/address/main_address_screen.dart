@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gardenia/shared/core/constants.dart';
-import 'package:gardenia/view/profile/address/address_card.dart';
+import 'package:gardenia/view/profile/screens/address/address_card.dart';
 import 'package:gardenia/view/checkout_page/heading_delivery.dart';
-import 'package:gardenia/view/profile/address/dafault_card.dart';
+import 'package:gardenia/view/profile/screens/address/dafault_card.dart';
 
 class ScreenAddress extends StatelessWidget {
   ScreenAddress({super.key});
@@ -44,7 +44,7 @@ class ScreenAddress extends StatelessWidget {
                       }
 
                       return ListView.builder(
-                        physics: ScrollPhysics(),
+                        physics: const ScrollPhysics(),
                         shrinkWrap: true,
                         itemCount: data.length,
                         itemBuilder: (context, index) {

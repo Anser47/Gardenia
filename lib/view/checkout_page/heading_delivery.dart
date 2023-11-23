@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:gardenia/view/profile/address/address_screen.dart';
+import 'package:gardenia/view/profile/screens/address/address_screen.dart';
 
 class DeliveryHeading extends StatelessWidget {
   const DeliveryHeading({

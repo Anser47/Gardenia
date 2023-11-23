@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gardenia/model/order_model.dart';
 import 'package:gardenia/shared/core/constants.dart';
@@ -6,7 +5,7 @@ import 'package:gardenia/shared/core/constants.dart';
 class OrderDetailsScreen extends StatefulWidget {
   final OrderModel order;
 
-  OrderDetailsScreen({required this.order});
+  const OrderDetailsScreen({super.key, required this.order});
 
   @override
   State<OrderDetailsScreen> createState() => _OrderDetailsScreenState();

@@ -27,7 +27,7 @@ class SplashScreen extends StatelessWidget {
                 );
               }
               if (snapshot.hasData) {
-                return ScreenNavWidget();
+                return const ScreenNavWidget();
               }
               return const ScreenLogin();
             },

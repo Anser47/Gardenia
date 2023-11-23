@@ -2,9 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gardenia/model/order_model.dart';
 import 'package:gardenia/shared/core/constants.dart';
-import 'package:gardenia/view/profile/orders/order_detiles.dart';
+import 'package:gardenia/view/profile/screens/orders/order_detiles.dart';
+import 'package:shimmer/shimmer.dart';
 
 class OrderScreen extends StatelessWidget {
+  const OrderScreen({Key? key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,9 +18,28 @@ class OrderScreen extends StatelessWidget {
         stream: FirebaseFirestore.instance.collection('Order').snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            // Shimmer loading state
+            return Shimmer.fromColors(
+              baseColor: Colors.grey[300]!,
+              highlightColor: Colors.grey[100]!,
+              child: ListView(
+                children: List.generate(
+                  10,
+                  (index) => Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Container(
+                      color: Colors.grey[300],
+                      height: 150,
+                      width: double.infinity,
+                    ),
+                  ),
+                ),
+              ),
+            );
           } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
+            );
           } else {
             List<OrderModel> orders = snapshot.data!.docs
                 .map((doc) =>

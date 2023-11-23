@@ -107,7 +107,7 @@ class CheckoutProvider extends ChangeNotifier {
       content: Text("Your payment has been successfully completed."),
       actions: [
         ElevatedButton(
-          child: Text("OK"),
+          child: const Text("OK"),
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute(

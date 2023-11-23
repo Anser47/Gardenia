@@ -21,7 +21,7 @@ class CommonButton extends StatelessWidget {
       ),
       child: Text(
         name,
-        style: TextStyle(fontSize: 20, color: Colors.white),
+        style: const TextStyle(fontSize: 20, color: Colors.white),
       ),
     );
   }

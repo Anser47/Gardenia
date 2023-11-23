@@ -3,7 +3,7 @@ import 'package:gardenia/provider/address/address_provider.dart';
 import 'package:gardenia/shared/common_widget/common_button.dart';
 import 'package:gardenia/shared/core/constants.dart';
 import 'package:provider/provider.dart';
-import '../../../model/address_model.dart';
+import '../../../../model/address_model.dart';
 
 class EditAddressScreen extends StatelessWidget {
   EditAddressScreen(

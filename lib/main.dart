@@ -6,7 +6,9 @@ import 'package:gardenia/provider/bottomnavbar/bottom_nav_bar_provider.dart';
 import 'package:gardenia/provider/cart/cart_provider.dart';
 import 'package:gardenia/provider/checkout_provider/checkout_provider.dart';
 import 'package:gardenia/provider/wishlist/wishlist_provider.dart';
-import 'package:gardenia/sample.dart';
+import 'package:gardenia/provider/profile/about_us/about_us.dart';
+import 'package:gardenia/provider/profile/privacy_policy/Privacy_policy.dart';
+import 'package:gardenia/provider/profile/terms_conditions/terms_conditions.dart';
 import 'package:gardenia/view/splash_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -53,11 +55,20 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => ProductPayment(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => AboutUsProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => TermsandConditonsProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => PrivacyPolicyProvider(),
+        ),
       ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,
         home: SplashScreen(),
-        // home: BillList(),
+        // home: MyWidget(),
       ),
     );
   }

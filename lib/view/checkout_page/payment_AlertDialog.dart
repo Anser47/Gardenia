@@ -4,12 +4,14 @@ import 'package:gardenia/view/home/home_screen.dart';
 import 'package:provider/provider.dart';
 
 class PaymentSuccessAlertDialog extends StatelessWidget {
+  const PaymentSuccessAlertDialog({super.key});
+
   @override
   Widget build(BuildContext context) {
     final alertDialogProvider = Provider.of<AlertDialogProvider>(context);
     return AlertDialog(
-      title: Text('Payment Successful'),
-      content: Text('Your payment has been successfully processed.'),
+      title: const Text('Payment Successful'),
+      content: const Text('Your payment has been successfully processed.'),
       actions: <Widget>[
         TextButton(
           onPressed: () {
@@ -23,7 +25,7 @@ class PaymentSuccessAlertDialog extends StatelessWidget {
               ),
             );
           },
-          child: Text('Ok'),
+          child: const Text('Ok'),
         ),
       ],
     );

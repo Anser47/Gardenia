@@ -5,9 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:gardenia/model/product_model.dart';
 
 import 'package:gardenia/view/home/product_tile.dart';
+import 'package:shimmer/shimmer.dart';
 
 class HomeScreenGrid extends StatelessWidget {
-  HomeScreenGrid({
+  const HomeScreenGrid({
     Key? key,
     required this.productCollection,
   }) : super(key: key);
@@ -29,10 +30,10 @@ class HomeScreenGrid extends StatelessWidget {
           },
         ).toList();
       } else {
-        print("Error: Product collection snapshot is null");
+        debugPrint("Error: Product collection snapshot is null");
       }
     } catch (e) {
-      print("Error fetching products=======: $e");
+      debugPrint("Error fetching products===+++++++====: $e");
     }
 
     return productList;
@@ -44,15 +45,30 @@ class HomeScreenGrid extends StatelessWidget {
       future: fetchProducts(),
       builder: (context, AsyncSnapshot<List<ProductClass>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: CircularProgressIndicator(),
+          return GridView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              childAspectRatio: 3.0 / 4.0,
+              crossAxisCount: MediaQuery.of(context).size.width > 600 ? 3 : 2,
+              crossAxisSpacing: 1.0,
+              mainAxisSpacing: 1.0,
+            ),
+            itemCount: 6,
+            itemBuilder: (context, index) {
+              return Shimmer.fromColors(
+                baseColor: Colors.grey[300]!,
+                highlightColor: Colors.grey[100]!,
+                child: const ProductTileShimmer(),
+              );
+            },
           );
         } else if (snapshot.hasError) {
           return Center(
             child: Text('Error: ${snapshot.error}'),
           );
         } else if (snapshot.data == null || snapshot.data!.isEmpty) {
-          return Center(
+          return const Center(
             child: Text('No Products'),
           );
         } else {
@@ -81,6 +97,50 @@ class HomeScreenGrid extends StatelessWidget {
           );
         }
       },
+    );
+  }
+}
+
+class ProductTileShimmer extends StatelessWidget {
+  const ProductTileShimmer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 2.0,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            color: Colors.grey[300],
+            height: 150.0,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              color: Colors.grey[300],
+              height: 16.0,
+              width: double.infinity,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              color: Colors.grey[300],
+              height: 16.0,
+              width: double.infinity,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              color: Colors.grey[300],
+              height: 16.0,
+              width: double.infinity,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

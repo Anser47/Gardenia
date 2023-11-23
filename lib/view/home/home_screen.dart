@@ -32,7 +32,7 @@ class HomeScreen extends StatelessWidget {
               ),
             ],
           ),
-          title: Text('Welcome'),
+          title: const Text('Welcome'),
         ),
         body: TabBarView(
           children: [

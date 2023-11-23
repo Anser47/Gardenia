@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gardenia/provider/address/address_provider.dart';
-import 'package:gardenia/view/profile/editing_screens.dart/editing_screen.dart';
+import 'package:gardenia/view/profile/screens/editing_screens.dart/editing_screen.dart';
 import 'package:provider/provider.dart';
 
 class AddEditAddressButtons extends StatelessWidget {
