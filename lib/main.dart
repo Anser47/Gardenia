@@ -5,6 +5,8 @@ import 'package:gardenia/provider/address/address_provider.dart';
 import 'package:gardenia/provider/bottomnavbar/bottom_nav_bar_provider.dart';
 import 'package:gardenia/provider/cart/cart_provider.dart';
 import 'package:gardenia/provider/checkout_provider/checkout_provider.dart';
+import 'package:gardenia/provider/indoor_outdoor/indoor_outdoor_provider.dart';
+import 'package:gardenia/provider/search/search_provider.dart';
 import 'package:gardenia/provider/wishlist/wishlist_provider.dart';
 import 'package:gardenia/provider/profile/about_us/about_us.dart';
 import 'package:gardenia/provider/profile/privacy_policy/Privacy_policy.dart';
@@ -63,6 +65,12 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => PrivacyPolicyProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => CategoryProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => SearchProvider(),
         ),
       ],
       child: const MaterialApp(

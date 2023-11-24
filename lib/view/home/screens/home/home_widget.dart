@@ -1,7 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:gardenia/view/home/home_grid.dart';
+import 'package:gardenia/view/home/indoor/indoor.dart';
+import 'package:gardenia/view/home/outdoor/outdoor.dart';
+import 'package:gardenia/view/home/screens/home/home_grid.dart';
 import 'package:gardenia/view/wishlist/wishlist_product_card.dart';
 
 class HomeScreenWidget extends StatelessWidget {
@@ -52,7 +54,13 @@ class HomeScreenWidget extends StatelessWidget {
                           left: 10,
                         ),
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const OutdoorScreen(),
+                              ),
+                            );
+                          },
                           style: ElevatedButton.styleFrom(
                               shape: const StadiumBorder(),
                               elevation: 8,
@@ -67,7 +75,13 @@ class HomeScreenWidget extends StatelessWidget {
                         width: 10,
                       ),
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const IndoorScreen(),
+                            ),
+                          );
+                        },
                         style: ElevatedButton.styleFrom(
                             shape: const StadiumBorder(),
                             elevation: 8,

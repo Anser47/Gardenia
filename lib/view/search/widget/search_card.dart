@@ -57,10 +57,24 @@ class SearchCard extends StatelessWidget {
                     child: Image.network(
                       searchResults![index].imageUrl ?? '',
                       fit: BoxFit.cover,
+                      loadingBuilder: (BuildContext context, Widget child,
+                          ImageChunkEvent? loadingProgress) {
+                        if (loadingProgress == null) {
+                          return child;
+                        } else {
+                          return Center(
+                            child: CircularProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded /
+                                      (loadingProgress.expectedTotalBytes ?? 1)
+                                  : null,
+                            ),
+                          );
+                        }
+                      },
                     ),
                   ),
                   const SizedBox(width: 16.0),
-                  // Product Details
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,7 +105,6 @@ class SearchCard extends StatelessWidget {
                       ],
                     ),
                   ),
-
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [

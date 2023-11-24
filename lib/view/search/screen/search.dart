@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:gardenia/model/product_model.dart';
-import 'package:gardenia/view/home/home_grid.dart';
-import 'package:gardenia/view/search/search_card.dart';
+import 'package:gardenia/shared/core/constants.dart';
+import 'package:gardenia/view/home/screens/home/home_grid.dart';
+import 'package:gardenia/view/search/screen/filter.dart';
+import 'package:gardenia/view/search/widget/search_card.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -78,8 +80,23 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
               ),
               const SizedBox(
-                height: 50,
+                height: 20,
               ),
+              // Row(
+              //   children: [
+              //     // TextButton(
+              //     //   onPressed: () {
+              //     //     // Navigator.of(context).push(
+              //     //     //   MaterialPageRoute(
+              //     //     //     builder: (context) => const FilterScreen(),
+              //     //     //   ),
+              //     //     // );
+              //     //   },
+              //     //   child: const Text('Filter: Lowest price to Highest'),
+              //     // ),
+              //   ],
+              // ),
+              kHeight30,
               searchValue.isEmpty
                   ? HomeScreenGrid(productCollection: productCollection)
                   : FutureBuilder<List<ProductClass>>(

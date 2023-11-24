@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gardenia/model/product_model.dart';
 
-import 'package:gardenia/view/home/product_tile.dart';
+import 'package:gardenia/view/home/widgets/product_tile.dart';
 import 'package:shimmer/shimmer.dart';
 
 class HomeScreenGrid extends StatelessWidget {

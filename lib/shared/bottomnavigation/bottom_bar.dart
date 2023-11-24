@@ -1,8 +1,8 @@
 import 'package:gardenia/provider/bottomnavbar/bottom_nav_bar_provider.dart';
 import 'package:gardenia/view/cart/cart.dart';
-import 'package:gardenia/view/home/home_screen.dart';
+import 'package:gardenia/view/home/screens/home/home_screen.dart';
 import 'package:gardenia/view/profile/screens/profile.dart';
-import 'package:gardenia/view/search/search.dart';
+import 'package:gardenia/view/search/screen/search.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:flutter/material.dart';

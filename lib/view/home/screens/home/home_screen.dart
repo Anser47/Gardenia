@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:gardenia/view/home/home_widget.dart';
+import 'package:gardenia/view/home/screens/home/home_widget.dart';
 import 'package:gardenia/view/wishlist/wishlist.dart';
 import 'package:gardenia/view_model/fetch_product.dart';
 

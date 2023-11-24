@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gardenia/provider/checkout_provider/checkout_provider.dart';
-import 'package:gardenia/view/home/home_screen.dart';
+import 'package:gardenia/view/home/screens/home/home_screen.dart';
 import 'package:provider/provider.dart';
 
 class PaymentSuccessAlertDialog extends StatelessWidget {
