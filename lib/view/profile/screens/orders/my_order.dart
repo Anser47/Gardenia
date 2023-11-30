@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gardenia/model/order_model.dart';
-import 'package:gardenia/shared/core/constants.dart';
 import 'package:gardenia/view/profile/screens/orders/order_detiles.dart';
 import 'package:shimmer/shimmer.dart';
+import '../../widgets/order_status_card.dart';
 
 class OrderScreen extends StatelessWidget {
-  const OrderScreen({Key? key});
+  const OrderScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +42,10 @@ class OrderScreen extends StatelessWidget {
             );
           } else {
             List<OrderModel> orders = snapshot.data!.docs
-                .map((doc) =>
-                    OrderModel.fromJson(doc.data() as Map<String, dynamic>))
+                .map(
+                  (doc) =>
+                      OrderModel.fromJson(doc.data() as Map<String, dynamic>),
+                )
                 .toList();
 
             return ListView.builder(
@@ -54,51 +56,31 @@ class OrderScreen extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 10, right: 10),
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => OrderDetailsScreen(
-                            order: order,
-                          ),
-                        ),
-                      );
-                    },
-                    child: Card(
-                      elevation: 4,
-                      margin: const EdgeInsets.all(8.0),
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          gradient: gcolor,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(12),
-                          ),
-                        ),
-                        child: ListTile(
-                          contentPadding: const EdgeInsets.all(16.0),
-                          leading: Container(
-                            width: 70.0,
-                            height: 100.0,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(order.imageUrl ?? ''),
-                              ),
+                      if (order.status == 'Pending' ||
+                          order.status == 'Shipped') {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => OrderDetailsScreen(
+                              buttonName: 'Return',
+                              orderStatus: () {},
+                              isDelivered: true,
+                              order: order,
                             ),
                           ),
-                          title: Text(
-                            order.productName ?? '',
-                            style: const TextStyle(fontWeight: FontWeight.bold),
+                        );
+                      } else
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => OrderDetailsScreen(
+                              buttonName: 'Cancel',
+                              orderStatus: () {},
+                              isDelivered: true,
+                              order: order,
+                            ),
                           ),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SizedBox(height: 8.0),
-                              Text('Date: ${order.date ?? ''}'),
-                              Text('Status: ${order.status ?? ''}'),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
+                        );
+                    },
+                    child: OrderCard(order: order),
                   ),
                 );
               },

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gardenia/model/cart_model.dart';
 import 'package:gardenia/provider/cart/cart_provider.dart';
 import 'package:gardenia/shared/core/constants.dart';
-import 'package:gardenia/view/checkout_page/checkout_page.dart';
+import 'package:gardenia/view/checkout_page/screens/checkout_page.dart';
 import 'package:provider/provider.dart';
 
 class ProductDiscription extends StatelessWidget {

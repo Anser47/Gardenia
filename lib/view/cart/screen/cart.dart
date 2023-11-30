@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:gardenia/model/product_model.dart';
 import 'package:gardenia/shared/core/constants.dart';
 import 'package:gardenia/shared/product_discription.dart';
-import 'package:gardenia/view/cart/cart_product_card.dart';
-import 'package:gardenia/view/checkout_page/check_out2.dart';
-import 'package:gardenia/view/checkout_page/checkout_page.dart';
+import 'package:gardenia/view/cart/widget/cart_product_card.dart';
+import 'package:gardenia/view/checkout_page/screens/check_out2.dart';
+import 'package:gardenia/view/checkout_page/screens/checkout_page.dart';
 
 class CartScreen extends StatelessWidget {
   CartScreen({super.key});

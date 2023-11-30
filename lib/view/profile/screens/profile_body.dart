@@ -96,7 +96,7 @@ class ProfileBody extends StatelessWidget {
                 ),
               ),
               const SizedBox(
-                height: 100,
+                height: 120,
               ),
               CommonButton(
                 name: 'Log Out',
@@ -104,7 +104,7 @@ class ProfileBody extends StatelessWidget {
                   FirebaseAuth.instance.signOut();
                 },
               ),
-              const SizedBox(height: 120),
+              const SizedBox(height: 160),
             ],
           ),
         ),

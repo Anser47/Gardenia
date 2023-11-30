@@ -28,7 +28,10 @@ class AccountTile extends StatelessWidget {
             ),
             Text(
               name,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
             )
           ],
         ),

@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:gardenia/firebase_options.dart';
+import 'package:gardenia/view_model/firebase_options.dart';
 import 'package:gardenia/provider/address/address_provider.dart';
 import 'package:gardenia/provider/bottomnavbar/bottom_nav_bar_provider.dart';
 import 'package:gardenia/provider/cart/cart_provider.dart';
@@ -76,7 +76,6 @@ class MyApp extends StatelessWidget {
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,
         home: SplashScreen(),
-        // home: MyWidget(),
       ),
     );
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gardenia/view/profile/profile_body.dart';
+import 'package:gardenia/view/profile/screens/profile_body.dart';
 
 class ScreenProfile extends StatelessWidget {
   const ScreenProfile({super.key});

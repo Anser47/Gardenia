@@ -20,13 +20,13 @@ class FilterScreen extends StatelessWidget {
               future: provider.getProductsByPriceRange(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator(); // Show a loading indicator while waiting for data
+                  return const CircularProgressIndicator();
                 } else if (snapshot.hasError) {
                   return Text('Error: ${snapshot.error}');
                 } else {
-                  final _listProduct = snapshot.data;
+                  final listProduct = snapshot.data;
                   return SearchCard(
-                    searchResults: _listProduct,
+                    searchResults: listProduct,
                   );
                 }
               },

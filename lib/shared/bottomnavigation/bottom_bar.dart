@@ -1,5 +1,5 @@
 import 'package:gardenia/provider/bottomnavbar/bottom_nav_bar_provider.dart';
-import 'package:gardenia/view/cart/cart.dart';
+import 'package:gardenia/view/cart/screen/cart.dart';
 import 'package:gardenia/view/home/screens/home/home_screen.dart';
 import 'package:gardenia/view/profile/screens/profile.dart';
 import 'package:gardenia/view/search/screen/search.dart';

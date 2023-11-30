@@ -4,14 +4,22 @@ import 'package:gardenia/shared/core/constants.dart';
 
 class OrderDetailsScreen extends StatefulWidget {
   final OrderModel order;
-
-  const OrderDetailsScreen({super.key, required this.order});
+  VoidCallback orderStatus;
+  bool isDelivered;
+  String buttonName;
+  OrderDetailsScreen(
+      {super.key,
+      required this.order,
+      required this.orderStatus,
+      required this.isDelivered,
+      required this.buttonName});
 
   @override
   State<OrderDetailsScreen> createState() => _OrderDetailsScreenState();
 }
 
 class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
+  final String productDelivered = 'Product is delivered';
   int _currentStep = 0;
   @override
   Widget build(BuildContext context) {
@@ -94,14 +102,29 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 ),
               ],
             ),
-            Row(
-              children: [
-                TextButton(
-                  onPressed: () {},
-                  child: const Text('Cancel'),
-                ),
-                TextButton(onPressed: () {}, child: const Text('Return'))
-              ],
+            TextButton(
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        content: const Text(
+                            'Requst will be proceded with in few days'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text('Ok'),
+                          )
+                        ],
+                      );
+                    });
+              },
+              child: Text(widget.buttonName),
             ),
             Stepper(
               steps: [
@@ -148,6 +171,12 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 }
               },
             )
+            // : const Center(
+            //     child: Text(
+            //       'Product Cancelled',
+            //       style: TextStyle(fontSize: 20),
+            //     ),
+            //   ),
           ],
         ),
       ),
@@ -162,7 +191,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
           onPressed: () {
             // Handle Cancel
           },
-          child: const Text('Cancel'),
+          child: const Text('Cancel Product'),
         ),
         ElevatedButton(
           onPressed: () {

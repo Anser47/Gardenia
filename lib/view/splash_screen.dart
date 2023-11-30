@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gardenia/shared/bottomnavigation/bottom_bar.dart';
-import 'package:gardenia/view/authentication_screens/log_in/log_in.dart';
+import 'package:gardenia/view/authentication_screens/log_in/screen/log_in.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
