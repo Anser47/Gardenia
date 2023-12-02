@@ -1,6 +1,7 @@
 # gardenia
 
 A new Flutter project.
+![photo_2023-11-23_14-54-11](https://github.com/Anser47/Gardenia/assets/123547488/bbb11485-66e6-440d-8eb5-6c1e13803d41)
 
 ## Getting Started
 
